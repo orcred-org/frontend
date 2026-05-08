@@ -21,11 +21,37 @@ export default function Navbar({ onApply }: NavbarProps) {
 
   const background = useTransform(
     scrollY,
-    [0, 80],
-    ["rgba(255,255,255,0.0)", "rgba(255,255,255,0.72)"]
+    [0, 100],
+    ["rgba(0,0,0,0.55)", "rgba(255,255,255,0.72)"]
   );
-  const blur = useTransform(scrollY, [0, 80], [0, 24]);
-  const borderOpacity = useTransform(scrollY, [0, 80], [0, 0.08]);
+  const blur = useTransform(scrollY, [0, 100], [0, 24]);
+  const borderOpacity = useTransform(scrollY, [0, 100], [0, 0.08]);
+
+  const textColor = useTransform(
+    scrollY,
+    [0, 100],
+    ["rgba(255,255,255,1)", "rgba(0,0,0,1)"]
+  );
+  const linkColor = useTransform(
+    scrollY,
+    [0, 100],
+    ["rgba(255,255,255,0.7)", "rgba(0,0,0,0.6)"]
+  );
+  const buttonBg = useTransform(
+    scrollY,
+    [0, 100],
+    ["rgba(255,255,255,0.2)", "rgba(0,0,0,0.9)"]
+  );
+  const buttonText = useTransform(
+    scrollY,
+    [0, 100],
+    ["rgba(255,255,255,1)", "rgba(255,255,255,1)"]
+  );
+  const buttonBorder = useTransform(
+    scrollY,
+    [0, 100],
+    ["rgba(255,255,255,0.5)", "rgba(0,0,0,0)"]
+  );
 
   return (
     <>
@@ -47,27 +73,36 @@ export default function Navbar({ onApply }: NavbarProps) {
         />
 
         <nav className="relative flex justify-between items-center h-[72px] px-6 sm:px-10 lg:px-margin-edge w-full max-w-container-max mx-auto">
-          <Link
-            href="#hero-section"
-            className="font-headline-md text-2xl sm:text-3xl tracking-tighter text-primary flex items-center gap-1.5 hover:text-accent-orange transition-colors"
-          >
-            Pruv<span className="asymmetric-dot mb-3" />
+          <Link href="#hero-section" className="flex items-center gap-1.5">
+            <motion.span
+              className="font-headline-md text-2xl sm:text-3xl tracking-tighter"
+              style={{ color: textColor }}
+            >
+              Pruv
+            </motion.span>
+            <span className="asymmetric-dot mb-3" />
           </Link>
 
           <div className="hidden md:flex items-center gap-10">
             {links.map((link) => (
-              <Link
-                key={link.label}
-                className="font-label-sm text-black/60 hover:text-black transition-colors tracking-widest text-[12px]"
-                href={link.href}
-              >
-                {link.label}
+              <Link key={link.label} href={link.href}>
+                <motion.span
+                  className="font-label-sm tracking-widest text-[12px] uppercase"
+                  style={{ color: linkColor }}
+                >
+                  {link.label}
+                </motion.span>
               </Link>
             ))}
           </div>
 
           <motion.button
-            className="hidden md:block bg-black/90 text-white px-5 py-1.5 rounded-full font-label-sm tracking-widest uppercase text-[12px] hover:bg-accent-orange transition-colors"
+            className="hidden md:block px-5 py-1.5 rounded-full font-label-sm tracking-widest uppercase text-[12px] border"
+            style={{
+              backgroundColor: buttonBg,
+              color: buttonText,
+              borderColor: buttonBorder,
+            }}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={onApply}
@@ -81,17 +116,20 @@ export default function Navbar({ onApply }: NavbarProps) {
             aria-label="Toggle menu"
           >
             <motion.span
-              className="block w-6 h-0.5 bg-black origin-center"
+              className="block w-6 h-0.5 origin-center"
+              style={{ background: textColor }}
               animate={menuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
               transition={{ duration: 0.3 }}
             />
             <motion.span
-              className="block w-6 h-0.5 bg-black origin-center"
+              className="block w-6 h-0.5 origin-center"
+              style={{ background: textColor }}
               animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
               transition={{ duration: 0.2 }}
             />
             <motion.span
-              className="block w-6 h-0.5 bg-black origin-center"
+              className="block w-6 h-0.5 origin-center"
+              style={{ background: textColor }}
               animate={menuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
               transition={{ duration: 0.3 }}
             />

@@ -19,6 +19,14 @@ export default function HeroSection({ onApply }: HeroProps) {
 
   const bgX = useTransform(mouseX, [-0.5, 0.5], [-8, 8]);
   const bgY = useTransform(mouseY, [-0.5, 0.5], [-5, 5]);
+
+  const fog1X = useTransform(mouseX, [-0.5, 0.5], [-3, 3]);
+  const fog1Y = useTransform(mouseY, [-0.5, 0.5], [-2, 2]);
+  const fog2X = useTransform(mouseX, [-0.5, 0.5], [-6, 6]);
+  const fog2Y = useTransform(mouseY, [-0.5, 0.5], [-4, 4]);
+  const fog3X = useTransform(mouseX, [-0.5, 0.5], [-10, 10]);
+  const fog3Y = useTransform(mouseY, [-0.5, 0.5], [-7, 7]);
+
   const subtitleX = useTransform(mouseX, [-0.5, 0.5], [-4, 4]);
   const subtitleY = useTransform(mouseY, [-0.5, 0.5], [-2, 2]);
   const subtitleRotateX = useTransform(mouseY, [-0.5, 0.5], [1.5, -1.5]);
@@ -69,9 +77,10 @@ export default function HeroSection({ onApply }: HeroProps) {
     <section
       id="hero-section"
       ref={heroRef}
-      className="min-h-[100vh] flex flex-col justify-center items-center relative px-6 sm:px-10 lg:px-margin-edge overflow-hidden"
+      className="min-h-[100vh] mt-[-72px] flex flex-col justify-center items-center relative px-6 sm:px-10 lg:px-margin-edge overflow-hidden isolate"
       style={{ backgroundColor: "#0d0200" }}
     >
+      {/* Base stripe background — no scale overflow */}
       <motion.div
         className="absolute inset-0 z-0"
         style={{
@@ -80,22 +89,59 @@ export default function HeroSection({ onApply }: HeroProps) {
           opacity: 0.72,
           backgroundImage:
             "radial-gradient(ellipse 90% 70% at 50% 15%, rgba(235,69,17,0.55) 0%, transparent 65%),repeating-linear-gradient(90deg,#050100 0px,#050100 2px,#7a1a04 2px,#b02e0c 14px,#eb4511 32px,#d04010 52px,#6b1605 64px,#050100 70px)",
-          scale: 1.06,
-        }}
-      />
-      <div
-        className="absolute inset-0 z-0 pointer-events-none"
-        style={{
-          background: "linear-gradient(to bottom, transparent 40%, rgba(5,1,0,0.75) 100%)",
         }}
       />
 
+      {/* Fog layer 1 — edge vignette, no scale */}
       <motion.div
-        className="relative z-10 flex flex-col items-center w-full max-w-4xl mx-auto"
+        className="absolute inset-0 z-[1] pointer-events-none"
+        style={{
+          x: fog1X,
+          y: fog1Y,
+          background:
+            "radial-gradient(ellipse 80% 80% at 50% 50%, transparent 30%, rgba(5,1,0,0.9) 100%)",
+        }}
+      />
+
+      {/* Fog layer 2 — center glow, no scale */}
+      <motion.div
+        className="absolute inset-0 z-[2] pointer-events-none"
+        style={{
+          x: fog2X,
+          y: fog2Y,
+          background:
+            "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(235,69,17,0.12) 0%, transparent 70%)",
+        }}
+      />
+
+      {/* Fog layer 3 — moving light source, no scale */}
+      <motion.div
+        className="absolute inset-0 z-[3] pointer-events-none"
+        style={{
+          x: fog3X,
+          y: fog3Y,
+          background:
+            "radial-gradient(ellipse 40% 50% at 50% 30%, rgba(235,69,17,0.15) 0%, transparent 65%)",
+        }}
+      />
+
+      {/* Bottom vignette */}
+      <div
+        className="absolute inset-0 z-[4] pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent 40%, rgba(5,1,0,0.85) 100%)",
+        }}
+      />
+
+      {/* Content */}
+      <motion.div
+        className="relative z-10 flex flex-col items-center w-full max-w-4xl mx-auto pt-[72px]"
         variants={stagger}
         initial="hidden"
         animate="show"
       >
+        {/* Badge */}
         <motion.div
           variants={fadeIn}
           style={{
@@ -104,11 +150,12 @@ export default function HeroSection({ onApply }: HeroProps) {
             transformPerspective: 1200,
           }}
         >
-          <div className="inline-block border border-accent-orange/50 text-accent-orange px-4 sm:px-6 py-1.5 rounded-full font-label-sm mb-8 sm:mb-12 tracking-[0.2em] uppercase text-[10px] sm:text-[11px]">
-            5 Founding Reviewer Spots Open
-          </div>
+          <div className="inline-block border border-white/40 text-white bg-black/30 backdrop-blur-sm px-4 sm:px-6 py-1.5 rounded-full font-label-sm mb-8 sm:mb-12 tracking-[0.2em] uppercase text-[10px] sm:text-[11px]">
+  5 Founding Reviewer Spots Open
+</div>
         </motion.div>
 
+        {/* Title */}
         <motion.div
           variants={fadeIn}
           style={{
@@ -127,6 +174,7 @@ export default function HeroSection({ onApply }: HeroProps) {
           </h1>
         </motion.div>
 
+        {/* Subtitle */}
         <motion.div
           variants={fadeIn}
           style={{
@@ -138,14 +186,15 @@ export default function HeroSection({ onApply }: HeroProps) {
           }}
         >
           <p className="font-body-lg text-white/65 max-w-xl sm:max-w-2xl text-center mb-10 sm:mb-16 leading-relaxed text-base sm:text-lg lg:text-body-lg px-4">
-            You spent months building something real.
-            Someone else spent a weekend prompting ChatGPT.
+            You spent months building something real. Someone else spent a
+            weekend prompting ChatGPT.
             <br className="hidden sm:block" />
             Right now, no one can tell the difference.{" "}
             <span className="text-white/90 font-normal">Pruv can.</span>
           </p>
         </motion.div>
 
+        {/* Buttons */}
         <motion.div
           variants={fadeIn}
           className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center w-full sm:w-auto px-4"

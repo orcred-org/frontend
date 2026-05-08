@@ -33,20 +33,23 @@ body {
   backdrop-filter: blur(40px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03),
-    0 0 0 1px rgba(255, 255, 255, 0.5) inset, 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+    0 20px 40px -10px rgba(0, 0, 0, 0.1);
 }
 
 .text-3d-enhanced {
   color: #000;
   position: relative;
-  text-shadow: 0.5px 0.5px 0 #eb4511, 1px 1px 0 #eb4511, 1.5px 1.5px 0 #eb4511,
-    2px 2px 0 #eb4511, 2.5px 2.5px 0 #eb4511, 3px 3px 0 #eb4511,
-    3.5px 3.5px 0 #eb4511, 4px 4px 15px rgba(235, 69, 17, 0.3);
+  text-shadow: 0.5px 0.5px 0 #eb4511, 1px 1px 0 #eb4511,
+    1.5px 1.5px 0 #eb4511, 2px 2px 0 #eb4511, 2.5px 2.5px 0 #eb4511,
+    3px 3px 0 #eb4511, 3.5px 3.5px 0 #eb4511,
+    4px 4px 15px rgba(235, 69, 17, 0.3);
 }
 
 .text-3d-lg-enhanced {
-  text-shadow: 2px 2px 0 #eb4511, 4px 4px 0 #eb4511, 6px 6px 0 #eb4511,
-    8px 8px 30px rgba(235, 69, 17, 0.4);
+  text-shadow: 2px 2px 0 rgba(139, 40, 5, 0.8),
+    4px 4px 0 rgba(139, 40, 5, 0.6), 6px 6px 0 rgba(139, 40, 5, 0.4),
+    8px 8px 30px rgba(235, 69, 17, 0.2);
   letter-spacing: -0.04em;
 }
 
@@ -104,6 +107,10 @@ section[id] {
   pointer-events: none;
   background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCErD3N3Z14tJ4bkkjdKGSbudVeP1Tih-uYBcIMYbrkFvKjWFel3PymvnNgU37sdzjC8tyBpPxLP3k0BNqhm0LLG3eNljb7UnuHX5h4JsgYTw9atZWq02AWocpdWfrzhL6q1ZziLm7Opw9opN7F35wmZdrmTwRvLwRe9KTS5vx2dJ5Ud3mOVnANn3UO8EiripXVFXlD9U3BtZnOYcb1OIhA53HU7fgMVRZaiO07vTwET8oRcETJXVdfs-0azmBNn4MNOEdxz60laS4");
   z-index: 10;
+}
+
+#hero-section::before {
+  display: none;
 }
 
 .glow-hover:hover {
