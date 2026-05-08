@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring, type Variants } from "framer-motion";
 
 interface HeroProps {
   onApply: () => void;
@@ -63,14 +63,17 @@ export default function HeroSection({ onApply }: HeroProps) {
     };
   }, [rawX, rawY]);
 
-  const stagger = {
+  const stagger: Variants = {
     hidden: {},
     show: { transition: { staggerChildren: 0.15, delayChildren: 0.4 } },
   };
 
-  const fadeIn = {
+  const fadeIn: Variants = {
     hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { duration: 1.2, ease: "easeOut" } },
+    show: {
+      opacity: 1,
+      transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] },
+    },
   };
 
   return (
@@ -80,7 +83,7 @@ export default function HeroSection({ onApply }: HeroProps) {
       className="min-h-[100vh] mt-[-72px] flex flex-col justify-center items-center relative px-6 sm:px-10 lg:px-margin-edge overflow-hidden isolate"
       style={{ backgroundColor: "#0d0200" }}
     >
-      {/* Base stripe background — no scale overflow */}
+      {/* Base stripe background */}
       <motion.div
         className="absolute inset-0 z-0"
         style={{
@@ -92,7 +95,7 @@ export default function HeroSection({ onApply }: HeroProps) {
         }}
       />
 
-      {/* Fog layer 1 — edge vignette, no scale */}
+      {/* Fog layer 1 */}
       <motion.div
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
@@ -103,7 +106,7 @@ export default function HeroSection({ onApply }: HeroProps) {
         }}
       />
 
-      {/* Fog layer 2 — center glow, no scale */}
+      {/* Fog layer 2 */}
       <motion.div
         className="absolute inset-0 z-[2] pointer-events-none"
         style={{
@@ -114,7 +117,7 @@ export default function HeroSection({ onApply }: HeroProps) {
         }}
       />
 
-      {/* Fog layer 3 — moving light source, no scale */}
+      {/* Fog layer 3 */}
       <motion.div
         className="absolute inset-0 z-[3] pointer-events-none"
         style={{
@@ -151,8 +154,8 @@ export default function HeroSection({ onApply }: HeroProps) {
           }}
         >
           <div className="inline-block border border-white/40 text-white bg-black/30 backdrop-blur-sm px-4 sm:px-6 py-1.5 rounded-full font-label-sm mb-8 sm:mb-12 tracking-[0.2em] uppercase text-[10px] sm:text-[11px]">
-  5 Founding Reviewer Spots Open
-</div>
+            5 Founding Reviewer Spots Open
+          </div>
         </motion.div>
 
         {/* Title */}
