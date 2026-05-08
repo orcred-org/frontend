@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
+
+:root {
+  scroll-behavior: smooth;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #ffffff;
+  color: #1a1c1d;
+}
+
+::selection {
+  background-color: #eb4511;
+  color: #ffffff;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset, 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+}
+
+.text-3d-enhanced {
+  color: #000;
+  position: relative;
+  text-shadow: 0.5px 0.5px 0 #eb4511, 1px 1px 0 #eb4511, 1.5px 1.5px 0 #eb4511,
+    2px 2px 0 #eb4511, 2.5px 2.5px 0 #eb4511, 3px 3px 0 #eb4511,
+    3.5px 3.5px 0 #eb4511, 4px 4px 15px rgba(235, 69, 17, 0.3);
+}
+
+.text-3d-lg-enhanced {
+  text-shadow: 2px 2px 0 #eb4511, 4px 4px 0 #eb4511, 6px 6px 0 #eb4511,
+    8px 8px 30px rgba(235, 69, 17, 0.4);
+  letter-spacing: -0.04em;
+}
+
+.mesh-gradient {
+  background-color: #fff;
+  background-image: radial-gradient(
+      at 0% 0%,
+      hsla(253, 16%, 7%, 0) 0,
+      hsla(253, 16%, 7%, 0) 50%
+    ),
+    radial-gradient(
+      at 50% 0%,
+      hsla(225, 39%, 30%, 0.03) 0,
+      hsla(225, 39%, 30%, 0) 50%
+    ),
+    radial-gradient(
+      at 100% 0%,
+      hsla(20, 85%, 45%, 0.05) 0,
+      hsla(20, 85%, 45%, 0) 50%
+    ),
+    radial-gradient(
+      at 0% 100%,
+      hsla(253, 16%, 7%, 0) 0,
+      hsla(253, 16%, 7%, 0) 50%
+    ),
+    radial-gradient(
+      at 50% 100%,
+      hsla(225, 39%, 30%, 0) 0,
+      hsla(225, 39%, 30%, 0) 50%
+    ),
+    radial-gradient(
+      at 100% 100%,
+      hsla(339, 49%, 30%, 0.03) 0,
+      hsla(339, 49%, 30%, 0) 50%
+    );
+  background-attachment: fixed;
+}
+
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+.grainy-overlay {
+  position: relative;
+}
+
+.grainy-overlay::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.04;
+  pointer-events: none;
+  background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCErD3N3Z14tJ4bkkjdKGSbudVeP1Tih-uYBcIMYbrkFvKjWFel3PymvnNgU37sdzjC8tyBpPxLP3k0BNqhm0LLG3eNljb7UnuHX5h4JsgYTw9atZWq02AWocpdWfrzhL6q1ZziLm7Opw9opN7F35wmZdrmTwRvLwRe9KTS5vx2dJ5Ud3mOVnANn3UO8EiripXVFXlD9U3BtZnOYcb1OIhA53HU7fgMVRZaiO07vTwET8oRcETJXVdfs-0azmBNn4MNOEdxz60laS4");
+  z-index: 10;
+}
+
+.glow-hover:hover {
+  box-shadow: 0 0 30px 2px rgba(235, 69, 17, 0.15);
+}
+
+.asymmetric-dot {
+  width: 8px;
+  height: 8px;
+  background: #eb4511;
+  border-radius: 50%;
+  display: inline-block;
+}
