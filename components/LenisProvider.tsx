@@ -8,23 +8,26 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.0,
+      duration: 0.9,
       easing: (t: number) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1,
+      wheelMultiplier: 0.8,
+      touchMultiplier: 0.8,
     });
 
     lenisRef.current = lenis;
 
+    let rafId: number;
+
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
     };
   }, []);

@@ -18,9 +18,13 @@ html {
 }
 
 body {
+body {
   font-family: "Inter", sans-serif;
   background-color: #ffffff;
   color: #1a1c1d;
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
+}
 }
 
 ::selection {
@@ -123,4 +127,15 @@ section[id] {
   background: #eb4511;
   border-radius: 50%;
   display: inline-block;
+}
+
+/* Prevent layout shift during animations */
+.framer-motion-fix {
+  will-change: opacity;
+  transform: translateZ(0);
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

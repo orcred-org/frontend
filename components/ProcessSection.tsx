@@ -31,7 +31,7 @@ export default function ProcessSection() {
   return (
     <section id="process" className="py-24 sm:py-32 lg:py-section-gap px-6 sm:px-10 lg:px-margin-edge max-w-container-max mx-auto">
       <motion.div
-        className="mb-16 sm:mb-24 lg:mb-32 md:ml-[33%]"
+        className="mb-16 sm:mb-24 lg:mb-32 max-w-2xl"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.3 }}

@@ -57,7 +57,7 @@ export default function CtaSection({ onApply }: CtaProps) {
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
       >
-        Pure signal. Zero noise.
+      
       </motion.p>
     </section>
   );

@@ -12,12 +12,14 @@ import ReviewersSection from "@/components/ReviewersSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 import ApplicationForm from "@/components/ApplicationForm";
+import Cursor from "@/components/Cursor";
 
 export default function Home() {
   const [formOpen, setFormOpen] = useState(false);
 
   return (
     <>
+      <Cursor />
       <Navbar onApply={() => setFormOpen(true)} />
       <main>
         <HeroSection onApply={() => setFormOpen(true)} />
