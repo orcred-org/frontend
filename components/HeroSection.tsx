@@ -3,34 +3,30 @@
 import { useRef, useEffect } from "react";
 import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
 
-export default function HeroSection() {
+interface HeroProps {
+  onApply: () => void;
+}
+
+export default function HeroSection({ onApply }: HeroProps) {
   const heroRef = useRef<HTMLElement>(null);
 
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
 
   const springConfig = { stiffness: 25, damping: 30, mass: 2 };
-
   const mouseX = useSpring(rawX, springConfig);
   const mouseY = useSpring(rawY, springConfig);
 
-  // Background — very subtle drift
   const bgX = useTransform(mouseX, [-0.5, 0.5], [-8, 8]);
   const bgY = useTransform(mouseY, [-0.5, 0.5], [-5, 5]);
-
-  // Subtitle — barely moves
   const subtitleX = useTransform(mouseX, [-0.5, 0.5], [-4, 4]);
   const subtitleY = useTransform(mouseY, [-0.5, 0.5], [-2, 2]);
   const subtitleRotateX = useTransform(mouseY, [-0.5, 0.5], [1.5, -1.5]);
   const subtitleRotateY = useTransform(mouseX, [-0.5, 0.5], [-1.5, 1.5]);
-
-  // Title — smallest movement, gentlest tilt
   const titleX = useTransform(mouseX, [-0.5, 0.5], [-2, 2]);
   const titleY = useTransform(mouseY, [-0.5, 0.5], [-1.5, 1.5]);
   const titleRotateX = useTransform(mouseY, [-0.5, 0.5], [3, -3]);
   const titleRotateY = useTransform(mouseX, [-0.5, 0.5], [-3, 3]);
-
-  // Badge — barely perceptible
   const badgeRotateX = useTransform(mouseY, [-0.5, 0.5], [1, -1]);
   const badgeRotateY = useTransform(mouseX, [-0.5, 0.5], [-1, 1]);
 
@@ -53,7 +49,6 @@ export default function HeroSection() {
 
     hero.addEventListener("mousemove", handleMouseMove);
     hero.addEventListener("mouseleave", handleMouseLeave);
-
     return () => {
       hero.removeEventListener("mousemove", handleMouseMove);
       hero.removeEventListener("mouseleave", handleMouseLeave);
@@ -77,7 +72,6 @@ export default function HeroSection() {
       className="min-h-[100vh] flex flex-col justify-center items-center relative px-6 sm:px-10 lg:px-margin-edge overflow-hidden"
       style={{ backgroundColor: "#0d0200" }}
     >
-      {/* Background stripe layer */}
       <motion.div
         className="absolute inset-0 z-0"
         style={{
@@ -89,8 +83,6 @@ export default function HeroSection() {
           scale: 1.06,
         }}
       />
-
-      {/* Bottom vignette */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
@@ -104,7 +96,6 @@ export default function HeroSection() {
         initial="hidden"
         animate="show"
       >
-        {/* Badge */}
         <motion.div
           variants={fadeIn}
           style={{
@@ -114,11 +105,10 @@ export default function HeroSection() {
           }}
         >
           <div className="inline-block border border-accent-orange/50 text-accent-orange px-4 sm:px-6 py-1.5 rounded-full font-label-sm mb-8 sm:mb-12 tracking-[0.2em] uppercase text-[10px] sm:text-[11px]">
-            Now in Early Access
+            5 Founding Reviewer Spots Open
           </div>
         </motion.div>
 
-        {/* Title */}
         <motion.div
           variants={fadeIn}
           style={{
@@ -137,7 +127,6 @@ export default function HeroSection() {
           </h1>
         </motion.div>
 
-        {/* Subtitle */}
         <motion.div
           variants={fadeIn}
           style={{
@@ -148,31 +137,33 @@ export default function HeroSection() {
             transformPerspective: 1200,
           }}
         >
-          <p className="font-body-lg text-white/65 max-w-xl sm:max-w-2xl lg:max-w-3xl text-center mb-10 sm:mb-16 leading-relaxed text-base sm:text-lg lg:text-body-lg px-4">
-            Get your AI/ML project reviewed by a senior engineer.
+          <p className="font-body-lg text-white/65 max-w-xl sm:max-w-2xl text-center mb-10 sm:mb-16 leading-relaxed text-base sm:text-lg lg:text-body-lg px-4">
+            You spent months building something real.
+            Someone else spent a weekend prompting ChatGPT.
             <br className="hidden sm:block" />
-            Walk away with a credential that actually means something.
+            Right now, no one can tell the difference.{" "}
+            <span className="text-white/90 font-normal">Pruv can.</span>
           </p>
         </motion.div>
 
-        {/* Buttons */}
         <motion.div
           variants={fadeIn}
           className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center w-full sm:w-auto px-4"
         >
           <motion.button
-            className="w-full sm:w-auto bg-black/90 text-white px-10 sm:px-12 py-4 sm:py-5 rounded-full font-label-sm uppercase tracking-widest text-[11px] sm:text-[12px] hover:bg-accent-orange transition-colors"
+            onClick={onApply}
+            className="w-full sm:w-auto bg-accent-orange text-white px-10 sm:px-12 py-4 sm:py-5 rounded-full font-label-sm uppercase tracking-widest text-[11px] sm:text-[12px] hover:bg-white hover:text-black transition-colors"
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
           >
-            Join the waitlist
+            Apply as a Founding Reviewer
           </motion.button>
           <motion.a
             className="font-label-sm text-white/80 hover:text-accent-orange transition-colors uppercase tracking-widest border-b border-transparent hover:border-accent-orange text-[11px] sm:text-[12px]"
-            href="#"
+            href="#process"
             whileHover={{ x: 4 }}
           >
-            Apply as a reviewer →
+            See how it works →
           </motion.a>
         </motion.div>
       </motion.div>

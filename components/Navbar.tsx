@@ -11,7 +11,11 @@ const links = [
   { label: "REVIEWERS", href: "#reviewers" },
 ];
 
-export default function Navbar() {
+interface NavbarProps {
+  onApply: () => void;
+}
+
+export default function Navbar({ onApply }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
 
@@ -43,7 +47,6 @@ export default function Navbar() {
         />
 
         <nav className="relative flex justify-between items-center h-[72px] px-6 sm:px-10 lg:px-margin-edge w-full max-w-container-max mx-auto">
-          {/* Logo */}
           <Link
             href="#hero-section"
             className="font-headline-md text-2xl sm:text-3xl tracking-tighter text-primary flex items-center gap-1.5 hover:text-accent-orange transition-colors"
@@ -51,7 +54,6 @@ export default function Navbar() {
             Pruv<span className="asymmetric-dot mb-3" />
           </Link>
 
-          {/* Desktop links */}
           <div className="hidden md:flex items-center gap-10">
             {links.map((link) => (
               <Link
@@ -64,16 +66,15 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Desktop CTA */}
           <motion.button
             className="hidden md:block bg-black/90 text-white px-5 py-1.5 rounded-full font-label-sm tracking-widest uppercase text-[12px] hover:bg-accent-orange transition-colors"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
+            onClick={onApply}
           >
-            Get Verified
+            Apply as Reviewer
           </motion.button>
 
-          {/* Mobile hamburger */}
           <button
             className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 z-50"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -98,7 +99,6 @@ export default function Navbar() {
         </nav>
       </motion.header>
 
-      {/* Mobile menu overlay */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -126,14 +126,17 @@ export default function Navbar() {
               </motion.div>
             ))}
             <motion.button
-              className="mt-6 bg-black text-white px-10 py-4 rounded-full font-label-sm tracking-widest uppercase text-[12px] hover:bg-accent-orange transition-colors"
+              className="mt-6 bg-black/90 text-white px-10 py-4 rounded-full font-label-sm tracking-widest uppercase text-[12px] hover:bg-accent-orange transition-colors"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2, delay: 0.28 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => setMenuOpen(false)}
+              onClick={() => {
+                setMenuOpen(false);
+                onApply();
+              }}
             >
-              Get Verified
+              Apply as Reviewer
             </motion.button>
           </motion.div>
         )}

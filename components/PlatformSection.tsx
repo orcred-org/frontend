@@ -22,19 +22,21 @@ function FadeIn({ children, delay = 0, className = "" }: { children: React.React
 export default function PlatformSection() {
   return (
     <section id="platform" className="relative py-24 sm:py-32 lg:py-section-gap overflow-hidden">
+
       {/* Panel 1 */}
       <div className="flex items-center px-6 sm:px-10 lg:px-margin-edge mb-20 sm:mb-28 lg:mb-32">
         <div className="max-w-container-max mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
           <FadeIn className="md:col-span-6 space-y-6 lg:space-y-10">
             <span className="font-label-sm text-accent-orange tracking-widest text-[10px] sm:text-[11px]">
-              01 / OVERLOAD
+              01 / THE REALITY
             </span>
             <h2 className="text-4xl sm:text-5xl lg:text-headline-lg font-bold leading-none tracking-tight">
-              Everyone has <br /> a GitHub.
+              More students are <br /> building than ever.
             </h2>
-            <p className="text-base sm:text-lg lg:text-body-lg text-on-surface-variant max-w-md font-light">
-              The repository list is the new resume, and it&apos;s just as cluttered.
-              Noise has replaced substance.
+            <p className="text-base sm:text-lg text-on-surface-variant max-w-md font-light leading-relaxed">
+              That&apos;s genuinely exciting. But when everyone has an AI project
+              on their resume, the ones who really built something
+              get lost in the crowd.
             </p>
           </FadeIn>
           <FadeIn delay={0.15} className="md:col-span-6 flex justify-center md:justify-end">
@@ -51,7 +53,7 @@ export default function PlatformSection() {
               />
               <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8">
                 <div className="w-10 sm:w-12 h-0.5 bg-accent-orange mb-3 sm:mb-4" />
-                <span className="font-label-sm text-black text-[10px] sm:text-[11px]">FRAGMENTATION_01.OBJ</span>
+                <span className="font-label-sm text-black text-[10px] sm:text-[11px]">SIGNAL_LOST.OBJ</span>
               </div>
             </motion.div>
           </FadeIn>
@@ -80,14 +82,16 @@ export default function PlatformSection() {
           </FadeIn>
           <FadeIn delay={0.15} className="md:col-span-5 md:col-start-8 order-1 md:order-2 space-y-6 lg:space-y-10">
             <span className="font-label-sm text-accent-orange tracking-widest text-[10px] sm:text-[11px]">
-              02 / DECEPTION
+              02 / THE GAP
             </span>
             <h2 className="text-4xl sm:text-5xl lg:text-headline-lg font-bold leading-none tracking-tight">
-              Trust is a <br /> broken asset.
+              A conversation <br /> reveals everything.
             </h2>
-            <p className="text-base sm:text-lg lg:text-body-lg text-on-surface-variant font-light">
-              Copy-pasted tutorials and LLM-generated code have made portfolios
-              noisy and unreliable.
+            <p className="text-base sm:text-lg text-on-surface-variant font-light leading-relaxed">
+              Ask a student why they chose that architecture.
+              Why that loss function. Why that tradeoff.
+              The ones who built it for real —
+              you&apos;ll know in 60 seconds.
             </p>
           </FadeIn>
         </div>
@@ -98,14 +102,16 @@ export default function PlatformSection() {
         <div className="max-w-container-max mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
           <FadeIn className="md:col-span-5 space-y-6 lg:space-y-10">
             <span className="font-label-sm text-accent-orange tracking-widest text-[10px] sm:text-[11px]">
-              03 / REALITY
+              03 / THE CREDENTIAL
             </span>
             <h2 className="text-4xl sm:text-5xl lg:text-headline-lg font-bold leading-none tracking-tight">
-              True depth <br /> is hidden.
+              Now there&apos;s <br /> proof.
             </h2>
-            <p className="text-base sm:text-lg lg:text-body-lg text-on-surface-variant font-light">
-              Engineering excellence is invisible until you&apos;re already halfway
-              through the hiring process. We surface it instantly.
+            <p className="text-base sm:text-lg text-on-surface-variant font-light leading-relaxed">
+              Pruv turns that conversation into a score.
+              A verified badge backed by a senior engineer&apos;s sign-off.
+              Something a student can carry into any room and say —
+              a real engineer reviewed this. It passed.
             </p>
           </FadeIn>
           <FadeIn delay={0.15} className="md:col-span-7 flex justify-end">
@@ -114,7 +120,7 @@ export default function PlatformSection() {
                 <div className="h-full w-full bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:20px_20px]" />
               </div>
               <div className="text-white font-bold text-2xl sm:text-4xl lg:text-6xl tracking-widest mix-blend-difference text-center px-4">
-                SIGNAL LOSS
+                VERIFIED.
               </div>
             </div>
           </FadeIn>

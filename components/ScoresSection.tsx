@@ -7,22 +7,22 @@ const scores = [
   {
     title: "Technical Depth",
     pct: "35%",
-    desc: "Algorithmic complexity, efficient resource management, and hardware-aware optimization.",
+    desc: "Did they build something that works — and do they know why it works?",
   },
   {
     title: "Communication",
     pct: "25%",
-    desc: "Ability to articulate design choices and explain complex concepts simply and effectively.",
+    desc: "Can they walk a room through their decisions without notes?",
   },
   {
     title: "Reproducibility",
     pct: "20%",
-    desc: "Code hygiene, environment configuration, and clarity of documentation for third-party use.",
+    desc: "Is the work clean enough that someone else could pick it up tomorrow?",
   },
   {
     title: "Originality",
     pct: "20%",
-    desc: "Novelty of implementation and independence from standard template code or tutorial structures.",
+    desc: "Did they think, or did they follow?",
   },
 ];
 
@@ -46,13 +46,13 @@ export default function ScoresSection() {
             </h2>
           </motion.div>
           <motion.p
-            className="text-base sm:text-lg lg:text-body-lg text-on-surface-variant max-w-xs pb-2 border-b border-black/10 font-light"
+            className="text-base sm:text-lg text-on-surface-variant max-w-xs pb-2 border-b border-black/10 font-light"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
           >
-            Multidimensional technical assessment across four critical vectors.
+            Not a grade. A signal. Four things that actually matter.
           </motion.p>
         </div>
 
@@ -76,7 +76,7 @@ export default function ScoresSection() {
                   {score.pct}
                 </motion.span>
               </div>
-              <p className="font-body-md text-on-surface-variant text-sm sm:text-base lg:text-lg">
+              <p className="font-body-md text-on-surface-variant text-sm sm:text-base lg:text-lg leading-relaxed">
                 {score.desc}
               </p>
             </motion.div>

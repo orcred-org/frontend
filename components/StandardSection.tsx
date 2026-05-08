@@ -16,17 +16,17 @@ export default function StandardSection() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
           <div className="md:col-span-8 md:col-start-3 text-center space-y-8 sm:space-y-12 lg:space-y-16">
             <p className="text-3xl sm:text-5xl lg:text-7xl font-bold leading-tight text-white/30 hover:text-white transition-colors duration-500 cursor-default tracking-tight">
-              A rigorous standard.
+              A credential that&apos;s earned.
             </p>
             <p className="text-3xl sm:text-5xl lg:text-7xl font-bold leading-tight text-white/60 hover:text-white transition-colors duration-500 cursor-default tracking-tight">
-              A standard that cannot be faked.
+              A credential backed by real engineers.
             </p>
             <p className="text-3xl sm:text-5xl lg:text-7xl font-bold leading-tight text-white cursor-default tracking-tight">
-              A standard industry trusts.
+              A credential that changes who gets hired.
             </p>
             <div className="pt-10 sm:pt-14 lg:pt-20">
               <span className="font-label-sm text-accent-orange uppercase tracking-[0.5em] font-bold block mb-4 text-[10px] sm:text-[11px]">
-                MANDATORY EXCELLENCE
+                BUILT BY ENGINEERS. FOR ENGINEERS.
               </span>
               <div className="w-16 h-1 bg-accent-orange mx-auto" />
             </div>

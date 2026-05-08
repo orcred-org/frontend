@@ -6,18 +6,18 @@ import { useRef } from "react";
 const rows = [
   {
     platform: "GitHub",
-    proves: "Activity and output levels.",
-    misses: "Authorship, logic, and actual depth.",
+    proves: "You pushed code.",
+    misses: "Whether you understand any of it.",
   },
   {
-    platform: "Leetcode",
-    proves: "Pattern recognition under pressure.",
-    misses: "Practical engineering and architecture.",
+    platform: "LeetCode",
+    proves: "You can memorise patterns.",
+    misses: "Whether you can engineer a real system.",
   },
   {
     platform: "Certificates",
-    proves: "Participation and time spent.",
-    misses: "Competence and live performance.",
+    proves: "You watched the videos.",
+    misses: "Whether you can apply any of it.",
   },
 ];
 
@@ -59,8 +59,8 @@ export default function ComparisonSection() {
               transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
             >
               <td className="py-12 sm:py-16 lg:py-20 px-6 sm:px-8 lg:px-10 font-bold text-3xl sm:text-4xl lg:text-5xl italic border-l-8 border-accent-orange tracking-tight">Pruv</td>
-              <td className="py-12 sm:py-16 lg:py-20 text-white font-light text-base sm:text-xl lg:text-2xl pr-4">Subject matter mastery.</td>
-              <td className="py-12 sm:py-16 lg:py-20 text-accent-orange font-bold text-base sm:text-xl lg:text-2xl tracking-tighter">The ability to hide.</td>
+              <td className="py-12 sm:py-16 lg:py-20 text-white font-light text-base sm:text-xl lg:text-2xl pr-4">You understand what you built.</td>
+              <td className="py-12 sm:py-16 lg:py-20 text-accent-orange font-bold text-base sm:text-xl lg:text-2xl tracking-tighter">Nothing. The gap is closed.</td>
             </motion.tr>
           </tbody>
         </table>

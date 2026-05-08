@@ -2,41 +2,51 @@
 
 import { motion } from "framer-motion";
 
-export default function CtaSection() {
+interface CtaProps {
+  onApply: () => void;
+}
+
+export default function CtaSection({ onApply }: CtaProps) {
   return (
     <section className="min-h-screen flex flex-col justify-center items-center px-6 sm:px-10 lg:px-margin-edge text-center bg-white mesh-gradient">
       <motion.h2
-        className="font-display-2xl text-primary text-3d-enhanced mb-12 sm:mb-16 lg:mb-20 uppercase leading-[0.85] text-[80px] sm:text-[120px] lg:text-display-2xl"
+        className="font-display-2xl text-primary text-3d-enhanced mb-6 uppercase leading-[0.85] text-[80px] sm:text-[120px] lg:text-display-2xl"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.9, ease: "easeOut" }}
       >
-        Ready
+        The standard
         <br />
-        to Pruv?
+        starts with
+        <br />
+        you.
       </motion.h2>
 
+      <motion.p
+        className="text-base sm:text-lg text-on-surface-variant font-light mb-10 sm:mb-14 max-w-md"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
+      >
+        5 founding reviewers. 2 founders. Built from nothing.
+      </motion.p>
+
       <motion.div
-        className="glass-panel p-2 sm:p-3 lg:p-4 rounded-full flex flex-col sm:flex-row items-center w-full max-w-sm sm:max-w-xl lg:max-w-2xl border-black/5 shadow-2xl glow-hover gap-2 sm:gap-0"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
       >
-        <input
-          aria-label="Email Address"
-          className="bg-transparent border-none focus:ring-0 px-6 sm:px-10 py-4 sm:py-5 font-body-md w-full text-base sm:text-lg placeholder:opacity-30 rounded-full"
-          placeholder="Enter your email"
-          type="email"
-        />
         <motion.button
-          className="w-full sm:w-auto bg-accent-orange text-white px-8 sm:px-12 py-4 sm:py-5 rounded-full font-label-sm whitespace-nowrap uppercase tracking-widest font-bold text-[11px] sm:text-[12px]"
-          whileHover={{ backgroundColor: "#000", scale: 1.05 }}
+          onClick={onApply}
+          className="bg-black/90 text-white px-12 sm:px-16 py-4 sm:py-6 rounded-full font-label-sm uppercase tracking-widest font-bold text-[11px] sm:text-[12px] hover:bg-accent-orange transition-colors"
+          whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.97 }}
           transition={{ duration: 0.2 }}
         >
-          Join Waitlist
+          Apply for a Founding Spot
         </motion.button>
       </motion.div>
 
@@ -47,7 +57,7 @@ export default function CtaSection() {
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
       >
-        PURE SIGNAL. ZERO NOISE.
+        Pure signal. Zero noise.
       </motion.p>
     </section>
   );

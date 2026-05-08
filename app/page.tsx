@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import PlatformSection from "@/components/PlatformSection";
@@ -8,22 +11,26 @@ import ComparisonSection from "@/components/ComparisonSection";
 import ReviewersSection from "@/components/ReviewersSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
+import ApplicationForm from "@/components/ApplicationForm";
 
 export default function Home() {
+  const [formOpen, setFormOpen] = useState(false);
+
   return (
     <>
-      <Navbar />
+      <Navbar onApply={() => setFormOpen(true)} />
       <main>
-        <HeroSection />
+        <HeroSection onApply={() => setFormOpen(true)} />
         <PlatformSection />
         <ProcessSection />
         <ScoresSection />
         <StandardSection />
         <ComparisonSection />
-        <ReviewersSection />
-        <CtaSection />
+        <ReviewersSection onApply={() => setFormOpen(true)} />
+        <CtaSection onApply={() => setFormOpen(true)} />
       </main>
       <Footer />
+      <ApplicationForm isOpen={formOpen} onClose={() => setFormOpen(false)} />
     </>
   );
 }
