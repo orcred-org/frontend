@@ -26,9 +26,24 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
 
     rafId = requestAnimationFrame(raf);
 
+    // Listen for body overflow changes to pause/resume lenis
+    const observer = new MutationObserver(() => {
+      if (document.body.style.overflow === "hidden") {
+        lenis.stop();
+      } else {
+        lenis.start();
+      }
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["style"],
+    });
+
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      observer.disconnect();
     };
   }, []);
 

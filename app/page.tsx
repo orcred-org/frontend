@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import PlatformSection from "@/components/PlatformSection";
@@ -11,28 +11,27 @@ import ComparisonSection from "@/components/ComparisonSection";
 import ReviewersSection from "@/components/ReviewersSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
-import ApplicationForm from "@/components/ApplicationForm";
 import Cursor from "@/components/Cursor";
 
 export default function Home() {
-  const [formOpen, setFormOpen] = useState(false);
+  const router = useRouter();
+  const handleApply = () => router.push("/apply");
 
   return (
     <>
       <Cursor />
-      <Navbar onApply={() => setFormOpen(true)} />
+      <Navbar onApply={handleApply} />
       <main>
-        <HeroSection onApply={() => setFormOpen(true)} />
+        <HeroSection onApply={handleApply} />
         <PlatformSection />
         <ProcessSection />
         <ScoresSection />
         <StandardSection />
         <ComparisonSection />
-        <ReviewersSection onApply={() => setFormOpen(true)} />
-        <CtaSection onApply={() => setFormOpen(true)} />
+        <ReviewersSection onApply={handleApply} />
+        <CtaSection onApply={handleApply} />
       </main>
       <Footer />
-      <ApplicationForm isOpen={formOpen} onClose={() => setFormOpen(false)} />
     </>
   );
 }
