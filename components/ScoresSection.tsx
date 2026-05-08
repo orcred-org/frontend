@@ -65,6 +65,12 @@ export default function ScoresSection() {
               animate={inView ? { opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: i * 0.12, ease: "easeOut" }}
               whileHover={{ y: -4 }}
+whileTap={{ 
+  y: -4,
+  boxShadow: "0 0 30px 2px rgba(235,69,17,0.15)",
+  borderColor: "rgba(235,69,17,1)",
+  transition: { duration: 0.2 }
+}}
             >
               <div className="absolute -right-10 -top-10 w-40 h-40 bg-accent-orange/0 group-hover:bg-accent-orange/5 rounded-full blur-3xl transition-colors" />
               <div className="flex justify-between items-baseline mb-6 sm:mb-10 lg:mb-12">

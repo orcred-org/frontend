@@ -13,6 +13,7 @@ export default function Cursor() {
   const x = useSpring(mouseX, { stiffness: 120, damping: 20, mass: 0.3 });
   const y = useSpring(mouseY, { stiffness: 120, damping: 20, mass: 0.3 });
 
+if (window.matchMedia("(pointer: coarse)").matches) return;
   useEffect(() => {
     const move = (e: MouseEvent) => {
       mouseX.set(e.clientX);

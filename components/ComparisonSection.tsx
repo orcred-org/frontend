@@ -79,21 +79,29 @@ export default function ComparisonSection() {
                 </motion.tr>
               ))}
               <motion.tr
-                className="bg-black text-white"
-                initial={{ opacity: 0 }}
-                animate={inView ? { opacity: 1 } : {}}
-                transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
-              >
-                <td className="py-16 sm:py-20 lg:py-24 px-6 sm:px-8 lg:px-10 font-bold text-3xl sm:text-4xl lg:text-5xl italic border-l-4 border-accent-orange tracking-tight">
-                  Pruv
-                </td>
-                <td className="py-16 sm:py-20 lg:py-24 text-white font-light text-base sm:text-lg lg:text-xl pr-4">
-                  You understand what you built.
-                </td>
-                <td className="py-16 sm:py-20 lg:py-24 text-accent-orange font-bold text-base sm:text-lg lg:text-xl tracking-tighter">
-                  Nothing. The gap is closed.
-                </td>
-              </motion.tr>
+  className="border-b border-black/5 group cursor-default"
+  initial={{ opacity: 0 }}
+  animate={inView ? { opacity: 1 } : {}}
+  transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+  whileHover={{
+  backgroundColor: "rgba(235,69,17,0.04)",
+  transition: { duration: 0.2, ease: "easeOut" },
+}}
+whileTap={{
+    backgroundColor: "rgba(235,69,17,0.06)",
+    transition: { duration: 0.1 },
+  }}
+>
+  <td className="py-8 sm:py-10 lg:py-12 font-bold text-xl sm:text-2xl lg:text-3xl text-primary transition-all group-hover:pl-4 group-hover:text-accent-orange tracking-tight">
+    Pruv
+  </td>
+  <td className="py-8 sm:py-10 lg:py-12 font-body-md text-sm sm:text-base lg:text-lg pr-4">
+    You understand what you built.
+  </td>
+  <td className="py-8 sm:py-10 lg:py-12 font-body-md text-sm sm:text-base lg:text-lg text-accent-orange font-medium">
+    Nothing. The gap is closed.
+  </td>
+</motion.tr>
             </tbody>
           </table>
         </div>

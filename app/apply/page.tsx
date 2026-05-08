@@ -34,22 +34,30 @@ export default function ApplyPage() {
         <div className="lg:sticky lg:top-0 lg:h-screen flex flex-col justify-between px-8 sm:px-12 lg:px-16 py-10 lg:py-16 border-b lg:border-b-0 lg:border-r border-black/5 bg-white">
           <div>
             <div className="inline-block border border-accent-orange/30 text-accent-orange px-4 py-1 rounded-full font-label-sm tracking-[0.2em] uppercase text-[10px] mb-8">
-              5 Spots Only
+              5 Founding Spots
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mb-6">
-              Apply as a <br />
-              <span className="text-accent-orange">
-                Founding<br />Reviewer.
-              </span>
+              Be the<br />
+              <span className="text-accent-orange">standard.</span>
             </h1>
 
+            <p className="text-sm sm:text-base text-black/50 font-light leading-relaxed mb-3 max-w-sm">
+              Two founders, one idea, and five seats at the table.
+            </p>
+
             <p className="text-sm sm:text-base text-black/40 font-light leading-relaxed mb-10 max-w-sm">
-              This is not a gig. It&apos;s equity, recognition,
-              and a founding role in something being built from scratch.
+              Pruv is building the verification standard for AI/ML engineers.
+              We are looking for 5 senior engineers who know the difference between
+              someone who built something and someone who ran something —
+              and want to do something about it.
             </p>
 
             <div className="w-8 h-[1px] bg-accent-orange/40 mb-10" />
+
+            <p className="font-label-sm text-black/30 uppercase tracking-widest text-[10px] mb-5">
+              What you get
+            </p>
 
             <div className="space-y-4">
               {[
@@ -69,12 +77,7 @@ export default function ApplyPage() {
           </div>
 
           <div className="mt-10 lg:mt-0 pt-8 border-t border-black/5">
-            <p className="font-label-sm text-black/25 text-[10px] uppercase tracking-widest mb-1">
-              Built by two founders
-            </p>
-            <p className="text-sm text-black/35 font-light">
-              No funding. No fluff. Just a real attempt to fix a broken signal.
-            </p>
+            
           </div>
         </div>
 
@@ -94,20 +97,8 @@ export default function ApplyPage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="border-t border-black/5 bg-white px-6 sm:px-10 lg:px-16 py-3">
-        <div className="flex justify-between items-center">
-          <p className="font-label-sm text-black/20 text-[10px] uppercase tracking-widest">
-            Pruv © 2024
-          </p>
-          <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-            <span className="font-label-sm text-black/25 text-[10px] uppercase tracking-widest">
-              5 spots remaining
-            </span>
-          </div>
-        </div>
-      </div>
+      
+
     </div>
   );
 }
