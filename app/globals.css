@@ -21,7 +21,6 @@ body {
   font-family: "Inter", sans-serif;
   background-color: #ffffff;
   color: #1a1c1d;
-  transform: translateZ(0);
   -webkit-font-smoothing: antialiased;
 }
 

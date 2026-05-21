@@ -11,6 +11,11 @@ const links = [
   { label: "REVIEWERS", href: "#reviewers" },
 ];
 
+const underlineVariants = {
+  rest: { scaleX: 0 },
+  hover: { scaleX: 1 },
+};
+
 interface NavbarProps {
   onApply: () => void;
 }
@@ -87,10 +92,19 @@ export default function Navbar({ onApply }: NavbarProps) {
             {links.map((link) => (
               <Link key={link.label} href={link.href}>
                 <motion.span
-                  className="font-label-sm tracking-widest text-[12px] uppercase"
+                  className="relative font-label-sm tracking-widest text-[12px] uppercase inline-block"
                   style={{ color: linkColor }}
+                  initial="rest"
+                  whileHover="hover"
+                  animate="rest"
                 >
                   {link.label}
+                  <motion.span
+                    className="absolute bottom-[-3px] left-0 w-full h-[1px] bg-current"
+                    style={{ originX: 0 }}
+                    variants={underlineVariants}
+                    transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                  />
                 </motion.span>
               </Link>
             ))}
