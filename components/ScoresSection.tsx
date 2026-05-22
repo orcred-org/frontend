@@ -40,7 +40,7 @@ export default function ScoresSection() {
     <section
       id="scores"
       className="py-24 sm:py-32 lg:py-40 px-6 sm:px-10 lg:px-16"
-      style={{ backgroundColor: "#0a0f18" }}
+      style={{ backgroundColor: "#06090e" }}
     >
       <div className="max-w-[1400px] mx-auto">
 
@@ -79,7 +79,7 @@ export default function ScoresSection() {
             <p
               className="text-[15px] font-light leading-relaxed pb-4 border-b"
               style={{
-                color: "rgba(235,225,205,0.38)",
+                color: "rgba(235,225,205,0.62)",
                 borderColor: "rgba(235,225,205,0.07)",
               }}
             >
@@ -133,7 +133,7 @@ export default function ScoresSection() {
                 </h3>
                 <p
                   className="text-[13px] sm:text-[14px] leading-relaxed font-light"
-                  style={{ color: "rgba(235,225,205,0.38)" }}
+                  style={{ color: "rgba(235,225,205,0.62)" }}
                 >
                   {c.desc}
                 </p>

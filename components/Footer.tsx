@@ -44,7 +44,7 @@ export default function Footer() {
             </div>
             <p
               className="text-[13px] sm:text-[14px] leading-relaxed font-light max-w-sm"
-              style={{ color: "rgba(235,225,205,0.32)" }}
+              style={{ color: "rgba(235,225,205,0.52)" }}
             >
               The verification standard for AI/ML engineers.
               Real projects. Real engineers. Real credentials.
@@ -80,7 +80,7 @@ export default function Footer() {
                 key={item.label}
                 href={item.href}
                 className="font-label-sm uppercase tracking-widest block text-[10px] sm:text-[11px] transition-colors duration-200 hover:text-accent-orange"
-                style={{ color: "rgba(235,225,205,0.42)" }}
+                style={{ color: "rgba(235,225,205,0.62)" }}
               >
                 {item.label}
               </Link>
@@ -106,7 +106,7 @@ export default function Footer() {
                 key={item}
                 href="#"
                 className="font-label-sm uppercase tracking-widest block text-[10px] sm:text-[11px] transition-colors duration-200 hover:text-accent-orange"
-                style={{ color: "rgba(235,225,205,0.42)" }}
+                style={{ color: "rgba(235,225,205,0.62)" }}
               >
                 {item}
               </Link>

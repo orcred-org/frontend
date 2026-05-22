@@ -93,7 +93,7 @@ export default function ComparisonSection() {
               style={{
                 fontStyle: "italic",
                 fontWeight: 300,
-                color: "rgba(235,225,205,0.45)",
+                color: "rgba(235,225,205,0.65)",
               }}
             >
               Orcred proves.
@@ -145,7 +145,7 @@ export default function ComparisonSection() {
                         fontSize: "clamp(22px, 2.8vw, 36px)",
                         color: row.orcred
                           ? "#eb4511"
-                          : "rgba(235,225,205,0.42)",
+                          : "rgba(235,225,205,0.62)",
                         lineHeight: 1,
                         display: "block",
                         transition: "color 0.3s ease",
@@ -204,7 +204,7 @@ export default function ComparisonSection() {
               fontStyle: "italic",
               fontWeight: 400,
               fontSize: "clamp(17px, 2.2vw, 26px)",
-              color: "rgba(235,225,205,0.3)",
+              color: "rgba(235,225,205,0.50)",
             }}
           >
             One conversation changes the signal permanently.

@@ -25,7 +25,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
       id="reviewers"
       className="relative min-h-screen flex items-center px-6 sm:px-10 lg:px-16"
       style={{
-        backgroundColor: "#0a0f18",
+        backgroundColor: "#06090e",
         borderTop: "1px solid rgba(235,225,205,0.05)",
         borderBottom: "1px solid rgba(235,225,205,0.05)",
       }}
@@ -99,7 +99,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
                 style={{
                   fontStyle: "italic",
                   fontWeight: 300,
-                  color: "rgba(235,225,205,0.42)",
+                  color: "rgba(235,225,205,0.62)",
                 }}
               >
                 60 seconds.
@@ -119,7 +119,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
           {/* Body */}
           <motion.p
             className="text-[14px] sm:text-[15px] leading-[1.9] font-light max-w-md mb-10"
-            style={{ color: "rgba(235,225,205,0.38)" }}
+            style={{ color: "rgba(235,225,205,0.62)" }}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 1, delay: 0.38, ease: "easeOut" }}
@@ -147,7 +147,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
                 />
                 <span
                   className="text-[13px] font-light"
-                  style={{ color: "rgba(235,225,205,0.42)" }}
+                  style={{ color: "rgba(235,225,205,0.62)" }}
                 >
                   {perk}
                 </span>
@@ -167,7 +167,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             className="relative border p-10 sm:p-12"
             style={{
               borderColor: "rgba(235,225,205,0.07)",
-              background: "#0c0f16",
+              background: "#0d1118",
             }}
           >
             {/* Corner accent — top-left L */}
@@ -222,7 +222,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             {/* Description */}
             <p
               className="text-[13px] sm:text-[14px] font-light leading-[1.85] mb-10"
-              style={{ color: "rgba(235,225,205,0.32)" }}
+              style={{ color: "rgba(235,225,205,0.52)" }}
             >
               This is not a gig.
               <br />

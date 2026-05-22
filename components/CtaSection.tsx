@@ -77,7 +77,7 @@ export default function CtaSection({ onApply }: CtaProps) {
         >
           The standard
           <br />
-          <span style={{ fontStyle: "italic", fontWeight: 300, color: "rgba(235,225,205,0.45)" }}>
+          <span style={{ fontStyle: "italic", fontWeight: 300, color: "rgba(235,225,205,0.55)" }}>
             starts with
           </span>
           <br />
@@ -109,7 +109,7 @@ export default function CtaSection({ onApply }: CtaProps) {
         {/* Body */}
         <motion.p
           className="text-[14px] sm:text-[16px] font-light leading-[1.9] max-w-sm mx-auto mb-12 sm:mb-14"
-          style={{ color: "rgba(235,225,205,0.38)" }}
+          style={{ color: "rgba(235,225,205,0.62)" }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.3 }}

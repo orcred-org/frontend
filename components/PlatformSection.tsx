@@ -192,7 +192,7 @@ function SessionVisual() {
           fontStyle: "italic",
           fontWeight: 300,
           fontSize: "clamp(17px, 2.2vw, 24px)",
-          color: "rgba(235,225,205,0.38)",
+          color: "rgba(235,225,205,0.62)",
           textAlign: "center",
         }}
         initial={{ opacity: 0, y: 8 }}
@@ -299,13 +299,13 @@ function ScoreVisual() {
             <div className="flex justify-between mb-1.5">
               <span
                 className="font-label-sm uppercase tracking-widest text-[8px]"
-                style={{ color: "rgba(235,225,205,0.28)" }}
+                style={{ color: "rgba(235,225,205,0.46)" }}
               >
                 {b.label}
               </span>
               <span
                 className="font-label-sm text-[9px]"
-                style={{ color: "rgba(235,225,205,0.35)" }}
+                style={{ color: "rgba(235,225,205,0.55)" }}
               >
                 {b.pct}
               </span>
@@ -455,7 +455,7 @@ function EditorialPanel({
                 fontWeight: 300,
                 fontSize: "clamp(22px, 2.8vw, 38px)",
                 lineHeight: 1.1,
-                color: "rgba(235,225,205,0.32)",
+                color: "rgba(235,225,205,0.50)",
                 marginTop: "4px",
               }}
             >
@@ -474,7 +474,7 @@ function EditorialPanel({
           {/* Body */}
           <motion.p
             className="text-[14px] sm:text-[15px] leading-[1.9] font-light"
-            style={{ color: "rgba(235,225,205,0.4)" }}
+            style={{ color: "rgba(235,225,205,0.62)" }}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 1, delay: 0.42, ease: "easeOut" }}

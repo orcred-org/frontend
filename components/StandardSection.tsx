@@ -118,7 +118,7 @@ export default function StandardSection() {
               {/* Body */}
               <p
                 className="text-[14px] sm:text-[15px] font-light leading-[1.9] max-w-md mx-auto"
-                style={{ color: "rgba(235,225,205,0.38)" }}
+                style={{ color: "rgba(235,225,205,0.62)" }}
               >
                 {story[i].body}
               </p>

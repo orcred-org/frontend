@@ -88,7 +88,7 @@ function ProcessStep({
       className="min-h-[88vh] flex items-center border-b px-6 sm:px-10 lg:px-16 py-20 relative overflow-hidden"
       style={{
         borderColor: "rgba(235,225,205,0.05)",
-        backgroundColor: i === 1 ? "#07090f" : "#06090e",
+        backgroundColor: "#06090e",
       }}
     >
       {/* Giant watermark numeral */}
@@ -154,7 +154,7 @@ function ProcessStep({
           {/* Sub-label */}
           <motion.p
             className="font-label-sm uppercase tracking-[0.28em] text-[10px]"
-            style={{ color: "rgba(235,225,205,0.35)" }}
+            style={{ color: "rgba(235,225,205,0.55)" }}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.9, delay: 0.08 }}
@@ -190,7 +190,7 @@ function ProcessStep({
           {/* Main description */}
           <motion.p
             className="text-[14px] sm:text-[15px] leading-[1.9] font-light"
-            style={{ color: "rgba(235,225,205,0.52)" }}
+            style={{ color: "rgba(235,225,205,0.70)" }}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 1, delay: 0.35, ease: "easeOut" }}
@@ -202,7 +202,7 @@ function ProcessStep({
           <motion.p
             className="text-[13px] leading-[1.85] font-light pl-4"
             style={{
-              color: "rgba(235,225,205,0.28)",
+              color: "rgba(235,225,205,0.46)",
               borderLeft: "1px solid rgba(235,69,17,0.25)",
             }}
             initial={{ opacity: 0 }}
