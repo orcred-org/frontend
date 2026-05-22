@@ -73,13 +73,13 @@ module.exports = {
         "margin-edge": "64px",
       },
       fontFamily: {
-        "headline-lg": ["Inter", "sans-serif"],
-        "body-md": ["Inter", "sans-serif"],
-        "display-xl": ["Inter", "sans-serif"],
-        "display-2xl": ["Inter", "sans-serif"],
-        "body-lg": ["Inter", "sans-serif"],
-        "headline-md": ["Inter", "sans-serif"],
-        "label-sm": ["Inter", "sans-serif"],
+        "headline-lg": ["'Source Serif 4'", "'Source Serif Pro'", "Georgia", "serif"],
+        "body-md":     ["'Source Serif 4'", "'Source Serif Pro'", "Georgia", "serif"],
+        "display-xl":  ["'Source Serif 4'", "'Source Serif Pro'", "Georgia", "serif"],
+        "display-2xl": ["'Source Serif 4'", "'Source Serif Pro'", "Georgia", "serif"],
+        "body-lg":     ["'Source Serif 4'", "'Source Serif Pro'", "Georgia", "serif"],
+        "headline-md": ["'Source Serif 4'", "'Source Serif Pro'", "Georgia", "serif"],
+        "label-sm":    ["Inter", "sans-serif"],
       },
       fontSize: {
         "headline-lg": [

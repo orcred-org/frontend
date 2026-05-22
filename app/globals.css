@@ -1,12 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
-
+/* ── Theme Variables ── */
 :root {
   scroll-behavior: auto;
+
+  /* Light mode (warm parchment) */
+  --bg-page: #faf7f2;
+  --bg-alt: #f0ebe0;
+  --bg-card: #f5f1e9;
+  --fg: #1a1614;
+  --fg-muted: rgba(26,22,20,0.55);
+  --fg-faint: rgba(26,22,20,0.28);
+  --border: rgba(26,22,20,0.07);
+  --border-strong: rgba(26,22,20,0.13);
+}
+
+html.dark {
+  /* Dark mode (midnight navy) */
+  --bg-page: #06090e;
+  --bg-alt: #0a0f18;
+  --bg-card: #0d1420;
+  --fg: #ebe1cd;
+  --fg-muted: rgba(235,225,205,0.5);
+  --fg-faint: rgba(235,225,205,0.25);
+  --border: rgba(235,225,205,0.07);
+  --border-strong: rgba(235,225,205,0.14);
 }
 
 html {
@@ -18,10 +42,13 @@ html {
 }
 
 body {
-  font-family: "Inter", sans-serif;
-  background-color: #ffffff;
-  color: #1a1c1d;
+  font-family: "Source Serif 4", "Source Serif Pro", Georgia, serif;
+  background-color: var(--bg-page);
+  color: var(--fg);
+  transition: background-color 0.45s ease, color 0.45s ease;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1, "liga" 1;
 }
 
 ::selection {
@@ -38,13 +65,33 @@ body {
     0 20px 40px -10px rgba(0, 0, 0, 0.1);
 }
 
+html.dark .glass-panel {
+  background: rgba(235, 225, 205, 0.03);
+  border-color: rgba(235, 225, 205, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(235, 225, 205, 0.05) inset,
+    0 20px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
 .text-3d-enhanced {
-  color: #000;
+  color: #1a1614;
   position: relative;
   text-shadow: 0.5px 0.5px 0 #eb4511, 1px 1px 0 #eb4511,
     1.5px 1.5px 0 #eb4511, 2px 2px 0 #eb4511, 2.5px 2.5px 0 #eb4511,
     3px 3px 0 #eb4511, 3.5px 3.5px 0 #eb4511,
     4px 4px 15px rgba(235, 69, 17, 0.3);
+}
+
+html.dark .text-3d-enhanced {
+  color: #ebe1cd;
+  text-shadow: 0.5px 0.5px 0 rgba(235,69,17,0.9),
+    1px 1px 0 rgba(235,69,17,0.8),
+    1.5px 1.5px 0 rgba(235,69,17,0.7),
+    2px 2px 0 rgba(235,69,17,0.6),
+    2.5px 2.5px 0 rgba(235,69,17,0.5),
+    3px 3px 0 rgba(235,69,17,0.4),
+    3.5px 3.5px 0 rgba(235,69,17,0.3),
+    4px 4px 15px rgba(235,69,17,0.35);
 }
 
 .text-3d-lg-enhanced {
@@ -55,7 +102,7 @@ body {
 }
 
 .mesh-gradient {
-  background-color: #fff;
+  background-color: var(--bg-page);
   background-image: radial-gradient(
       at 0% 0%,
       hsla(253, 16%, 7%, 0) 0,
@@ -89,8 +136,39 @@ body {
   background-attachment: fixed;
 }
 
+html.dark .mesh-gradient {
+  background-color: #06090e;
+  background-image:
+    radial-gradient(at 100% 0%, hsla(20, 85%, 45%, 0.07) 0%, hsla(20, 85%, 45%, 0) 50%),
+    radial-gradient(at 0% 50%, hsla(225, 39%, 30%, 0.05) 0%, hsla(225, 39%, 30%, 0) 50%),
+    radial-gradient(at 50% 100%, hsla(20, 70%, 30%, 0.04) 0%, hsla(20, 70%, 30%, 0) 50%);
+}
+
 section[id] {
   scroll-margin-top: 80px;
+}
+
+/* ── Custom scrollbar — elegant thin orange ── */
+::-webkit-scrollbar {
+  width: 3px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(235, 69, 17, 0.45);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(235, 69, 17, 0.75);
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: rgba(235, 69, 17, 0.35);
+}
+
+/* ── Link / interactive hover cursor hint ── */
+a, button, [data-magnetic] {
+  cursor: none;
 }
 
 .grainy-overlay {
@@ -135,4 +213,19 @@ section[id] {
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Marquee ticker ── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-33.333%); }
+}
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+  will-change: transform;
+}
+
+/* ── Tally form dark override ── */
+.tally-dark iframe {
+  color-scheme: dark;
 }

@@ -1,38 +1,149 @@
 "use client";
 
-export default function StandardSection() {
-  return (
-    <section className="bg-black text-white py-24 sm:py-32 lg:py-section-gap px-6 sm:px-10 lg:px-margin-edge overflow-hidden relative">
-      <div className="absolute top-0 left-0 w-full h-full opacity-10">
-        <div className="grid grid-cols-12 h-full w-full">
-          {Array.from({ length: 11 }).map((_, i) => (
-            <div key={i} className="border-r border-white/20" />
-          ))}
-          <div />
-        </div>
-      </div>
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
-      <div className="max-w-container-max mx-auto relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
-          <div className="md:col-span-8 md:col-start-3 text-center space-y-8 sm:space-y-12 lg:space-y-16">
-            <p className="text-3xl sm:text-5xl lg:text-7xl font-bold leading-tight text-white/30 hover:text-white transition-colors duration-500 cursor-default tracking-tight">
-              A credential that&apos;s earned.
-            </p>
-            <p className="text-3xl sm:text-5xl lg:text-7xl font-bold leading-tight text-white/60 hover:text-white transition-colors duration-500 cursor-default tracking-tight">
-              A credential backed by real engineers.
-            </p>
-            <p className="text-3xl sm:text-5xl lg:text-7xl font-bold leading-tight text-white cursor-default tracking-tight">
-              A credential that changes who gets hired.
-            </p>
-            <div className="pt-10 sm:pt-14 lg:pt-20">
-              <span className="font-label-sm text-accent-orange uppercase tracking-[0.5em] font-bold block mb-4 text-[10px] sm:text-[11px]">
-                BUILT BY ENGINEERS. FOR ENGINEERS.
-              </span>
-              <div className="w-16 h-1 bg-accent-orange mx-auto" />
-            </div>
-          </div>
+const story = [
+  {
+    eyebrow: "The Problem",
+    headline: "No one can tell\nthe difference.",
+    body: "Someone spent six months building something real. Someone else spent a weekend prompting ChatGPT. Right now, their portfolios look identical.",
+  },
+  {
+    eyebrow: "The Cost",
+    headline: "Real builders\nare losing.",
+    body: "Hiring managers can't see what's under the surface. GitHub shows commits. Certificates show course completions. Neither shows understanding.",
+  },
+  {
+    eyebrow: "The Fix",
+    headline: "45 minutes\nchanges that.",
+    body: "One conversation with a senior engineer who has seen the difference a thousand times. One score. One credential that holds.",
+  },
+];
+
+export default function StandardSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  /* ── Each statement occupies ~1/3 of the scroll range with overlap ── */
+  const op1  = useTransform(scrollYProgress, [0,    0.08,  0.29,  0.38], [0, 1, 1, 0]);
+  const y1   = useTransform(scrollYProgress, [0,    0.08,  0.29,  0.38], [50, 0, 0, -50]);
+
+  const op2  = useTransform(scrollYProgress, [0.35, 0.43,  0.60,  0.68], [0, 1, 1, 0]);
+  const y2   = useTransform(scrollYProgress, [0.35, 0.43,  0.60,  0.68], [50, 0, 0, -50]);
+
+  const op3  = useTransform(scrollYProgress, [0.65, 0.73,  0.92,  1   ], [0, 1, 1, 1]);
+  const y3   = useTransform(scrollYProgress, [0.65, 0.73,  0.92,  1   ], [50, 0, 0,  0]);
+
+  /* ── Bottom progress line ── */
+  const lineW = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
+  const cards = [
+    { op: op1, y: y1 },
+    { op: op2, y: y2 },
+    { op: op3, y: y3 },
+  ];
+
+  return (
+    <div
+      ref={containerRef}
+      style={{ height: "270vh", backgroundColor: "#06090e", position: "relative" }}
+    >
+      <div
+        className="sticky top-0 overflow-hidden"
+        style={{ height: "100vh" }}
+      >
+        {/* Ambient */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 55% 50% at 50% 50%, rgba(235,69,17,0.04) 0%, transparent 70%)",
+          }}
+        />
+
+        {/* Section marker — top */}
+        <div className="absolute top-10 left-0 right-0 flex items-center justify-center gap-4 px-6">
+          <div className="w-10 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+          <span
+            className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
+            style={{ color: "rgba(235,225,205,0.2)" }}
+          >
+            The Standard
+          </span>
+          <div className="w-10 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
         </div>
+
+        {/* Story cards — stacked, driven by scroll */}
+        {cards.map((card, i) => (
+          <motion.div
+            key={i}
+            className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 sm:px-12 lg:px-28"
+            style={{ opacity: card.op, y: card.y }}
+          >
+            <div className="max-w-3xl mx-auto w-full">
+              {/* Eyebrow */}
+              <p
+                className="font-label-sm uppercase tracking-[0.48em] text-[9px] mb-7"
+                style={{ color: "rgba(235,69,17,0.65)" }}
+              >
+                {story[i].eyebrow}
+              </p>
+
+              {/* Headline */}
+              <h2
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontStyle: "italic",
+                  fontWeight: 300,
+                  fontSize: "clamp(40px, 7.5vw, 102px)",
+                  lineHeight: 1.06,
+                  color: "rgba(235,225,205,0.92)",
+                  whiteSpace: "pre-line",
+                  letterSpacing: "-0.01em",
+                }}
+              >
+                {story[i].headline}
+              </h2>
+
+              {/* Rule */}
+              <div className="flex justify-center my-8">
+                <div className="w-8 h-px opacity-60" style={{ background: "#eb4511" }} />
+              </div>
+
+              {/* Body */}
+              <p
+                className="text-[14px] sm:text-[15px] font-light leading-[1.9] max-w-md mx-auto"
+                style={{ color: "rgba(235,225,205,0.38)" }}
+              >
+                {story[i].body}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+
+        {/* Scroll nudge */}
+        <div
+          className="absolute bottom-9 left-1/2 -translate-x-1/2"
+        >
+          <span
+            className="font-label-sm uppercase tracking-[0.45em] text-[8px]"
+            style={{ color: "rgba(235,225,205,0.12)" }}
+          >
+            scroll
+          </span>
+        </div>
+
+        {/* Progress line — bottom */}
+        <motion.div
+          className="absolute bottom-0 left-0 h-[1px]"
+          style={{ width: lineW, background: "rgba(235,69,17,0.38)" }}
+        />
       </div>
-    </section>
+    </div>
   );
 }

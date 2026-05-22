@@ -3,103 +3,187 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
-const scores = [
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const criteria = [
   {
+    roman: "I.",
     title: "Technical Depth",
-    pct: "35%",
+    weight: "35%",
     desc: "Did they build something that works — and do they know why it works?",
   },
   {
+    roman: "II.",
     title: "Communication",
-    pct: "25%",
+    weight: "25%",
     desc: "Can they walk a room through their decisions without notes?",
   },
   {
+    roman: "III.",
     title: "Reproducibility",
-    pct: "20%",
+    weight: "20%",
     desc: "Is the work clean enough that someone else could pick it up tomorrow?",
   },
   {
+    roman: "IV.",
     title: "Originality",
-    pct: "20%",
+    weight: "20%",
     desc: "Did they think, or did they follow?",
   },
 ];
 
 export default function ScoresSection() {
-  const gridRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(gridRef, { once: true, amount: 0.1 });
+  const ref    = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.1 });
 
   return (
-    <section id="scores" className="py-24 sm:py-32 lg:py-section-gap bg-surface-container-low/30 px-6 sm:px-10 lg:px-margin-edge relative">
-      <div className="max-w-container-max mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 sm:mb-24 lg:mb-32 gap-6 sm:gap-8">
-          <motion.div
-            className="max-w-xl"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <h2 className="text-4xl sm:text-5xl lg:text-headline-lg font-bold leading-none tracking-tight">
-              The Pruv <br /> Score.
-            </h2>
-          </motion.div>
-          <motion.p
-            className="text-base sm:text-lg text-on-surface-variant max-w-xs pb-2 border-b border-black/10 font-light"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-          >
-            Not a grade. A signal. Four things that actually matter.
-          </motion.p>
-        </div>
+    <section
+      id="scores"
+      className="py-24 sm:py-32 lg:py-40 px-6 sm:px-10 lg:px-16"
+      style={{ backgroundColor: "#0a0f18" }}
+    >
+      <div className="max-w-[1400px] mx-auto">
 
-        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
-          {scores.map((score, i) => (
+        {/* Header */}
+        <motion.div
+          className="mb-16 sm:mb-20 lg:mb-24 grid grid-cols-1 md:grid-cols-2 gap-8 items-end"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+        >
+          <div>
+            <span
+              className="font-label-sm uppercase tracking-[0.35em] text-[9px] sm:text-[10px] block mb-5"
+              style={{ color: "rgba(235,69,17,0.7)" }}
+            >
+              Assessment Framework
+            </span>
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontWeight: 400,
+                fontSize: "clamp(36px, 5.5vw, 68px)",
+                lineHeight: 1.05,
+                color: "rgba(235,225,205,0.9)",
+              }}
+            >
+              The Orcred
+              <br />
+              <span style={{ fontStyle: "italic", fontWeight: 300 }}>
+                Score.
+              </span>
+            </h2>
+          </div>
+          <div className="md:text-right md:max-w-xs md:ml-auto">
+            <p
+              className="text-[15px] font-light leading-relaxed pb-4 border-b"
+              style={{
+                color: "rgba(235,225,205,0.38)",
+                borderColor: "rgba(235,225,205,0.07)",
+              }}
+            >
+              Not a grade. A signal.
+              <br />
+              Four things that actually matter.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Top rule */}
+        <div
+          className="h-px mb-0"
+          style={{ background: "rgba(235,225,205,0.12)" }}
+        />
+
+        {/* Criteria table */}
+        <div ref={ref}>
+          {criteria.map((c, i) => (
             <motion.div
-              key={score.title}
-              className="glass-panel p-8 sm:p-12 lg:p-16 hover:border-accent-orange transition-all group bg-white/40 glow-hover relative overflow-hidden"
+              key={c.roman}
+              className="group grid grid-cols-12 items-center border-b cursor-default"
+              style={{ borderColor: "rgba(235,225,205,0.07)" }}
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: i * 0.12, ease: "easeOut" }}
-              whileHover={{ y: -4 }}
-whileTap={{ 
-  y: -4,
-  boxShadow: "0 0 30px 2px rgba(235,69,17,0.15)",
-  borderColor: "rgba(235,69,17,1)",
-  transition: { duration: 0.2 }
-}}
+              whileHover={{ backgroundColor: "rgba(235,225,205,0.02)" }}
             >
-              <div className="absolute -right-10 -top-10 w-40 h-40 bg-accent-orange/0 group-hover:bg-accent-orange/5 rounded-full blur-3xl transition-colors" />
-              <div className="flex justify-between items-baseline mb-6 sm:mb-10 lg:mb-12">
-                <h3 className="font-headline-md text-xl sm:text-2xl lg:text-3xl">{score.title}</h3>
-                <motion.span
-                  className="font-display-xl text-3xl sm:text-4xl lg:text-5xl group-hover:text-accent-orange transition-colors"
-                  whileHover={{ scale: 1.05 }}
+              {/* Roman numeral */}
+              <div className="col-span-1 py-8 sm:py-10 lg:py-12 pr-4">
+                <span
+                  style={{
+                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontStyle: "italic",
+                    fontWeight: 300,
+                    fontSize: "clamp(16px, 2vw, 22px)",
+                    color: "rgba(235,225,205,0.22)",
+                  }}
                 >
-                  {score.pct}
+                  {c.roman}
+                </span>
+              </div>
+
+              {/* Name + desc */}
+              <div className="col-span-8 sm:col-span-9 py-8 sm:py-10 lg:py-12 pr-6">
+                <h3
+                  className="font-label-sm uppercase tracking-[0.25em] text-[10px] sm:text-[11px] mb-2 transition-colors duration-300 group-hover:text-accent-orange"
+                  style={{ color: "rgba(235,225,205,0.9)" }}
+                >
+                  {c.title}
+                </h3>
+                <p
+                  className="text-[13px] sm:text-[14px] leading-relaxed font-light"
+                  style={{ color: "rgba(235,225,205,0.38)" }}
+                >
+                  {c.desc}
+                </p>
+              </div>
+
+              {/* Weight */}
+              <div className="col-span-3 sm:col-span-2 py-8 sm:py-10 lg:py-12 text-right">
+                <motion.span
+                  style={{
+                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontStyle: "italic",
+                    fontWeight: 300,
+                    fontSize: "clamp(28px, 4vw, 48px)",
+                    lineHeight: 1,
+                    color: "rgba(235,225,205,0.18)",
+                  }}
+                  whileHover={{
+                    color: "#eb4511",
+                    transition: { duration: 0.25 },
+                  }}
+                >
+                  {c.weight}
                 </motion.span>
               </div>
-              <p className="font-body-md text-on-surface-variant text-sm sm:text-base lg:text-lg leading-relaxed">
-                {score.desc}
-              </p>
             </motion.div>
           ))}
         </div>
 
+        {/* Tagline */}
         <motion.div
-          className="mt-16 sm:mt-20 lg:mt-24 text-center"
+          className="mt-14 sm:mt-16 flex items-center gap-5"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          <p className="font-headline-md text-accent-orange italic text-xl sm:text-2xl lg:text-3xl tracking-tighter">
+          <div className="w-8 h-px bg-accent-orange opacity-70" />
+          <p
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontStyle: "italic",
+              fontWeight: 400,
+              fontSize: "clamp(18px, 2.5vw, 28px)",
+              color: "rgba(235,69,17,0.85)",
+            }}
+          >
             Not everyone passes. That&apos;s the point.
           </p>
         </motion.div>
+
       </div>
     </section>
   );

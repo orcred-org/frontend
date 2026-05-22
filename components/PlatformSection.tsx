@@ -3,311 +3,559 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
-function FadeIn({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.2 });
+const ease = [0.22, 1, 0.36, 1] as const;
+
+/* ─────────────────────────────────────────
+   Visuals — pure typography & geometry,
+   no card containers, no "screenshot" feel
+───────────────────────────────────────── */
+
+/** Visual 1 — 24 circles, 1 is real */
+function SignalGrid() {
+  const total  = 24;
+  const signal = 13; // which one glows
+
   return (
-    <motion.div
-      ref={ref}
-      className={className}
-      initial={{ opacity: 0 }}
-      animate={inView ? { opacity: 1 } : {}}
-      transition={{ duration: 0.8, delay, ease: "easeOut" }}
-    >
-      {children}
-    </motion.div>
+    <div className="w-full flex flex-col items-center justify-center gap-10 py-16 px-8">
+      {/* Grid of candidates */}
+      <motion.div
+        className="grid gap-4"
+        style={{ gridTemplateColumns: "repeat(6, 1fr)" }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2 }}
+      >
+        {Array.from({ length: total }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="rounded-full"
+            style={{
+              width:      i === signal ? 12 : 8,
+              height:     i === signal ? 12 : 8,
+              background: i === signal ? "#eb4511" : "rgba(235,225,205,0.09)",
+              boxShadow:  i === signal ? "0 0 14px 5px rgba(235,69,17,0.38)" : "none",
+              alignSelf:  "center",
+              justifySelf: "center",
+            }}
+            initial={{ opacity: 0, scale: 0.4 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{
+              duration: 0.5,
+              delay: i * 0.025,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          />
+        ))}
+      </motion.div>
+
+      {/* Statement */}
+      <div className="text-center">
+        <motion.p
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontStyle: "italic",
+            fontWeight: 300,
+            fontSize: "clamp(28px, 4vw, 46px)",
+            lineHeight: 1.1,
+            color: "rgba(235,225,205,0.72)",
+          }}
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.6, ease }}
+        >
+          1 signal in 24.
+        </motion.p>
+        <motion.p
+          className="font-label-sm uppercase tracking-[0.42em] text-[9px] mt-3"
+          style={{ color: "rgba(235,225,205,0.22)" }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.85 }}
+        >
+          That&apos;s the problem.
+        </motion.p>
+      </div>
+    </div>
   );
 }
 
-function GitHubGrid() {
-  const weeks = 26;
-  const days = 7;
+/** Visual 2 — SVG clock arc + centered time */
+function SessionVisual() {
+  const r   = 88;
+  const circ = 2 * Math.PI * r; // ≈ 552.9
+  const fill = circ * 0.38;     // 38% of session elapsed
 
-  const getColor = (i: number, j: number) => {
-    const seed = (i * 3 + j * 7 + i * j * 2) % 20;
-    if (seed === 7) return "#eb4511";
-    if (seed === 14) return "#eb4511";
-    if (seed < 4) return "#1a1a1a";
-    if (seed < 10) return "#222";
-    if (seed < 16) return "#2a2a2a";
-    return "#1e1e1e";
-  };
+  // Tick positions at 0, 15, 30, 45 min (top, right, bottom, left)
+  const ticks = [0, 90, 180, 270].map((deg) => {
+    const rad = ((deg - 90) * Math.PI) / 180;
+    return {
+      x1: 100 + (r - 10) * Math.cos(rad),
+      y1: 100 + (r - 10) * Math.sin(rad),
+      x2: 100 + (r + 2)  * Math.cos(rad),
+      y2: 100 + (r + 2)  * Math.sin(rad),
+    };
+  });
 
   return (
-    <div className="w-full bg-[#0d0d0d] aspect-video relative flex flex-col justify-center items-center p-8 sm:p-12 overflow-hidden">
-      <div className="absolute top-6 left-8 right-8 flex justify-between items-center">
-        <span className="font-label-sm text-white/20 text-[9px] uppercase tracking-widest">Contribution Activity</span>
-        <span className="font-label-sm text-white/20 text-[9px] uppercase tracking-widest">26 weeks</span>
+    <div className="w-full flex flex-col items-center justify-center gap-8 py-14 px-8">
+      {/* Clock arc */}
+      <div className="relative w-[220px] h-[220px] sm:w-[260px] sm:h-[260px]">
+        <svg viewBox="0 0 200 200" className="w-full h-full" style={{ overflow: "visible" }}>
+          {/* Outer faint orbit */}
+          <circle cx="100" cy="100" r="96"
+            fill="none" stroke="rgba(235,225,205,0.04)" strokeWidth="1" />
+
+          {/* Track ring */}
+          <circle cx="100" cy="100" r={r}
+            fill="none" stroke="rgba(235,225,205,0.06)" strokeWidth="1" />
+
+          {/* Animated progress arc */}
+          <motion.circle
+            cx="100" cy="100" r={r}
+            fill="none"
+            stroke="rgba(235,69,17,0.55)"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeDasharray={circ}
+            transform="rotate(-90 100 100)"
+            initial={{ strokeDashoffset: circ }}
+            whileInView={{ strokeDashoffset: circ - fill }}
+            viewport={{ once: true }}
+            transition={{ duration: 2.6, delay: 0.4, ease: "easeOut" }}
+          />
+
+          {/* Tick marks */}
+          {ticks.map((t, i) => (
+            <line key={i}
+              x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2}
+              stroke="rgba(235,225,205,0.18)" strokeWidth="1"
+            />
+          ))}
+
+          {/* Minute labels */}
+          {["0", "15", "30", "45"].map((label, i) => {
+            const deg = i * 90 - 90;
+            const rad = (deg * Math.PI) / 180;
+            const lx  = 100 + (r + 14) * Math.cos(rad);
+            const ly  = 100 + (r + 14) * Math.sin(rad);
+            return (
+              <text key={i} x={lx} y={ly}
+                textAnchor="middle" dominantBaseline="central"
+                style={{
+                  fill: "rgba(235,225,205,0.18)",
+                  fontSize: "8px",
+                  fontFamily: "Inter, sans-serif",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                {label}
+              </text>
+            );
+          })}
+        </svg>
+
+        {/* Center — time display */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <motion.span
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontWeight: 400,
+              fontSize: "clamp(38px, 6vw, 54px)",
+              lineHeight: 1,
+              color: "rgba(235,225,205,0.9)",
+              letterSpacing: "-0.02em",
+            }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.2 }}
+          >
+            45<span style={{ color: "#eb4511", opacity: 0.75 }}>:</span>00
+          </motion.span>
+          <span
+            className="font-label-sm uppercase tracking-[0.35em] text-[7px] mt-1.5"
+            style={{ color: "rgba(235,225,205,0.2)" }}
+          >
+            minutes
+          </span>
+        </div>
       </div>
 
-      <div className="flex gap-[3px]">
-        {Array.from({ length: weeks }).map((_, i) => (
-          <div key={i} className="flex flex-col gap-[3px]">
-            {Array.from({ length: days }).map((_, j) => (
+      {/* Label below arc */}
+      <motion.p
+        style={{
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+          fontStyle: "italic",
+          fontWeight: 300,
+          fontSize: "clamp(17px, 2.2vw, 24px)",
+          color: "rgba(235,225,205,0.38)",
+          textAlign: "center",
+        }}
+        initial={{ opacity: 0, y: 8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, delay: 0.55, ease }}
+      >
+        One session · One verdict
+      </motion.p>
+    </div>
+  );
+}
+
+/** Visual 3 — score + dimension bars, no card container */
+function ScoreVisual() {
+  const bars = [
+    { label: "Technical Depth",  pct: "91%", w: "91%" },
+    { label: "Communication",    pct: "84%", w: "84%" },
+    { label: "Reproducibility",  pct: "88%", w: "88%" },
+    { label: "Originality",      pct: "79%", w: "79%" },
+  ];
+
+  return (
+    <div className="w-full flex flex-col py-12 px-6 sm:px-10 gap-7">
+
+      {/* Header row — score + label */}
+      <div className="flex items-end justify-between">
+        <motion.div
+          className="flex items-start gap-1.5"
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.1, ease }}
+        >
+          <span
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontStyle: "italic",
+              fontWeight: 300,
+              fontSize: "clamp(64px, 11vw, 110px)",
+              lineHeight: 0.88,
+              color: "rgba(235,225,205,0.9)",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            87
+          </span>
+          <span
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontStyle: "italic",
+              fontWeight: 300,
+              fontSize: "clamp(18px, 3vw, 26px)",
+              color: "#eb4511",
+              marginTop: "8px",
+            }}
+          >
+            /100
+          </span>
+        </motion.div>
+
+        <motion.div
+          className="text-right pb-1"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.3 }}
+        >
+          <p
+            className="font-label-sm uppercase tracking-[0.3em] text-[8px]"
+            style={{ color: "rgba(235,225,205,0.22)" }}
+          >
+            Orcred Score
+          </p>
+          <p
+            className="font-label-sm uppercase tracking-[0.3em] text-[8px] mt-0.5"
+            style={{ color: "rgba(235,225,205,0.15)" }}
+          >
+            Founding Cohort · 2026
+          </p>
+        </motion.div>
+      </div>
+
+      {/* Thin divider */}
+      <motion.div
+        className="w-full h-px"
+        style={{ background: "rgba(235,225,205,0.07)" }}
+        initial={{ scaleX: 0, originX: "left" }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.9, delay: 0.25, ease }}
+      />
+
+      {/* Dimension bars */}
+      <div className="space-y-4">
+        {bars.map((b, i) => (
+          <motion.div
+            key={b.label}
+            initial={{ opacity: 0, x: -10 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.3 + i * 0.1, ease }}
+          >
+            <div className="flex justify-between mb-1.5">
+              <span
+                className="font-label-sm uppercase tracking-widest text-[8px]"
+                style={{ color: "rgba(235,225,205,0.28)" }}
+              >
+                {b.label}
+              </span>
+              <span
+                className="font-label-sm text-[9px]"
+                style={{ color: "rgba(235,225,205,0.35)" }}
+              >
+                {b.pct}
+              </span>
+            </div>
+            <div
+              className="w-full h-[1.5px] overflow-hidden"
+              style={{ background: "rgba(235,225,205,0.06)" }}
+            >
               <motion.div
-                key={j}
-                className="w-[9px] h-[9px] sm:w-[10px] sm:h-[10px] rounded-[2px]"
-                style={{ backgroundColor: getColor(i, j) }}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
+                className="h-full"
+                style={{ background: "rgba(235,69,17,0.5)" }}
+                initial={{ width: 0 }}
+                whileInView={{ width: b.w }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.2, delay: (i * days + j) * 0.002 }}
+                transition={{ duration: 1.1, delay: 0.35 + i * 0.1, ease: "easeOut" }}
               />
-            ))}
-          </div>
+            </div>
+          </motion.div>
         ))}
       </div>
 
-      <div className="absolute bottom-6 left-8 right-8">
-        <div className="w-full h-[0.5px] bg-white/5 mb-3" />
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-[2px] bg-accent-orange opacity-60" />
-            <span className="font-label-sm text-white/25 text-[9px]">Real signal is rare.</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-[2px] bg-[#2a2a2a]" />
-            <span className="font-label-sm text-white/15 text-[9px]">noise</span>
-            <div className="w-2 h-2 rounded-[2px] bg-accent-orange/60 ml-2" />
-            <span className="font-label-sm text-white/15 text-[9px]">signal</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+      {/* Thin divider */}
+      <div className="w-full h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
 
-function ReviewTimer() {
-  return (
-    <div className="w-full bg-[#0d0d0d] aspect-video relative flex flex-col justify-center items-center overflow-hidden">
-      {/* Ambient glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse 50% 60% at 50% 50%, rgba(235,69,17,0.06) 0%, transparent 70%)",
-        }}
-      />
-
-      {/* Top label */}
-      <div className="absolute top-6 left-8 right-8 flex justify-between items-center">
-        <span className="font-label-sm text-white/20 text-[9px] uppercase tracking-widest">
-          Live Review Session
-        </span>
-        <div className="flex items-center gap-1.5">
-          <motion.div
-            className="w-1.5 h-1.5 rounded-full bg-accent-orange"
-            animate={{ opacity: [1, 0.3, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <span className="font-label-sm text-accent-orange/60 text-[9px] uppercase tracking-widest">
-            In Progress
-          </span>
-        </div>
-      </div>
-
-      {/* Timer */}
-      <div className="flex flex-col items-center gap-3">
-        <motion.div
-          className="font-bold tracking-tighter text-white"
-          style={{ fontSize: "clamp(56px, 10vw, 96px)", lineHeight: 1 }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, ease: "easeOut" }}
-        >
-          45<span className="text-accent-orange/80">:</span>00
-        </motion.div>
-        <motion.div
-          className="font-label-sm text-white/20 text-[9px] uppercase tracking-[0.4em]"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-        >
-          Minutes · One Engineer · Your Work
-        </motion.div>
-      </div>
-
-      {/* Progress bar */}
-      <div className="absolute bottom-16 left-8 right-8">
-        <div className="w-full h-[1px] bg-white/5 rounded-full overflow-hidden">
-          <motion.div
-            className="h-full bg-accent-orange/40 rounded-full"
-            initial={{ width: 0 }}
-            whileInView={{ width: "35%" }}
-            viewport={{ once: true }}
-            transition={{ duration: 2, ease: "easeOut", delay: 0.5 }}
-          />
-        </div>
-      </div>
-
-      {/* Bottom label */}
-      <div className="absolute bottom-6 left-8 right-8">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-accent-orange opacity-50" />
-          <span className="font-label-sm text-white/25 text-[9px] uppercase tracking-widest">
-            60 seconds is all it takes to separate builders from browsers.
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Certificate() {
-  return (
-    <div className="w-full bg-[#0d0d0d] aspect-video flex items-center justify-center relative overflow-hidden">
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse 50% 80% at 50% 50%, rgba(235,69,17,0.05) 0%, transparent 70%)",
-        }}
-      />
-
+      {/* Footer */}
       <motion.div
-        className="relative w-[72%] max-w-[400px] border border-white/5 bg-[#111] p-6 sm:p-8"
-        whileInView={{ opacity: [0.4, 1] }}
+        className="flex items-center justify-between"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 1, delay: 0.7 }}
       >
-        <div className="flex justify-between items-start mb-5 sm:mb-6">
-          <div>
-            <div className="font-bold text-white text-base sm:text-lg tracking-tighter flex items-center gap-1">
-              Pruv
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent-orange mb-1" />
-            </div>
-            <div className="font-label-sm text-white/20 text-[9px] uppercase tracking-widest mt-0.5">
-              Verification Certificate
-            </div>
-          </div>
-          <div className="text-right">
-            <div className="font-label-sm text-white/20 text-[9px] uppercase tracking-widest">Score</div>
-            <div className="text-accent-orange font-bold text-2xl sm:text-3xl tracking-tighter">87</div>
-          </div>
-        </div>
-
-        <div className="w-full h-[0.5px] bg-white/5 mb-4 sm:mb-5" />
-
-        <div className="space-y-3 sm:space-y-3.5 mb-4 sm:mb-5">
-          {[
-            { label: "Technical Depth", score: 91, width: "91%" },
-            { label: "Communication", score: 84, width: "84%" },
-            { label: "Reproducibility", score: 88, width: "88%" },
-            { label: "Originality", score: 79, width: "79%" },
-          ].map((item) => (
-            <div key={item.label}>
-              <div className="flex justify-between items-center mb-1">
-                <span className="font-label-sm text-white/30 text-[9px] uppercase tracking-widest">
-                  {item.label}
-                </span>
-                <span className="font-label-sm text-white/40 text-[9px]">{item.score}</span>
-              </div>
-              <div className="w-full h-[2px] bg-white/5 rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full bg-accent-orange/60 rounded-full"
-                  initial={{ width: 0 }}
-                  whileInView={{ width: item.width }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="w-full h-[0.5px] bg-white/5 mb-3 sm:mb-4" />
-
-        <div className="flex justify-between items-center">
-          <div>
-            <div className="font-label-sm text-white/15 text-[8px] uppercase tracking-widest">
-              Reviewed by
-            </div>
-            <div className="font-label-sm text-white/30 text-[9px] mt-0.5">
-              Senior ML Engineer · Verified
-            </div>
-          </div>
-          <div className="border border-accent-orange/30 px-2 py-1">
-            <span className="font-label-sm text-accent-orange text-[8px] uppercase tracking-widest">
-              Passed
-            </span>
-          </div>
+        <p
+          className="font-label-sm uppercase tracking-[0.3em] text-[8px]"
+          style={{ color: "rgba(235,225,205,0.2)" }}
+        >
+          Senior ML Engineer · Verified
+        </p>
+        <div
+          className="border px-3 py-1"
+          style={{ borderColor: "rgba(235,69,17,0.35)" }}
+        >
+          <span
+            className="font-label-sm uppercase tracking-[0.35em] text-[8px]"
+            style={{ color: "#eb4511" }}
+          >
+            Passed
+          </span>
         </div>
       </motion.div>
     </div>
   );
 }
 
+/* ─────────────────────────────────────────
+   Editorial panel — full-height scroll reveal
+───────────────────────────────────────── */
+
+interface PanelProps {
+  index: number;
+  chapter: string;
+  headline: string;
+  italic: string;
+  body: string;
+  visual: React.ReactNode;
+  flip?: boolean;
+}
+
+function EditorialPanel({
+  index,
+  chapter,
+  headline,
+  italic,
+  body,
+  visual,
+  flip,
+}: PanelProps) {
+  const ref   = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.2 });
+  const num   = String(index).padStart(2, "0");
+
+  return (
+    <div
+      ref={ref}
+      className="min-h-screen flex items-center border-b py-16 px-6 sm:px-10 lg:px-16"
+      style={{ borderColor: "rgba(235,225,205,0.04)" }}
+    >
+      <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
+
+        {/* ── Text block ── */}
+        <div
+          className={`lg:col-span-4 flex flex-col gap-7
+            ${flip ? "lg:col-start-9 lg:order-2" : "lg:col-start-1 lg:order-1"}`}
+        >
+          {/* Chapter marker */}
+          <motion.div
+            className="flex items-center gap-4"
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+          >
+            <span
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontStyle: "italic",
+                fontWeight: 300,
+                fontSize: "13px",
+                letterSpacing: "0.1em",
+                color: "rgba(235,69,17,0.65)",
+              }}
+            >
+              {num}
+            </span>
+            <div
+              className="flex-1 h-px"
+              style={{ background: "rgba(235,225,205,0.07)" }}
+            />
+            <span
+              className="font-label-sm uppercase tracking-[0.38em] text-[9px]"
+              style={{ color: "rgba(235,69,17,0.65)" }}
+            >
+              {chapter}
+            </span>
+          </motion.div>
+
+          {/* Headline */}
+          <motion.div
+            initial={{ opacity: 0, y: 22 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 1.05, delay: 0.15, ease }}
+          >
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontWeight: 400,
+                fontSize: "clamp(32px, 3.8vw, 52px)",
+                lineHeight: 1.0,
+                color: "rgba(235,225,205,0.92)",
+              }}
+            >
+              {headline}
+            </h2>
+            <p
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontStyle: "italic",
+                fontWeight: 300,
+                fontSize: "clamp(22px, 2.8vw, 38px)",
+                lineHeight: 1.1,
+                color: "rgba(235,225,205,0.32)",
+                marginTop: "4px",
+              }}
+            >
+              {italic}
+            </p>
+          </motion.div>
+
+          {/* Thin orange rule */}
+          <motion.div
+            className="h-px bg-accent-orange w-8 opacity-70"
+            initial={{ scaleX: 0, originX: "left" }}
+            animate={inView ? { scaleX: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.3, ease }}
+          />
+
+          {/* Body */}
+          <motion.p
+            className="text-[14px] sm:text-[15px] leading-[1.9] font-light"
+            style={{ color: "rgba(235,225,205,0.4)" }}
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 1, delay: 0.42, ease: "easeOut" }}
+          >
+            {body}
+          </motion.p>
+        </div>
+
+        {/* ── Visual — curtain reveal, no frame ── */}
+        <motion.div
+          className={`lg:col-span-7 overflow-hidden
+            ${flip ? "lg:col-start-1 lg:order-1" : "lg:col-start-6 lg:order-2"}`}
+          initial={{ clipPath: "inset(0 0 100% 0)" }}
+          animate={inView ? { clipPath: "inset(0 0 0% 0)" } : {}}
+          transition={{ duration: 1.35, delay: 0.08, ease }}
+        >
+          {visual}
+        </motion.div>
+
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   Export
+───────────────────────────────────────── */
+
 export default function PlatformSection() {
   return (
-    <section id="platform" className="relative py-24 sm:py-32 lg:py-section-gap overflow-hidden">
+    <section id="platform" className="relative" style={{ backgroundColor: "#06090e" }}>
 
-      {/* Panel 1 */}
-      <div className="flex items-center px-6 sm:px-10 lg:px-margin-edge mb-20 sm:mb-28 lg:mb-32">
-        <div className="max-w-container-max mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
-          <FadeIn className="md:col-span-6 space-y-6 lg:space-y-10">
-            <span className="font-label-sm text-accent-orange tracking-widest text-[10px] sm:text-[11px]">
-              01 / THE REALITY
-            </span>
-            <h2 className="text-4xl sm:text-5xl lg:text-headline-lg font-bold leading-none tracking-tight">
-              More students are <br /> building than ever.
-            </h2>
-            <p className="text-base sm:text-lg text-on-surface-variant max-w-md font-light leading-relaxed">
-              That&apos;s genuinely exciting. But when everyone has an AI project
-              on their resume, the ones who really built something
-              get lost in the crowd.
-            </p>
-          </FadeIn>
-          <FadeIn delay={0.15} className="md:col-span-6 flex justify-center md:justify-end">
-            <GitHubGrid />
-          </FadeIn>
-        </div>
-      </div>
+      {/* Section title rule */}
+      <motion.div
+        className="px-6 sm:px-10 lg:px-16 pt-24 pb-0 max-w-[1400px] mx-auto flex items-center gap-5"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+      >
+        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+        <span
+          className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
+          style={{ color: "rgba(235,225,205,0.25)" }}
+        >
+          The Story
+        </span>
+        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+      </motion.div>
 
-      {/* Panel 2 */}
-      <div className="flex items-center px-6 sm:px-10 lg:px-margin-edge mb-20 sm:mb-28 lg:mb-32">
-        <div className="max-w-container-max mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
-          <FadeIn className="md:col-span-6 order-2 md:order-1 flex justify-center md:justify-start">
-            <ReviewTimer />
-          </FadeIn>
-          <FadeIn delay={0.15} className="md:col-span-5 md:col-start-8 order-1 md:order-2 space-y-6 lg:space-y-10">
-            <span className="font-label-sm text-accent-orange tracking-widest text-[10px] sm:text-[11px]">
-              02 / THE GAP
-            </span>
-            <h2 className="text-4xl sm:text-5xl lg:text-headline-lg font-bold leading-none tracking-tight">
-              A conversation <br /> reveals everything.
-            </h2>
-            <p className="text-base sm:text-lg text-on-surface-variant font-light leading-relaxed">
-              Ask a student why they chose that architecture.
-              Why that loss function. Why that tradeoff.
-              The ones who built it for real —
-              you&apos;ll know in 60 seconds.
-            </p>
-          </FadeIn>
-        </div>
-      </div>
+      {/* Panel 1 — The problem */}
+      <EditorialPanel
+        index={1}
+        chapter="The Problem"
+        headline="Everyone has a project."
+        italic="Yours is different."
+        body="Right now no one can tell the difference between someone who spent months building something real and someone who spent a weekend prompting ChatGPT. That gap is costing real builders their careers."
+        visual={<SignalGrid />}
+      />
 
-      {/* Panel 3 */}
-      <div className="flex items-center px-6 sm:px-10 lg:px-margin-edge">
-        <div className="max-w-container-max mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
-          <FadeIn className="md:col-span-5 space-y-6 lg:space-y-10">
-            <span className="font-label-sm text-accent-orange tracking-widest text-[10px] sm:text-[11px]">
-              03 / THE CREDENTIAL
-            </span>
-            <h2 className="text-4xl sm:text-5xl lg:text-headline-lg font-bold leading-none tracking-tight">
-              Now there&apos;s <br /> proof.
-            </h2>
-            <p className="text-base sm:text-lg text-on-surface-variant font-light leading-relaxed">
-              Pruv turns that conversation into a score.
-              A verified badge backed by a senior engineer&apos;s sign-off.
-              Something a student can carry into any room and say —
-              a real engineer reviewed this. It passed.
-            </p>
-          </FadeIn>
-          <FadeIn delay={0.15} className="md:col-span-7 flex justify-end">
-            <Certificate />
-          </FadeIn>
-        </div>
-      </div>
+      {/* Panel 2 — The session */}
+      <EditorialPanel
+        index={2}
+        chapter="The Session"
+        headline="45 minutes."
+        italic="One engineer. Your work."
+        body="Not a quiz. Not a take-home test. A real conversation — about the project you built, every decision you made, every tradeoff you chose. The ones who built it for real talk about it differently."
+        visual={<SessionVisual />}
+        flip
+      />
+
+      {/* Panel 3 — The proof */}
+      <EditorialPanel
+        index={3}
+        chapter="The Proof"
+        headline="Now there's"
+        italic="proof."
+        body="An Orcred Score. A verified credential backed by a senior engineer's sign-off. Something you carry into any room and say — a real engineer reviewed this work. It passed."
+        visual={<ScoreVisual />}
+      />
+
     </section>
   );
 }

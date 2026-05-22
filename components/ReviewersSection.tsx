@@ -1,89 +1,256 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 interface ReviewersProps {
   onApply: () => void;
 }
 
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const perks = [
+  "Equity in Orcred",
+  "Your name on the platform from day one",
+  "A founding badge that never goes away",
+  "Direct say in what the standard looks like",
+];
+
 export default function ReviewersSection({ onApply }: ReviewersProps) {
+  const ref    = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.15 });
+
   return (
-    <section id="reviewers" className="bg-zinc-50 border-y border-black/5 py-24 sm:py-32 lg:py-section-gap px-6 sm:px-10 lg:px-margin-edge overflow-hidden">
-      <div className="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-12 items-center gap-12 lg:gap-20">
-        <motion.div
-          className="lg:col-span-7 space-y-6 sm:space-y-8"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <span className="font-label-sm text-accent-orange uppercase tracking-widest block text-[10px] sm:text-[11px]">
-            FOR SENIOR ML/AI ENGINEERS
-          </span>
-          <h2 className="text-4xl sm:text-5xl lg:text-headline-lg font-bold leading-none tracking-tight">
-            You know within <br /> 60 seconds.
-          </h2>
-          <p className="text-base sm:text-lg text-on-surface-variant font-light leading-relaxed max-w-xl">
-            You&apos;ve been in enough interviews to know.
-            The student who built something real —
-            they talk about it differently.
-            They remember the decisions. The tradeoffs. The failures.
-          </p>
-          <p className="text-base sm:text-lg text-on-surface-variant font-light leading-relaxed max-w-xl">
-            That instinct is exactly what Pruv is built on.
-            We&apos;re two founders building this from scratch —
-            and we need 5 engineers to make it real.
-          </p>
-          <div className="pt-4 space-y-3">
-            {[
-              "Equity in Pruv",
-              "Your name on the platform from day one",
-              "A founding badge that never goes away",
-              "Direct say in what the standard looks like",
-            ].map((perk) => (
-              <div key={perk} className="flex items-center gap-3">
-                <div className="w-1 h-1 rounded-full bg-accent-orange flex-shrink-0" />
-                <span className="text-sm sm:text-base text-on-surface-variant font-light">{perk}</span>
-              </div>
+    <section
+      id="reviewers"
+      className="relative min-h-screen flex items-center px-6 sm:px-10 lg:px-16"
+      style={{
+        backgroundColor: "#0a0f18",
+        borderTop: "1px solid rgba(235,225,205,0.05)",
+        borderBottom: "1px solid rgba(235,225,205,0.05)",
+      }}
+    >
+      {/* Ambient warm left */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 50% 65% at 25% 50%, rgba(235,69,17,0.05) 0%, transparent 70%)",
+        }}
+      />
+
+      <div
+        ref={ref}
+        className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-6 items-center py-24 lg:py-32"
+      >
+
+        {/* ── Left — headline + body ── */}
+        <div className="lg:col-span-6 lg:pr-16">
+
+          {/* Chapter marker */}
+          <motion.div
+            className="flex items-center gap-4 mb-10"
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+          >
+            <span
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontStyle: "italic",
+                fontWeight: 300,
+                fontSize: "13px",
+                letterSpacing: "0.1em",
+                color: "rgba(235,69,17,0.65)",
+              }}
+            >
+              04
+            </span>
+            <div
+              className="flex-1 h-px"
+              style={{ background: "rgba(235,225,205,0.07)" }}
+            />
+            <span
+              className="font-label-sm uppercase tracking-[0.38em] text-[9px]"
+              style={{ color: "rgba(235,69,17,0.65)" }}
+            >
+              For Engineers
+            </span>
+          </motion.div>
+
+          {/* Headline */}
+          <motion.div
+            initial={{ opacity: 0, y: 22 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 1.05, delay: 0.12, ease }}
+          >
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontWeight: 400,
+                fontSize: "clamp(38px, 4.5vw, 72px)",
+                lineHeight: 1.0,
+                color: "rgba(235,225,205,0.92)",
+              }}
+            >
+              You know within
+              <br />
+              <span
+                style={{
+                  fontStyle: "italic",
+                  fontWeight: 300,
+                  color: "rgba(235,225,205,0.42)",
+                }}
+              >
+                60 seconds.
+              </span>
+            </h2>
+          </motion.div>
+
+          {/* Orange rule */}
+          <motion.div
+            className="h-px bg-accent-orange w-8 opacity-70"
+            style={{ marginTop: "32px", marginBottom: "32px" }}
+            initial={{ scaleX: 0, originX: "left" }}
+            animate={inView ? { scaleX: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.28, ease }}
+          />
+
+          {/* Body */}
+          <motion.p
+            className="text-[14px] sm:text-[15px] leading-[1.9] font-light max-w-md mb-10"
+            style={{ color: "rgba(235,225,205,0.38)" }}
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 1, delay: 0.38, ease: "easeOut" }}
+          >
+            You&apos;ve been in enough rooms to know.
+            The student who built something real talks about it differently —
+            the decisions, the tradeoffs, the failures.
+            That instinct is exactly what Orcred is built on.
+            We&apos;re two founders, and we need 5 engineers to make it real.
+          </motion.p>
+
+          {/* Perks */}
+          <div className="space-y-3.5">
+            {perks.map((perk, i) => (
+              <motion.div
+                key={perk}
+                className="flex items-center gap-4"
+                initial={{ opacity: 0, x: -10 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.7, delay: 0.52 + i * 0.1, ease }}
+              >
+                <div
+                  className="w-px h-[14px] flex-shrink-0"
+                  style={{ background: "rgba(235,69,17,0.55)" }}
+                />
+                <span
+                  className="text-[13px] font-light"
+                  style={{ color: "rgba(235,225,205,0.42)" }}
+                >
+                  {perk}
+                </span>
+              </motion.div>
             ))}
+          </div>
+        </div>
+
+        {/* ── Right — application card ── */}
+        <motion.div
+          className="lg:col-span-5 lg:col-start-8"
+          initial={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
+          animate={inView ? { opacity: 1, clipPath: "inset(0 0 0% 0)" } : {}}
+          transition={{ duration: 1.3, delay: 0.15, ease }}
+        >
+          <div
+            className="relative border p-10 sm:p-12"
+            style={{
+              borderColor: "rgba(235,225,205,0.07)",
+              background: "#0c0f16",
+            }}
+          >
+            {/* Corner accent — top-left L */}
+            <div
+              className="absolute top-0 left-0 w-10 h-[1px]"
+              style={{ background: "#eb4511" }}
+            />
+            <div
+              className="absolute top-0 left-0 w-[1px] h-10"
+              style={{ background: "#eb4511" }}
+            />
+
+            {/* Label */}
+            <div className="mb-6">
+              <span
+                className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
+                style={{ color: "rgba(235,69,17,0.7)" }}
+              >
+                Founding Cohort
+              </span>
+            </div>
+
+            {/* Big italic numeral */}
+            <div className="mb-6">
+              <span
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontStyle: "italic",
+                  fontWeight: 300,
+                  fontSize: "clamp(72px, 11vw, 110px)",
+                  lineHeight: 1,
+                  color: "rgba(235,225,205,0.07)",
+                  display: "block",
+                }}
+              >
+                5
+              </span>
+              <span
+                className="font-label-sm uppercase tracking-[0.35em] text-[8px]"
+                style={{ color: "rgba(235,225,205,0.2)", marginTop: "-4px", display: "block" }}
+              >
+                spots remaining
+              </span>
+            </div>
+
+            {/* Divider */}
+            <div
+              className="w-full h-px mb-8"
+              style={{ background: "rgba(235,225,205,0.05)" }}
+            />
+
+            {/* Description */}
+            <p
+              className="text-[13px] sm:text-[14px] font-light leading-[1.85] mb-10"
+              style={{ color: "rgba(235,225,205,0.32)" }}
+            >
+              This is not a gig.
+              <br />
+              It&apos;s a stake in something built from scratch.
+            </p>
+
+            {/* CTA button — flat rectangular, no rounding */}
+            <motion.button
+              onClick={onApply}
+              className="w-full py-[15px] font-label-sm uppercase tracking-[0.3em] text-[10px] text-white"
+              style={{ background: "#eb4511" }}
+              whileHover={{ opacity: 0.88 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.15 }}
+            >
+              Apply for a Founding Spot
+            </motion.button>
+
+            {/* Fine print */}
+            <p
+              className="text-center mt-5 font-label-sm uppercase tracking-[0.3em] text-[8px]"
+              style={{ color: "rgba(235,225,205,0.15)" }}
+            >
+              Equity included
+            </p>
           </div>
         </motion.div>
 
-        <motion.div
-          className="lg:col-span-5 flex flex-col items-center justify-center p-8 sm:p-12 glass-panel border-accent-orange/20"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-        >
-          <div className="text-center space-y-6 sm:space-y-8">
-            <div className="w-16 sm:w-20 h-16 sm:h-20 bg-accent-orange/10 rounded-full flex items-center justify-center mx-auto">
-              <span className="material-symbols-outlined text-accent-orange text-3xl sm:text-4xl">
-                shield_person
-              </span>
-            </div>
-            <div>
-              <p className="font-label-sm text-accent-orange uppercase tracking-widest text-[10px] sm:text-[11px] mb-2">
-                5 spots. That&apos;s it.
-              </p>
-              <h3 className="font-headline-md text-xl sm:text-2xl">
-                Apply for a <br /> Founding Spot
-              </h3>
-            </div>
-            <p className="text-sm text-on-surface-variant font-light">
-              This is not a gig. <br /> It&apos;s a stake in something built from scratch.
-            </p>
-            <motion.button
-              onClick={onApply}
-              className="w-full bg-black/90 text-white px-10 sm:px-14 py-4 sm:py-5 rounded-full font-label-sm uppercase tracking-widest font-bold text-[11px] sm:text-[12px] hover:bg-accent-orange transition-colors"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ duration: 0.2 }}
-            >
-              Apply Now
-            </motion.button>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

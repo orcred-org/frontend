@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-import dynamic from "next/dynamic";
-
-const LenisProvider = dynamic(() => import("@/components/LenisProvider"), { ssr: false });
-
-const inter = Inter({ subsets: ["latin"], weight: ["100", "200", "300", "400", "500", "600", "700", "800"] });
+import LenisProvider from "@/components/LenisProvider";
 
 export const metadata: Metadata = {
-  title: "Pruv | The Standard for AI/ML Intelligence",
+  title: "Orcred | The Standard for AI/ML Intelligence",
   description: "Get your AI/ML project reviewed by a senior engineer. Walk away with a credential that actually means something.",
 };
 
@@ -18,14 +13,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="light">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
+        {/* Anti-flash: set theme class synchronously before first paint */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('orcred-theme');document.documentElement.className=t||'dark';}catch(e){document.documentElement.className='dark';}})();`,
+          }}
+        />
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         />
       </head>
-      <body className={`${inter.className} bg-white text-on-background selection:bg-accent-orange selection:text-white grainy-overlay`}>
+      <body className="selection:bg-accent-orange selection:text-white grainy-overlay">
         <LenisProvider>
           {children}
         </LenisProvider>

@@ -5,9 +5,17 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-black/5 py-16 sm:py-20 lg:py-24 px-6 sm:px-10 lg:px-margin-edge">
-      <div className="max-w-container-max mx-auto">
+    <footer
+      className="py-16 sm:py-20 lg:py-24 px-6 sm:px-10 lg:px-16"
+      style={{
+        backgroundColor: "#06090e",
+        borderTop: "1px solid rgba(235,225,205,0.06)",
+      }}
+    >
+      <div className="max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 sm:gap-16 lg:gap-20 items-start">
+
+          {/* Brand */}
           <motion.div
             className="sm:col-span-2"
             initial={{ opacity: 0 }}
@@ -15,18 +23,41 @@ export default function Footer() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
-            <div className="font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tighter text-primary flex items-center gap-2 mb-4 sm:mb-6">
-              Pruv<span className="asymmetric-dot" />
+            <div
+              className="flex items-center gap-3 mb-5"
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontWeight: 400,
+                fontSize: "clamp(28px, 4vw, 40px)",
+                letterSpacing: "0.06em",
+                color: "rgba(235,225,205,0.82)",
+              }}
+            >
+              <div
+                className="w-[13px] h-[13px] rounded-full flex-shrink-0"
+                style={{
+                  background: "#eb4511",
+                  boxShadow: "0 0 10px 3px rgba(235,69,17,0.35)",
+                }}
+              />
+              ORCRED
             </div>
-            <p className="font-body-md text-on-surface-variant max-w-sm text-sm sm:text-base leading-relaxed">
+            <p
+              className="text-[13px] sm:text-[14px] leading-relaxed font-light max-w-sm"
+              style={{ color: "rgba(235,225,205,0.32)" }}
+            >
               The verification standard for AI/ML engineers.
               Real projects. Real engineers. Real credentials.
             </p>
-            <p className="font-body-md text-on-surface-variant/40 text-xs sm:text-sm mt-4">
+            <p
+              className="text-[12px] mt-3 font-light"
+              style={{ color: "rgba(235,225,205,0.18)" }}
+            >
               Built by two founders. From scratch.
             </p>
           </motion.div>
 
+          {/* Platform links */}
           <motion.div
             className="space-y-4 sm:space-y-5"
             initial={{ opacity: 0 }}
@@ -34,24 +65,29 @@ export default function Footer() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
           >
-            <span className="font-label-sm opacity-30 uppercase tracking-widest block mb-3 sm:mb-4 text-[10px] sm:text-[11px]">
-              PLATFORM
+            <span
+              className="font-label-sm uppercase tracking-widest block mb-4 text-[9px] sm:text-[10px]"
+              style={{ color: "rgba(235,225,205,0.2)" }}
+            >
+              Platform
             </span>
             {[
-              { label: "How it Works", href: "#process" },
-              { label: "The Pruv Score", href: "#scores" },
-              { label: "For Reviewers", href: "#reviewers" },
+              { label: "How it Works",     href: "#process"   },
+              { label: "The Orcred Score", href: "#scores"    },
+              { label: "For Reviewers",    href: "#reviewers" },
             ].map((item) => (
               <Link
                 key={item.label}
-                className="font-label-sm text-primary hover:text-accent-orange transition-colors block uppercase text-[11px] sm:text-[12px]"
                 href={item.href}
+                className="font-label-sm uppercase tracking-widest block text-[10px] sm:text-[11px] transition-colors duration-200 hover:text-accent-orange"
+                style={{ color: "rgba(235,225,205,0.42)" }}
               >
                 {item.label}
               </Link>
             ))}
           </motion.div>
 
+          {/* Legal links */}
           <motion.div
             className="space-y-4 sm:space-y-5"
             initial={{ opacity: 0 }}
@@ -59,14 +95,18 @@ export default function Footer() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
           >
-            <span className="font-label-sm opacity-30 uppercase tracking-widest block mb-3 sm:mb-4 text-[10px] sm:text-[11px]">
-              LEGAL &amp; CONTACT
+            <span
+              className="font-label-sm uppercase tracking-widest block mb-4 text-[9px] sm:text-[10px]"
+              style={{ color: "rgba(235,225,205,0.2)" }}
+            >
+              Legal &amp; Contact
             </span>
             {["Terms", "Privacy", "Contact"].map((item) => (
               <Link
                 key={item}
-                className="font-label-sm text-primary hover:text-accent-orange transition-colors block uppercase text-[11px] sm:text-[12px]"
                 href="#"
+                className="font-label-sm uppercase tracking-widest block text-[10px] sm:text-[11px] transition-colors duration-200 hover:text-accent-orange"
+                style={{ color: "rgba(235,225,205,0.42)" }}
               >
                 {item}
               </Link>
@@ -74,13 +114,23 @@ export default function Footer() {
           </motion.div>
         </div>
 
-        <div className="mt-16 sm:mt-24 pt-8 sm:pt-12 border-t border-black/5 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-8">
-          <div className="font-label-sm text-on-surface-variant/40 tracking-widest text-[10px] sm:text-[11px] text-center sm:text-left">
-            © 2026 PRUV. ALL RIGHTS RESERVED.
+        {/* Bottom bar */}
+        <div
+          className="mt-16 sm:mt-24 pt-8 sm:pt-10 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-8"
+          style={{ borderTop: "1px solid rgba(235,225,205,0.05)" }}
+        >
+          <div
+            className="font-label-sm tracking-widest text-[9px] sm:text-[10px] uppercase text-center sm:text-left"
+            style={{ color: "rgba(235,225,205,0.2)" }}
+          >
+            © 2026 ORCRED. ALL RIGHTS RESERVED.
           </div>
-          <div className="flex gap-4 items-center">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="font-label-sm opacity-40 uppercase tracking-widest text-[10px] sm:text-[11px]">
+          <div className="flex gap-3 items-center">
+            <div className="w-[7px] h-[7px] rounded-full bg-green-500 animate-pulse" />
+            <span
+              className="font-label-sm uppercase tracking-widest text-[9px] sm:text-[10px]"
+              style={{ color: "rgba(235,225,205,0.2)" }}
+            >
               Now Recruiting Founding Reviewers
             </span>
           </div>
