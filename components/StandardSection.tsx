@@ -40,7 +40,6 @@ export default function StandardSection() {
   const y3   = useTransform(scrollYProgress, [0.65, 0.73,  0.92,  1   ], [50, 0, 0,  0]);
 
   /* ── Bottom progress line ── */
-  const lineW = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   const cards = [
     { op: op1, y: y1 },
@@ -138,11 +137,6 @@ export default function StandardSection() {
           </span>
         </div>
 
-        {/* Progress line — bottom */}
-        <motion.div
-          className="absolute bottom-0 left-0 h-[1px]"
-          style={{ width: lineW, background: "rgba(235,69,17,0.38)" }}
-        />
       </div>
     </div>
   );

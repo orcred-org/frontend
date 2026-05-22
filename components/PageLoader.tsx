@@ -11,20 +11,19 @@ export default function PageLoader({ onDone }: PageLoaderProps) {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    // Lock scroll and snap to top so any accidental scroll during loading is ignored
-    window.scrollTo(0, 0);
-    document.body.style.overflow = "hidden";
+    // Lenis starts paused (see LenisProvider) — nothing extra needed to lock
 
     const t = setTimeout(() => {
-      // Unlock scroll before exit animation begins
-      document.body.style.overflow = "";
       setVisible(false);
+      // Fire immediately so Lenis unlocks in the same frame the loader begins fading
+      document.dispatchEvent(new Event("lenis:start"));
       onDone?.();
     }, 2200);
 
     return () => {
       clearTimeout(t);
-      document.body.style.overflow = "";
+      // Safety: always unlock if the component unmounts early
+      document.dispatchEvent(new Event("lenis:start"));
     };
   }, [onDone]);
 

@@ -11,12 +11,10 @@ import PlatformSection from "@/components/PlatformSection";
 import ProcessSection from "@/components/ProcessSection";
 import ScoresSection from "@/components/ScoresSection";
 import ComparisonSection from "@/components/ComparisonSection";
-import ReviewersSection from "@/components/ReviewersSection";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 
-const Cursor     = dynamic(() => import("@/components/Cursor"),     { ssr: false });
 const PageLoader = dynamic(() => import("@/components/PageLoader"), { ssr: false });
 
 export default function Home() {
@@ -31,9 +29,6 @@ export default function Home() {
 
       {/* Bottom scroll progress bar — only shown after loader clears */}
       {loaded && <ScrollProgress />}
-
-      {/* Custom orange dot cursor */}
-      <Cursor />
 
       <Navbar />
 
@@ -62,11 +57,8 @@ export default function Home() {
         {/* 6 · Why Orcred — comparison vs alternatives */}
         <ComparisonSection />
 
-        {/* 7 · For Reviewers — apply to join the founding cohort */}
-        <ReviewersSection onApply={handleApply} />
-
-        {/* 8 · Final CTA */}
-        <CtaSection onApply={handleApply} />
+        {/* 7 · Final CTA */}
+        <CtaSection />
       </main>
 
       <Footer />
