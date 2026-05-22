@@ -148,22 +148,13 @@ section[id] {
   scroll-margin-top: 80px;
 }
 
-/* ── Custom scrollbar — elegant thin orange ── */
+/* ── Hide scrollbar — bottom progress bar replaces it ── */
+html, body {
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE / Edge */
+}
 ::-webkit-scrollbar {
-  width: 3px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(235, 69, 17, 0.45);
-  border-radius: 2px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(235, 69, 17, 0.75);
-}
-html.light ::-webkit-scrollbar-thumb {
-  background: rgba(235, 69, 17, 0.35);
+  display: none;               /* Chrome / Safari / Opera */
 }
 
 /* ── Link / interactive hover cursor hint ── */
