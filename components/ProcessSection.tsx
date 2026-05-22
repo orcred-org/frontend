@@ -5,6 +5,306 @@ import { useRef } from "react";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
+/* ─────────────────────────────────────────
+   Step visuals — native to site design language
+───────────────────────────────────────── */
+
+/** Visual 1 — animated submission form */
+function SubmissionVisual({ inView }: { inView: boolean }) {
+  const fields = [
+    { label: "Project",      value: "RAG Pipeline · LangChain + Pinecone" },
+    { label: "Architecture", value: "Custom retrieval + cross-encoder reranking" },
+    { label: "Key decision", value: "Late chunking over fixed-size splitting" },
+    { label: "What failed",  value: "Naive top-k at 400-token fixed chunks" },
+    { label: "Tradeoffs",    value: "120ms latency accepted for accuracy gain" },
+  ];
+
+  return (
+    <div className="w-full flex flex-col py-10 px-2 gap-0">
+      {/* Header */}
+      <motion.div
+        className="flex items-center gap-4 mb-7"
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.8 }}
+      >
+        <span
+          className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
+          style={{ color: "rgba(235,69,17,0.6)" }}
+        >
+          Project Submission
+        </span>
+        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+        <div
+          className="w-[6px] h-[6px] rounded-full"
+          style={{ background: "#eb4511", boxShadow: "0 0 6px 2px rgba(235,69,17,0.4)" }}
+        />
+      </motion.div>
+
+      {/* Fields */}
+      {fields.map((field, i) => (
+        <div key={field.label} className="py-4" style={{ borderBottom: "1px solid rgba(235,225,205,0.06)" }}>
+          <div className="flex items-baseline gap-5">
+            {/* Label */}
+            <span
+              className="font-label-sm uppercase tracking-[0.32em] text-[8px] flex-shrink-0 w-24"
+              style={{ color: "rgba(235,69,17,0.55)" }}
+            >
+              {field.label}
+            </span>
+
+            {/* Value — clip-path reveal L→R */}
+            <div className="overflow-hidden flex-1">
+              <motion.p
+                className="text-[13px] font-light"
+                style={{ color: "rgba(235,225,205,0.70)" }}
+                initial={{ clipPath: "inset(0 100% 0 0)" }}
+                animate={inView ? { clipPath: "inset(0 0% 0 0)" } : {}}
+                transition={{ duration: 0.75, delay: 0.25 + i * 0.22, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {field.value}
+              </motion.p>
+            </div>
+          </div>
+
+          {/* Thin fill line */}
+          <div className="mt-3 ml-[116px] h-[1px] overflow-hidden"
+            style={{ background: "rgba(235,225,205,0.05)" }}>
+            <motion.div
+              className="h-full"
+              style={{ background: "rgba(235,69,17,0.3)" }}
+              initial={{ width: 0 }}
+              animate={inView ? { width: "100%" } : {}}
+              transition={{ duration: 0.9, delay: 0.45 + i * 0.22, ease: "easeOut" }}
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Visual 2 — Q&A conversation transcript */
+function ConversationVisual({ inView }: { inView: boolean }) {
+  const exchanges = [
+    {
+      q: "Walk me through why you chose this embedding model over ada-002.",
+      a: "It outperforms ada-002 by 14% on domain-specific retrieval in our internal evals. I ran three separate benchmarks before committing.",
+    },
+    {
+      q: "What would you change if you rebuilt this from scratch?",
+      a: "I'd decouple the chunking pipeline from indexing entirely. Right now they're tightly coupled and painful to iterate on independently.",
+    },
+    {
+      q: "You mentioned a latency tradeoff — walk me through that decision.",
+      a: "We accepted 120ms over 40ms because the accuracy delta was 18 points on our eval set. The use case justified it.",
+    },
+  ];
+
+  return (
+    <div className="w-full flex flex-col py-8 px-2 gap-7">
+      {/* Header */}
+      <motion.div
+        className="flex items-center gap-4"
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.8 }}
+      >
+        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+        <span
+          className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
+          style={{ color: "rgba(235,69,17,0.6)" }}
+        >
+          Session Transcript
+        </span>
+        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+      </motion.div>
+
+      {/* Exchanges */}
+      {exchanges.map((ex, i) => (
+        <div key={i} className="flex flex-col gap-2">
+          {/* Question */}
+          <motion.div
+            className="flex gap-3 items-start"
+            initial={{ opacity: 0, x: -8 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.2 + i * 0.7, ease }}
+          >
+            <span
+              className="font-label-sm uppercase tracking-widest text-[9px] mt-0.5 w-4 flex-shrink-0"
+              style={{ color: "rgba(235,225,205,0.22)" }}
+            >
+              Q
+            </span>
+            <p
+              className="text-[13px] font-light italic leading-relaxed"
+              style={{ color: "rgba(235,225,205,0.32)" }}
+            >
+              {ex.q}
+            </p>
+          </motion.div>
+
+          {/* Answer — brighter, slightly delayed */}
+          <motion.div
+            className="flex gap-3 items-start"
+            initial={{ opacity: 0, x: 6 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.45 + i * 0.7, ease }}
+          >
+            <span
+              className="font-label-sm uppercase tracking-widest text-[9px] mt-0.5 w-4 flex-shrink-0"
+              style={{ color: "#eb4511", opacity: 0.8 }}
+            >
+              A
+            </span>
+            <p
+              className="text-[13px] font-light leading-relaxed"
+              style={{ color: "rgba(235,225,205,0.75)" }}
+            >
+              {ex.a}
+            </p>
+          </motion.div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Visual 3 — stamp verdict + SVG circle */
+function VerdictVisual({ inView }: { inView: boolean }) {
+  const r    = 72;
+  const circ = 2 * Math.PI * r;
+
+  return (
+    <div className="w-full flex flex-col items-center justify-center py-12 px-8 gap-8">
+
+      {/* SVG circle stamp */}
+      <div className="relative flex items-center justify-center">
+        <svg
+          viewBox="0 0 200 200"
+          width="220"
+          height="220"
+          style={{ overflow: "visible" }}
+        >
+          {/* Outer guide ring — faint */}
+          <circle
+            cx="100" cy="100" r="90"
+            fill="none"
+            stroke="rgba(235,225,205,0.04)"
+            strokeWidth="1"
+          />
+
+          {/* Main circle — draws itself */}
+          <motion.circle
+            cx="100" cy="100" r={r}
+            fill="none"
+            stroke="rgba(235,69,17,0.55)"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeDasharray={circ}
+            transform="rotate(-90 100 100)"
+            initial={{ strokeDashoffset: circ }}
+            animate={inView ? { strokeDashoffset: 0 } : {}}
+            transition={{ duration: 2.2, delay: 0.3, ease: "easeInOut" }}
+          />
+
+          {/* Inner ring — slightly smaller */}
+          <motion.circle
+            cx="100" cy="100" r={r - 8}
+            fill="none"
+            stroke="rgba(235,69,17,0.12)"
+            strokeWidth="1"
+            strokeDasharray={2 * Math.PI * (r - 8)}
+            transform="rotate(-90 100 100)"
+            initial={{ strokeDashoffset: 2 * Math.PI * (r - 8) }}
+            animate={inView ? { strokeDashoffset: 0 } : {}}
+            transition={{ duration: 2.5, delay: 0.5, ease: "easeInOut" }}
+          />
+        </svg>
+
+        {/* Center content */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <motion.div
+            className="flex items-start gap-1"
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 1, delay: 1.2, ease }}
+          >
+            <span
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontStyle: "italic",
+                fontWeight: 300,
+                fontSize: "60px",
+                lineHeight: 0.9,
+                color: "rgba(235,225,205,0.9)",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              87
+            </span>
+            <span
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontStyle: "italic",
+                fontWeight: 300,
+                fontSize: "18px",
+                color: "#eb4511",
+                marginTop: "8px",
+              }}
+            >
+              /100
+            </span>
+          </motion.div>
+
+          <motion.span
+            className="font-label-sm uppercase tracking-[0.35em] text-[8px] mt-2"
+            style={{ color: "rgba(235,225,205,0.2)" }}
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.9, delay: 1.5 }}
+          >
+            Orcred Score
+          </motion.span>
+        </div>
+      </div>
+
+      {/* PASSED stamp — presses down like a rubber stamp */}
+      <motion.div
+        className="flex flex-col items-center gap-3"
+        initial={{ opacity: 0, y: -12, scale: 1.15 }}
+        animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+        transition={{ duration: 0.65, delay: 1.8, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <div
+          className="border px-6 py-2"
+          style={{
+            borderColor: "rgba(235,69,17,0.45)",
+            transform: "rotate(-2deg)",
+          }}
+        >
+          <span
+            className="font-label-sm uppercase tracking-[0.5em] text-[11px]"
+            style={{ color: "rgba(235,69,17,0.85)" }}
+          >
+            Passed
+          </span>
+        </div>
+        <p
+          className="font-label-sm uppercase tracking-[0.3em] text-[8px]"
+          style={{ color: "rgba(235,225,205,0.28)" }}
+        >
+          Senior ML Engineer · Verified
+        </p>
+      </motion.div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   Steps data
+───────────────────────────────────────── */
+
 const steps = [
   {
     index: "01",
@@ -14,7 +314,6 @@ const steps = [
     headline: "The project\nand the person.",
     desc: "A real project. A written explanation of every decision — why they chose this architecture, what they tried that failed, what they'd do differently. No templates. No guided prompts.",
     detail: "Engineers who built something real write differently. Specific. Confident. Uncertain in the right places. The submission is already a signal.",
-    accent: "The work\nspeaks first.",
     flip: false,
   },
   {
@@ -23,9 +322,8 @@ const steps = [
     label: "Core",
     title: "You Talk",
     headline: "45 minutes.\nYour judgment.",
-    desc: "No script. Just you and the candidate and the work they say they built. You go wherever your instincts take you — the decision that seems too confident, the tradeoff they glossed over.",
+    desc: "No script. Just you and the candidate and the work they say they built. You go wherever your instincts take you — the tradeoff they glossed over, the decision that seems too confident.",
     detail: "That instinct you've trusted in every technical interview — the one that fires within 60 seconds — now it has a formal home.",
-    accent: "60\nseconds.",
     flip: true,
   },
   {
@@ -36,10 +334,13 @@ const steps = [
     headline: "Pass or fail.\nForever.",
     desc: "An Orcred Score they carry into every room. Backed by your sign-off. Something they can show any hiring manager and say: a real engineer reviewed this work and it passed.",
     detail: "Not everyone passes. That's what makes it mean something.",
-    accent: "PASSED\nor FAILED.",
     flip: false,
   },
 ];
+
+/* ─────────────────────────────────────────
+   Section
+───────────────────────────────────────── */
 
 export default function ProcessSection() {
   return (
@@ -67,25 +368,23 @@ export default function ProcessSection() {
       {steps.map((step, i) => (
         <ProcessStep key={step.numeral} step={step} i={i} />
       ))}
-
     </section>
   );
 }
 
-function ProcessStep({
-  step,
-  i,
-}: {
-  step: (typeof steps)[0];
-  i: number;
-}) {
+function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
   const ref    = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.2 });
+  const inView = useInView(ref, { once: true, amount: 0.15 });
+
+  const visual =
+    i === 0 ? <SubmissionVisual inView={inView} /> :
+    i === 1 ? <ConversationVisual inView={inView} /> :
+              <VerdictVisual inView={inView} />;
 
   return (
     <div
       ref={ref}
-      className="min-h-[88vh] flex items-center border-b px-6 sm:px-10 lg:px-16 py-20 relative overflow-hidden"
+      className="min-h-screen flex items-center border-b px-6 sm:px-10 lg:px-16 py-20 relative overflow-hidden"
       style={{
         borderColor: "rgba(235,225,205,0.05)",
         backgroundColor: "#06090e",
@@ -100,9 +399,7 @@ function ProcessStep({
           fontWeight: 300,
           fontSize: "clamp(200px, 32vw, 440px)",
           lineHeight: 0.85,
-          color: i === 1
-            ? "rgba(235,69,17,0.05)"
-            : "rgba(235,225,205,0.03)",
+          color: "rgba(235,225,205,0.025)",
           right:  step.flip ? "auto" : "-1%",
           left:   step.flip ? "-1%" : "auto",
           bottom: "-6%",
@@ -115,13 +412,13 @@ function ProcessStep({
         {step.numeral}
       </motion.div>
 
-      {/* Content grid */}
+      {/* Grid */}
       <div className="w-full max-w-[1400px] mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
 
-        {/* Text block */}
+        {/* ── Text block ── */}
         <div
-          className={`lg:col-span-5 flex flex-col gap-7
-            ${step.flip ? "lg:col-start-8 lg:order-2" : "lg:col-start-1 lg:order-1"}`}
+          className={`lg:col-span-4 flex flex-col gap-7
+            ${step.flip ? "lg:col-start-9 lg:order-2" : "lg:col-start-1 lg:order-1"}`}
         >
           {/* Chapter marker */}
           <motion.div
@@ -187,9 +484,9 @@ function ProcessStep({
             transition={{ duration: 0.8, delay: 0.28, ease }}
           />
 
-          {/* Main description */}
+          {/* Description */}
           <motion.p
-            className="text-[14px] sm:text-[15px] leading-[1.9] font-light"
+            className="text-[15px] leading-[1.9] font-light"
             style={{ color: "rgba(235,225,205,0.70)" }}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
@@ -198,9 +495,9 @@ function ProcessStep({
             {step.desc}
           </motion.p>
 
-          {/* Detail — left-bordered quote */}
+          {/* Detail — left-bordered */}
           <motion.p
-            className="text-[13px] leading-[1.85] font-light pl-4"
+            className="text-[14px] leading-[1.85] font-light pl-4"
             style={{
               color: "rgba(235,225,205,0.46)",
               borderLeft: "1px solid rgba(235,69,17,0.25)",
@@ -213,34 +510,15 @@ function ProcessStep({
           </motion.p>
         </div>
 
-        {/* Typographic accent — right side (left when flipped) */}
+        {/* ── Visual — curtain reveal ── */}
         <motion.div
-          className={`hidden lg:flex lg:col-span-5 items-center
-            ${step.flip
-              ? "lg:col-start-1 lg:order-1 justify-start"
-              : "lg:col-start-7 lg:order-2 justify-end"}`}
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 1.4, delay: 0.18, ease: "easeOut" }}
+          className={`lg:col-span-7 overflow-hidden
+            ${step.flip ? "lg:col-start-1 lg:order-1" : "lg:col-start-6 lg:order-2"}`}
+          initial={{ clipPath: "inset(0 0 100% 0)" }}
+          animate={inView ? { clipPath: "inset(0 0 0% 0)" } : {}}
+          transition={{ duration: 1.35, delay: 0.08, ease }}
         >
-          <div className={step.flip ? "text-left" : "text-right"}>
-            <p
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontStyle: "italic",
-                fontWeight: 300,
-                fontSize: "clamp(36px, 5.5vw, 72px)",
-                lineHeight: 1.1,
-                color: i === 1
-                  ? "rgba(235,69,17,0.38)"
-                  : "rgba(235,225,205,0.18)",
-                whiteSpace: "pre-line",
-                userSelect: "none",
-              }}
-            >
-              {step.accent}
-            </p>
-          </div>
+          {visual}
         </motion.div>
 
       </div>

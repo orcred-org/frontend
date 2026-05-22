@@ -217,12 +217,22 @@ export default function HeroSection({ onApply }: HeroProps) {
         >
           <motion.button
             onClick={onApply}
-            className="w-full sm:w-auto px-10 sm:px-12 py-[14px] sm:py-[15px] font-label-sm uppercase tracking-[0.22em] text-[10px] transition-all duration-400"
-            style={{ background: "#eb4511", color: "#fff" }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
+            className="relative w-full sm:w-auto font-label-sm uppercase tracking-[0.22em] text-[11px] py-2 text-left sm:text-center"
+            style={{ color: "rgba(235,225,205,0.88)", background: "transparent" }}
+            initial="rest"
+            whileHover="hover"
+            animate="rest"
+            whileTap={{ scale: 0.98 }}
           >
             Apply as a Founding Reviewer
+            <motion.span
+              className="absolute bottom-0 left-0 h-[1px]"
+              style={{ background: "#eb4511" }}
+              variants={{
+                rest:  { width: "0%",   transition: { duration: 0.3,  ease: "easeOut" } },
+                hover: { width: "100%", transition: { duration: 0.6,  ease: [0.22, 1, 0.36, 1] } },
+              }}
+            />
           </motion.button>
 
           <motion.a

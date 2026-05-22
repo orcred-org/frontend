@@ -129,13 +129,22 @@ export default function CtaSection({ onApply }: CtaProps) {
         >
           <motion.button
             onClick={onApply}
-            className="relative px-12 sm:px-16 py-4 sm:py-5 font-label-sm uppercase tracking-[0.3em] text-[10px] sm:text-[11px] text-white"
-            style={{ background: "#eb4511" }}
-            whileHover={{ opacity: 0.88 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ duration: 0.15 }}
+            className="relative font-label-sm uppercase tracking-[0.3em] text-[11px] sm:text-[12px] py-2"
+            style={{ color: "rgba(235,225,205,0.88)", background: "transparent" }}
+            initial="rest"
+            whileHover="hover"
+            animate="rest"
+            whileTap={{ scale: 0.98 }}
           >
             Apply for a Founding Spot
+            <motion.span
+              className="absolute bottom-0 left-0 h-[1px]"
+              style={{ background: "#eb4511" }}
+              variants={{
+                rest:  { width: "0%",   transition: { duration: 0.3,  ease: "easeOut" } },
+                hover: { width: "100%", transition: { duration: 0.6,  ease: [0.22, 1, 0.36, 1] } },
+              }}
+            />
           </motion.button>
         </motion.div>
 
