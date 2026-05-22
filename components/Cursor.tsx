@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 
 export default function Cursor() {
   const [hovered, setHovered] = useState(false);
@@ -10,8 +10,9 @@ export default function Cursor() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const x = useSpring(mouseX, { stiffness: 120, damping: 20, mass: 0.3 });
-  const y = useSpring(mouseY, { stiffness: 120, damping: 20, mass: 0.3 });
+  // No spring — tracks cursor 1:1 with zero lag
+  const x = mouseX;
+  const y = mouseY;
 
 if (window.matchMedia("(pointer: coarse)").matches) return;
   useEffect(() => {
