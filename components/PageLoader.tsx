@@ -3,13 +3,30 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function PageLoader() {
+interface PageLoaderProps {
+  onDone?: () => void;
+}
+
+export default function PageLoader({ onDone }: PageLoaderProps) {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    const t = setTimeout(() => setVisible(false), 2200);
-    return () => clearTimeout(t);
-  }, []);
+    // Lock scroll and snap to top so any accidental scroll during loading is ignored
+    window.scrollTo(0, 0);
+    document.body.style.overflow = "hidden";
+
+    const t = setTimeout(() => {
+      // Unlock scroll before exit animation begins
+      document.body.style.overflow = "";
+      setVisible(false);
+      onDone?.();
+    }, 2200);
+
+    return () => {
+      clearTimeout(t);
+      document.body.style.overflow = "";
+    };
+  }, [onDone]);
 
   return (
     <AnimatePresence>
@@ -87,20 +104,6 @@ export default function PageLoader() {
           >
             The Verification Standard
           </motion.p>
-
-          {/* Progress line at bottom */}
-          <div
-            className="absolute bottom-0 left-0 right-0 h-[1px]"
-            style={{ background: "rgba(235,225,205,0.05)" }}
-          >
-            <motion.div
-              className="h-full"
-              style={{ background: "#eb4511", opacity: 0.65 }}
-              initial={{ width: "0%" }}
-              animate={{ width: "100%" }}
-              transition={{ duration: 2, ease: [0.25, 0.1, 0.25, 1] }}
-            />
-          </div>
         </motion.div>
       )}
     </AnimatePresence>

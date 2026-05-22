@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
@@ -21,14 +22,15 @@ const PageLoader = dynamic(() => import("@/components/PageLoader"), { ssr: false
 export default function Home() {
   const router = useRouter();
   const handleApply = () => router.push("/apply");
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <>
-      {/* Entrance loader — elegant Orcred seal, 2s */}
-      <PageLoader />
+      {/* Entrance loader — locks scroll, snaps to top, fades out after 2.2s */}
+      <PageLoader onDone={() => setLoaded(true)} />
 
-      {/* Thin orange scroll progress bar at top */}
-      <ScrollProgress />
+      {/* Bottom scroll progress bar — only shown after loader clears */}
+      {loaded && <ScrollProgress />}
 
       {/* Custom orange dot cursor */}
       <Cursor />
