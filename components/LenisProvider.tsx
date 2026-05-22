@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Lenis from "lenis";
 
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
-  const lenisRef = useRef<Lenis | null>(null);
-
   useEffect(() => {
     const lenis = new Lenis({
       duration: 0.9,
@@ -15,35 +13,26 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       touchMultiplier: 0.8,
     });
 
-    lenisRef.current = lenis;
+    // Start paused — PageLoader will fire 'lenis:start' when the screen clears
+    lenis.stop();
 
     let rafId: number;
-
     function raf(time: number) {
       lenis.raf(time);
       rafId = requestAnimationFrame(raf);
     }
-
     rafId = requestAnimationFrame(raf);
 
-    // Listen for body overflow changes to pause/resume lenis
-    const observer = new MutationObserver(() => {
-      if (document.body.style.overflow === "hidden") {
-        lenis.stop();
-      } else {
-        lenis.start();
-      }
-    });
-
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["style"],
-    });
+    const onStart = () => lenis.start();
+    const onStop  = () => lenis.stop();
+    document.addEventListener("lenis:start", onStart);
+    document.addEventListener("lenis:stop",  onStop);
 
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
-      observer.disconnect();
+      document.removeEventListener("lenis:start", onStart);
+      document.removeEventListener("lenis:stop",  onStop);
     };
   }, []);
 

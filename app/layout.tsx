@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import LenisProvider from "@/components/LenisProvider";
+import CursorGlobal from "@/components/CursorGlobal";
 
 export const metadata: Metadata = {
   title: "Orcred | The Standard for AI/ML Intelligence",
@@ -29,6 +30,7 @@ export default function RootLayout({
       <body className="selection:bg-accent-orange selection:text-white grainy-overlay">
         <LenisProvider>
           {children}
+          <CursorGlobal />
         </LenisProvider>
       </body>
     </html>

@@ -1,14 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-
-interface CtaProps {
-  onApply: () => void;
-}
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-export default function CtaSection({ onApply }: CtaProps) {
+export default function CtaSection() {
+  const router = useRouter();
+
   return (
     <section
       className="min-h-screen flex flex-col justify-center items-center px-6 sm:px-10 lg:px-16 text-center relative overflow-hidden"
@@ -36,31 +35,7 @@ export default function CtaSection({ onApply }: CtaProps) {
 
       <div className="relative z-10 max-w-3xl mx-auto">
 
-        {/* Section label */}
-        <motion.div
-          className="flex items-center justify-center gap-5 mb-14 sm:mb-16"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
-        >
-          <div
-            className="w-12 h-px"
-            style={{ background: "rgba(235,225,205,0.08)" }}
-          />
-          <span
-            className="font-label-sm uppercase tracking-[0.42em] text-[9px] sm:text-[10px]"
-            style={{ color: "rgba(235,69,17,0.7)" }}
-          >
-            Founding Cohort
-          </span>
-          <div
-            className="w-12 h-px"
-            style={{ background: "rgba(235,225,205,0.08)" }}
-          />
-        </motion.div>
-
-        {/* Main headline — Cormorant Garamond */}
+        {/* Main headline */}
         <motion.h2
           style={{
             fontFamily: "'Cormorant Garamond', Georgia, serif",
@@ -84,51 +59,16 @@ export default function CtaSection({ onApply }: CtaProps) {
           you.
         </motion.h2>
 
-        {/* Ornamental divider ── ◆ ── */}
-        <motion.div
-          className="flex items-center justify-center gap-4 my-10 sm:my-12"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }}
-        >
-          <div
-            className="w-16 h-px"
-            style={{ background: "rgba(235,225,205,0.08)" }}
-          />
-          <div
-            className="w-[6px] h-[6px] rotate-45 border"
-            style={{ borderColor: "rgba(235,69,17,0.5)" }}
-          />
-          <div
-            className="w-16 h-px"
-            style={{ background: "rgba(235,225,205,0.08)" }}
-          />
-        </motion.div>
-
-        {/* Body */}
-        <motion.p
-          className="text-[14px] sm:text-[16px] font-light leading-[1.9] max-w-sm mx-auto mb-12 sm:mb-14"
-          style={{ color: "rgba(235,225,205,0.62)" }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" }}
-        >
-          5 founding reviewers. 2 founders.
-          <br />
-          Built entirely from scratch.
-        </motion.p>
-
         {/* CTA */}
         <motion.div
+          className="mt-14"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.9, delay: 0.4, ease: "easeOut" }}
+          transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" }}
         >
           <motion.button
-            onClick={onApply}
+            onClick={() => router.push("/contact")}
             className="relative font-label-sm uppercase tracking-[0.3em] text-[11px] sm:text-[12px] py-2"
             style={{ color: "rgba(235,225,205,0.88)", background: "transparent" }}
             initial="rest"
@@ -136,7 +76,7 @@ export default function CtaSection({ onApply }: CtaProps) {
             animate="rest"
             whileTap={{ scale: 0.98 }}
           >
-            Apply for a Founding Spot
+            Contact Us
             <motion.span
               className="absolute bottom-0 left-0 h-[1px]"
               style={{ background: "#eb4511" }}
@@ -147,18 +87,6 @@ export default function CtaSection({ onApply }: CtaProps) {
             />
           </motion.button>
         </motion.div>
-
-        {/* Fine print */}
-        <motion.p
-          className="mt-8 font-label-sm uppercase tracking-[0.35em] text-[9px]"
-          style={{ color: "rgba(235,225,205,0.18)" }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 1, delay: 0.55, ease: "easeOut" }}
-        >
-          5 spots remaining · Equity included
-        </motion.p>
 
       </div>
     </section>

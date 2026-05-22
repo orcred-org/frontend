@@ -46,13 +46,6 @@ export default function HeroSection({ onApply }: HeroProps) {
     ruleLine:    "rgba(235,225,205,0.1)",
     body:        "rgba(235,225,205,0.4)",
     bodySpan:    "rgba(235,225,205,0.68)",
-    linkText:    "rgba(235,225,205,0.28)",
-    linkBorder:  "rgba(235,225,205,0.15)",
-    linkHover:   "rgba(235,225,205,0.55)",
-    statBorder:  "rgba(235,225,205,0.08)",
-    statDivider: "rgba(235,225,205,0.07)",
-    statNum:     "rgba(235,225,205,0.82)",
-    statLabel:   "rgba(235,225,205,0.22)",
   } : {
     bg:          "#faf7f2",
     radial:      "rgba(235,69,17,0.06)",
@@ -65,19 +58,12 @@ export default function HeroSection({ onApply }: HeroProps) {
     ruleLine:    "rgba(26,22,20,0.1)",
     body:        "rgba(26,22,20,0.42)",
     bodySpan:    "rgba(26,22,20,0.72)",
-    linkText:    "rgba(26,22,20,0.32)",
-    linkBorder:  "rgba(26,22,20,0.15)",
-    linkHover:   "rgba(26,22,20,0.62)",
-    statBorder:  "rgba(26,22,20,0.08)",
-    statDivider: "rgba(26,22,20,0.07)",
-    statNum:     "rgba(26,22,20,0.82)",
-    statLabel:   "rgba(26,22,20,0.28)",
   };
 
   return (
     <section
       id="hero-section"
-      className="min-h-[100vh] mt-[-72px] relative flex flex-col items-center justify-center overflow-hidden px-6 sm:px-10 lg:px-16"
+      className="mt-[-72px] relative flex flex-col items-center overflow-hidden px-6 sm:px-10 lg:px-16"
       style={{ backgroundColor: c.bg, transition: "background-color 0.45s ease" }}
     >
 
@@ -103,7 +89,7 @@ export default function HeroSection({ onApply }: HeroProps) {
         style={{ background: c.bottomRule, transition: "background 0.45s ease" }} />
 
       {/* ══ CONTENT ══ */}
-      <div className="relative z-10 flex flex-col items-center text-center w-full max-w-3xl mx-auto py-[96px]">
+      <div className="relative z-10 flex flex-col items-center text-center w-full max-w-3xl mx-auto pt-[120px] pb-[80px]">
 
         {/* Formal concentric seal */}
         <motion.div
@@ -194,7 +180,7 @@ export default function HeroSection({ onApply }: HeroProps) {
 
         {/* Body copy */}
         <motion.p
-          className="leading-[1.9] text-[13px] sm:text-[15px] font-[300] max-w-[480px] mb-11 sm:mb-14"
+          className="leading-[1.9] text-[13px] sm:text-[15px] font-[300] max-w-[480px] mb-0"
           style={{ color: c.body, transition: "color 0.45s ease" }}
           variants={fadeUp(0.55)}
           initial="hidden"
@@ -208,86 +194,6 @@ export default function HeroSection({ onApply }: HeroProps) {
           </span>
         </motion.p>
 
-        {/* CTAs */}
-        <motion.div
-          className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center w-full sm:w-auto"
-          variants={fadeUp(0.65)}
-          initial="hidden"
-          animate="show"
-        >
-          <motion.button
-            onClick={onApply}
-            className="relative w-full sm:w-auto font-label-sm uppercase tracking-[0.22em] text-[11px] py-2 text-left sm:text-center"
-            style={{ color: "rgba(235,225,205,0.88)", background: "transparent" }}
-            initial="rest"
-            whileHover="hover"
-            animate="rest"
-            whileTap={{ scale: 0.98 }}
-          >
-            Apply as a Founding Reviewer
-            <motion.span
-              className="absolute bottom-0 left-0 h-[1px]"
-              style={{ background: "#eb4511" }}
-              variants={{
-                rest:  { width: "0%",   transition: { duration: 0.3,  ease: "easeOut" } },
-                hover: { width: "100%", transition: { duration: 0.6,  ease: [0.22, 1, 0.36, 1] } },
-              }}
-            />
-          </motion.button>
-
-          <motion.a
-            href="#process"
-            className="font-label-sm uppercase tracking-[0.22em] text-[10px] border-b pb-px transition-colors duration-300"
-            style={{ color: c.linkText, borderColor: c.linkBorder, transition: "color 0.45s ease, border-color 0.45s ease" }}
-            whileHover={{ x: 3 }}
-            onHoverStart={e => { (e.target as HTMLElement).style.color = c.linkHover; }}
-            onHoverEnd={e   => { (e.target as HTMLElement).style.color = c.linkText; }}
-          >
-            See how it works
-          </motion.a>
-        </motion.div>
-
-        {/* Credibility bar */}
-        <motion.div
-          className="grid grid-cols-3 w-full max-w-xl mt-16 sm:mt-20 border-t"
-          style={{ borderColor: c.statBorder, transition: "border-color 0.45s ease" }}
-          variants={fadeIn(0.8)}
-          initial="hidden"
-          animate="show"
-        >
-          {[
-            { num: "45",  unit: "min",   label: "Average review session"    },
-            { num: "100", unit: "%",     label: "Senior engineer reviewed"  },
-            { num: "05",  unit: "spots", label: "Founding cohort remaining" },
-          ].map((s, i) => (
-            <div
-              key={i}
-              className="flex flex-col items-center gap-1.5 pt-8 border-r last:border-r-0"
-              style={{ borderColor: c.statDivider, transition: "border-color 0.45s ease" }}
-            >
-              <div className="flex items-baseline gap-1">
-                <span
-                  className="font-[700] text-xl sm:text-2xl tracking-tight"
-                  style={{ color: c.statNum, transition: "color 0.45s ease" }}
-                >
-                  {s.num}
-                </span>
-                <span
-                  className="font-label-sm uppercase tracking-[0.12em] text-[8px] sm:text-[9px]"
-                  style={{ color: "#eb4511" }}
-                >
-                  {s.unit}
-                </span>
-              </div>
-              <span
-                className="font-label-sm uppercase tracking-[0.16em] text-[8px] text-center leading-relaxed px-3"
-                style={{ color: c.statLabel, transition: "color 0.45s ease" }}
-              >
-                {s.label}
-              </span>
-            </div>
-          ))}
-        </motion.div>
 
       </div>
     </section>
