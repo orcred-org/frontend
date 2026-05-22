@@ -229,16 +229,25 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
               It&apos;s a stake in something built from scratch.
             </p>
 
-            {/* CTA button — flat rectangular, no rounding */}
+            {/* CTA button — underline sweep */}
             <motion.button
               onClick={onApply}
-              className="w-full py-[15px] font-label-sm uppercase tracking-[0.3em] text-[10px] text-white"
-              style={{ background: "#eb4511" }}
-              whileHover={{ opacity: 0.88 }}
+              className="relative w-full py-[15px] font-label-sm uppercase tracking-[0.3em] text-[10px]"
+              style={{ color: "rgba(235,225,205,0.88)", background: "transparent" }}
+              initial="rest"
+              whileHover="hover"
+              animate="rest"
               whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.15 }}
             >
               Apply for a Founding Spot
+              <motion.span
+                className="absolute bottom-0 left-0 h-[1px]"
+                style={{ background: "#eb4511" }}
+                variants={{
+                  rest:  { width: "0%",   transition: { duration: 0.3,  ease: "easeOut" } },
+                  hover: { width: "100%", transition: { duration: 0.6,  ease: [0.22, 1, 0.36, 1] } },
+                }}
+              />
             </motion.button>
 
             {/* Fine print */}
