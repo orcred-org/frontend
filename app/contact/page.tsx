@@ -264,7 +264,7 @@ export default function ContactPage() {
       {/* ── Header ── */}
       <header
         className="relative z-10 flex items-center justify-between flex-shrink-0 px-8 sm:px-12 lg:px-16"
-        style={{ height: "68px", borderBottom: "1px solid rgba(235,225,205,0.27)" }}
+        style={{ height: "68px", borderBottom: "1px solid rgba(235,225,205,0.07)" }}
       >
         <div className="flex items-center gap-3">
           <div
@@ -307,20 +307,20 @@ export default function ContactPage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.9 }}
         >
-          <div className="w-8 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
+          <div className="w-8 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
           <span
             className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
             style={{ color: "rgba(235,69,17,0.6)" }}
           >
             Get in touch
           </span>
-          <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
+          <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
         </motion.div>
 
         {/* Path selector */}
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 gap-0 mb-0"
-          style={{ borderBottom: path ? "1px solid rgba(235,225,205,0.27)" : "none" }}
+          style={{ borderBottom: path ? "1px solid rgba(235,225,205,0.07)" : "none" }}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.1, ease }}
@@ -348,7 +348,7 @@ export default function ContactPage() {
                 onClick={() => choosePath(active ? null : opt.key)}
                 className="relative text-left px-0 py-10 sm:py-12 flex flex-col gap-4 overflow-hidden"
                 style={{
-                  borderRight: i === 0 ? "1px solid rgba(235,225,205,0.27)" : "none",
+                  borderRight: i === 0 ? "1px solid rgba(235,225,205,0.07)" : "none",
                   paddingRight: i === 0 ? "48px" : "0",
                   paddingLeft:  i === 1 ? "48px" : "0",
                   opacity: faded ? 0.25 : 1,

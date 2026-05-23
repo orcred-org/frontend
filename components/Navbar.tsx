@@ -32,7 +32,7 @@ export default function Navbar() {
         style={{
           backdropFilter: useTransform(blur, (v) => `blur(${v}px) saturate(180%)`),
           WebkitBackdropFilter: useTransform(blur, (v) => `blur(${v}px) saturate(180%)`),
-          borderBottom: scrolled ? "1px solid rgba(235,225,205,0.27)" : "1px solid transparent",
+          borderBottom: scrolled ? "1px solid rgba(235,225,205,0.07)" : "1px solid transparent",
           transition: "border-color 0.5s ease",
         }}
       />
@@ -43,7 +43,7 @@ export default function Navbar() {
         {/* Left ornamental rule */}
         <motion.div
           className="absolute left-8 right-[50%] mr-24 h-px pointer-events-none"
-          style={{ background: scrolled ? "rgba(235,225,205,0.28)" : "rgba(235,225,205,0.26)" }}
+          style={{ background: scrolled ? "rgba(235,225,205,0.08)" : "rgba(235,225,205,0.06)" }}
           initial={{ scaleX: 0, originX: 1 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
@@ -72,7 +72,7 @@ export default function Navbar() {
         {/* Right ornamental rule */}
         <motion.div
           className="absolute left-[50%] ml-24 right-8 h-px pointer-events-none"
-          style={{ background: scrolled ? "rgba(235,225,205,0.28)" : "rgba(235,225,205,0.26)" }}
+          style={{ background: scrolled ? "rgba(235,225,205,0.08)" : "rgba(235,225,205,0.06)" }}
           initial={{ scaleX: 0, originX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}

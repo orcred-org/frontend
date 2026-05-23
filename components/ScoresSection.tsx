@@ -80,7 +80,7 @@ export default function ScoresSection() {
               className="text-[15px] font-light leading-relaxed pb-4 border-b"
               style={{
                 color: "rgba(235,225,205,0.62)",
-                borderColor: "rgba(235,225,205,0.27)",
+                borderColor: "rgba(235,225,205,0.07)",
               }}
             >
               Not a grade. A signal.
@@ -102,7 +102,7 @@ export default function ScoresSection() {
             <motion.div
               key={c.roman}
               className="group grid grid-cols-12 items-center border-b cursor-default"
-              style={{ borderColor: "rgba(235,225,205,0.27)" }}
+              style={{ borderColor: "rgba(235,225,205,0.07)" }}
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: i * 0.12, ease: "easeOut" }}
