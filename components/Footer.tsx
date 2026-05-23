@@ -7,9 +7,7 @@ export default function Footer() {
     <footer
       className="px-6 sm:px-10 lg:px-16 py-10 sm:py-12"
       style={{
-        backgroundColor: "rgba(1,2,4,0.96)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
+        backgroundColor: "#000000",
         borderTop: "1px solid rgba(235,225,205,0.13)",
       }}
     >
@@ -54,11 +52,10 @@ export default function Footer() {
           ))}
 
           <span
-            className="font-label-sm tracking-widest text-[9px] uppercase sm:pl-4"
+            className="font-label-sm tracking-widest text-[9px] uppercase sm:pl-4 sm:border-l"
             style={{
               color: "rgba(235,225,205,0.38)",
-              borderLeft: "1px solid rgba(235,225,205,0.14)",
-              paddingLeft: "16px",
+              borderColor: "rgba(235,225,205,0.14)",
             }}
           >
             © 2026 Orcred
