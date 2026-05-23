@@ -1,8 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Footer() {
+  const router = useRouter();
+
+  const goHome = () => {
+    router.push("/");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <footer
       className="px-6 sm:px-10 lg:px-16 py-10 sm:py-12"
@@ -14,7 +22,9 @@ export default function Footer() {
       <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
 
         {/* Brand */}
-        <div
+        <button
+          type="button"
+          onClick={goHome}
           className="flex items-center gap-3"
           style={{
             fontFamily: "'Cormorant Garamond', Georgia, serif",
@@ -22,6 +32,9 @@ export default function Footer() {
             fontSize: "20px",
             letterSpacing: "0.1em",
             color: "rgba(235,225,205,0.72)",
+            background: "none",
+            border: "none",
+            padding: 0,
           }}
         >
           <div
@@ -32,7 +45,7 @@ export default function Footer() {
             }}
           />
           ORCRED
-        </div>
+        </button>
 
         {/* Links + copyright */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-8">
