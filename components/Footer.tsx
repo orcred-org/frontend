@@ -8,7 +8,7 @@ export default function Footer() {
       className="px-6 sm:px-10 lg:px-16 py-10 sm:py-12"
       style={{
         backgroundColor: "#010204",
-        borderTop: "1px solid rgba(235,225,205,0.06)",
+        borderTop: "1px solid rgba(235,225,205,0.12)",
       }}
     >
       <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
@@ -55,7 +55,7 @@ export default function Footer() {
             className="font-label-sm tracking-widest text-[9px] uppercase sm:pl-4"
             style={{
               color: "rgba(235,225,205,0.38)",
-              borderLeft: "1px solid rgba(235,225,205,0.08)",
+              borderLeft: "1px solid rgba(235,225,205,0.14)",
               paddingLeft: "16px",
             }}
           >

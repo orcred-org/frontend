@@ -33,7 +33,7 @@ function SignalGrid() {
             style={{
               width:      i === signal ? 12 : 8,
               height:     i === signal ? 12 : 8,
-              background: i === signal ? "#eb4511" : "rgba(235,225,205,0.09)",
+              background: i === signal ? "#eb4511" : "rgba(235,225,205,0.15)",
               boxShadow:  i === signal ? "0 0 14px 5px rgba(235,69,17,0.38)" : "none",
               alignSelf:  "center",
               justifySelf: "center",
@@ -107,11 +107,11 @@ function SessionVisual() {
         <svg viewBox="0 0 200 200" className="w-full h-full" style={{ overflow: "visible" }}>
           {/* Outer faint orbit */}
           <circle cx="100" cy="100" r="96"
-            fill="none" stroke="rgba(235,225,205,0.04)" strokeWidth="1" />
+            fill="none" stroke="rgba(235,225,205,0.10)" strokeWidth="1" />
 
           {/* Track ring */}
           <circle cx="100" cy="100" r={r}
-            fill="none" stroke="rgba(235,225,205,0.06)" strokeWidth="1" />
+            fill="none" stroke="rgba(235,225,205,0.12)" strokeWidth="1" />
 
           {/* Animated progress arc */}
           <motion.circle
@@ -279,7 +279,7 @@ function ScoreVisual() {
       {/* Thin divider */}
       <motion.div
         className="w-full h-px"
-        style={{ background: "rgba(235,225,205,0.07)" }}
+        style={{ background: "rgba(235,225,205,0.13)" }}
         initial={{ scaleX: 0, originX: "left" }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true }}
@@ -312,7 +312,7 @@ function ScoreVisual() {
             </div>
             <div
               className="w-full h-[1.5px] overflow-hidden"
-              style={{ background: "rgba(235,225,205,0.06)" }}
+              style={{ background: "rgba(235,225,205,0.12)" }}
             >
               <motion.div
                 className="h-full"
@@ -328,7 +328,7 @@ function ScoreVisual() {
       </div>
 
       {/* Thin divider */}
-      <div className="w-full h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+      <div className="w-full h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
 
       {/* Footer */}
       <motion.div
@@ -391,7 +391,7 @@ function EditorialPanel({
     <div
       ref={ref}
       className="min-h-screen flex items-center border-b py-16 px-6 sm:px-10 lg:px-16"
-      style={{ borderColor: "rgba(235,225,205,0.04)" }}
+      style={{ borderColor: "rgba(235,225,205,0.10)" }}
     >
       <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
 
@@ -421,7 +421,7 @@ function EditorialPanel({
             </span>
             <div
               className="flex-1 h-px"
-              style={{ background: "rgba(235,225,205,0.07)" }}
+              style={{ background: "rgba(235,225,205,0.13)" }}
             />
             <span
               className="font-label-sm uppercase tracking-[0.38em] text-[9px]"
@@ -515,14 +515,14 @@ export default function PlatformSection() {
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 1, ease: "easeOut" }}
       >
-        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
         <span
           className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
           style={{ color: "rgba(235,225,205,0.45)" }}
         >
           The Story
         </span>
-        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
       </motion.div>
 
       {/* Panel 1 — The problem */}

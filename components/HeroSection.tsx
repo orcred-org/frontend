@@ -39,7 +39,7 @@ export default function HeroSection({ onApply }: HeroProps) {
     radial:      "rgba(235,69,17,0.05)",
     sealOuter:   "rgba(235,69,17,0.4)",
     sealInner:   "rgba(235,69,17,0.18)",
-    bottomRule:  "rgba(235,225,205,0.07)",
+    bottomRule:  "rgba(235,225,205,0.13)",
     label:       "rgba(235,225,205,0.52)",
     h1:          "rgba(235,225,205,0.95)",
     h1italic:    "rgba(235,225,205,0.68)",

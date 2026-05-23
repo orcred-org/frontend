@@ -21,8 +21,8 @@ export default function MarqueeTicker() {
       className="overflow-hidden py-[11px] relative"
       style={{
         backgroundColor: "#010204",
-        borderTop: "1px solid rgba(235,225,205,0.05)",
-        borderBottom: "1px solid rgba(235,225,205,0.05)",
+        borderTop: "1px solid rgba(235,225,205,0.11)",
+        borderBottom: "1px solid rgba(235,225,205,0.11)",
       }}
     >
       {/* Left + Right fade masks */}
