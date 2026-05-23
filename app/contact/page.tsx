@@ -339,67 +339,98 @@ export default function ContactPage() {
               body:     "You can tell in 60 seconds. Join us as a reviewer and shape the standard.",
             },
           ] as const).map((opt, i) => {
-            const active  = path === opt.key;
-            const faded   = path !== null && !active;
+            const active = path === opt.key;
+            const faded  = path !== null && !active;
 
             return (
               <motion.button
                 key={opt.key}
                 onClick={() => choosePath(active ? null : opt.key)}
-                className="relative text-left px-0 py-10 sm:py-12 flex flex-col gap-4 group"
+                className="relative text-left px-0 py-10 sm:py-12 flex flex-col gap-4 overflow-hidden"
                 style={{
                   borderRight: i === 0 ? "1px solid rgba(235,225,205,0.27)" : "none",
                   paddingRight: i === 0 ? "48px" : "0",
                   paddingLeft:  i === 1 ? "48px" : "0",
-                  opacity: faded ? 0.3 : 1,
+                  opacity: faded ? 0.25 : 1,
                   transition: "opacity 0.4s ease",
                 }}
-                whileTap={{ scale: 0.99 }}
+                initial="rest"
+                whileHover={!faded ? "hover" : "rest"}
+                animate={active ? "active" : "rest"}
+                whileTap={{ scale: 0.98 }}
               >
-                {/* Eyebrow */}
-                <span
-                  className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
+                {/* Hover glow */}
+                <motion.div
+                  className="absolute inset-0 pointer-events-none"
                   style={{
-                    color: active ? "rgba(235,69,17,0.7)" : "rgba(235,225,205,0.42)",
-                    transition: "color 0.3s ease",
+                    background: i === 0
+                      ? "radial-gradient(ellipse 80% 100% at 20% 50%, rgba(235,69,17,0.06) 0%, transparent 70%)"
+                      : "radial-gradient(ellipse 80% 100% at 80% 50%, rgba(235,69,17,0.06) 0%, transparent 70%)",
                   }}
+                  variants={{ rest: { opacity: 0 }, hover: { opacity: 1 }, active: { opacity: 0 } }}
+                  transition={{ duration: 0.4 }}
+                />
+
+                {/* Eyebrow */}
+                <motion.span
+                  className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
+                  variants={{
+                    rest:   { color: "rgba(235,225,205,0.42)", x: 0   },
+                    hover:  { color: "rgba(235,69,17,0.75)",   x: i === 0 ? 4 : -4 },
+                    active: { color: "rgba(235,69,17,0.80)",   x: 0   },
+                  }}
+                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 >
                   {opt.eyebrow}
-                </span>
+                </motion.span>
 
                 {/* Headline */}
-                <span
+                <motion.span
                   style={{
                     fontFamily: "'Cormorant Garamond', Georgia, serif",
                     fontWeight: 400,
                     fontStyle: active ? "italic" : "normal",
                     fontSize: "clamp(32px, 4vw, 58px)",
                     lineHeight: 1.0,
-                    color: active ? "#eb4511" : "rgba(235,225,205,0.82)",
-                    transition: "color 0.35s ease, font-style 0.2s ease",
                     display: "block",
+                    transition: "font-style 0.2s ease",
                   }}
+                  variants={{
+                    rest:   { color: "rgba(235,225,205,0.82)", scale: 1,    x: 0   },
+                    hover:  { color: "rgba(235,225,205,0.96)", scale: 1.03, x: i === 0 ? 6 : -6 },
+                    active: { color: "#eb4511",                scale: 1,    x: 0   },
+                  }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 >
                   {opt.headline}
-                </span>
+                </motion.span>
 
                 {/* Body */}
-                <span
+                <motion.span
                   className="text-[13px] font-light leading-relaxed max-w-xs block"
-                  style={{
-                    color: active ? "rgba(235,225,205,0.75)" : "rgba(235,225,205,0.48)",
-                    transition: "color 0.3s ease",
+                  variants={{
+                    rest:   { color: "rgba(235,225,205,0.48)", x: 0   },
+                    hover:  { color: "rgba(235,225,205,0.70)", x: i === 0 ? 4 : -4 },
+                    active: { color: "rgba(235,225,205,0.75)", x: 0   },
                   }}
+                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 >
                   {opt.body}
-                </span>
+                </motion.span>
 
-                {/* Active underline */}
+                {/* Underline — partial on hover, full when active */}
                 <motion.div
-                  className="absolute bottom-0 left-0 h-[1px]"
-                  style={{ background: "#eb4511" }}
-                  animate={{ width: active ? (i === 0 ? "calc(100% - 48px)" : "100%") : "0%" }}
-                  transition={{ duration: 0.5, ease }}
+                  className="absolute bottom-0 h-[1px]"
+                  style={{
+                    background: "#eb4511",
+                    left: i === 1 ? "48px" : "0",
+                  }}
+                  variants={{
+                    rest:   { width: "0%",                                       opacity: 0.6 },
+                    hover:  { width: i === 0 ? "35%" : "35%",                   opacity: 0.5 },
+                    active: { width: i === 0 ? "calc(100% - 48px)" : "calc(100% - 48px)", opacity: 1   },
+                  }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                 />
               </motion.button>
             );
