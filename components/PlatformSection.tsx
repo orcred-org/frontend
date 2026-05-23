@@ -390,7 +390,7 @@ function EditorialPanel({
   return (
     <div
       ref={ref}
-      className="min-h-screen flex items-center border-b py-16 px-6 sm:px-10 lg:px-16"
+      className="relative overflow-hidden min-h-screen flex items-center border-b py-16 px-6 sm:px-10 lg:px-16"
       style={{ borderColor: "rgba(235,225,205,0.10)" }}
     >
       <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">

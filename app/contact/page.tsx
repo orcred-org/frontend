@@ -346,11 +346,13 @@ export default function ContactPage() {
               <motion.button
                 key={opt.key}
                 onClick={() => choosePath(active ? null : opt.key)}
-                className="relative text-left px-0 py-10 sm:py-12 flex flex-col gap-4 overflow-hidden"
+                className={`relative text-left px-0 py-10 sm:py-12 flex flex-col gap-4 overflow-hidden ${
+                  i === 0
+                    ? "border-b sm:border-b-0 sm:border-r sm:pr-12"
+                    : "sm:pl-12"
+                }`}
                 style={{
-                  borderRight: i === 0 ? "1px solid rgba(235,225,205,0.13)" : "none",
-                  paddingRight: i === 0 ? "48px" : "0",
-                  paddingLeft:  i === 1 ? "48px" : "0",
+                  borderColor: "rgba(235,225,205,0.13)",
                   opacity: faded ? 0.25 : 1,
                   transition: "opacity 0.4s ease",
                 }}
@@ -420,15 +422,12 @@ export default function ContactPage() {
 
                 {/* Underline — partial on hover, full when active */}
                 <motion.div
-                  className="absolute bottom-0 h-[1px]"
-                  style={{
-                    background: "#eb4511",
-                    left: i === 1 ? "48px" : "0",
-                  }}
+                  className="absolute bottom-0 left-0 h-[1px]"
+                  style={{ background: "#eb4511" }}
                   variants={{
-                    rest:   { width: "0%",                                       opacity: 0.6 },
-                    hover:  { width: i === 0 ? "35%" : "35%",                   opacity: 0.5 },
-                    active: { width: i === 0 ? "calc(100% - 48px)" : "calc(100% - 48px)", opacity: 1   },
+                    rest:   { width: "0%",   opacity: 0.6 },
+                    hover:  { width: "35%",  opacity: 0.5 },
+                    active: { width: "100%", opacity: 1   },
                   }}
                   transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                 />
