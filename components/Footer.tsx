@@ -7,8 +7,10 @@ export default function Footer() {
     <footer
       className="px-6 sm:px-10 lg:px-16 py-10 sm:py-12"
       style={{
-        backgroundColor: "#010204",
-        borderTop: "1px solid rgba(235,225,205,0.12)",
+        backgroundColor: "rgba(1,2,4,0.96)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        borderTop: "1px solid rgba(235,225,205,0.13)",
       }}
     >
       <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
