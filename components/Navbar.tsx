@@ -19,7 +19,7 @@ export default function Navbar() {
     <motion.header
       className="sticky top-0 z-50"
       style={{
-        backgroundColor: scrolled ? "rgba(6,9,14,0.88)" : "rgba(0,0,0,0)",
+        backgroundColor: scrolled ? "rgba(1,2,4,0.92)" : "rgba(0,0,0,0)",
         transition: "background-color 0.5s ease",
       }}
       initial={{ opacity: 0 }}
