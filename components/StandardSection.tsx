@@ -67,14 +67,14 @@ export default function StandardSection() {
 
         {/* Section marker — top */}
         <div className="absolute top-10 left-0 right-0 flex items-center justify-center gap-4 px-6">
-          <div className="w-10 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
+          <div className="w-10 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
           <span
             className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
             style={{ color: "rgba(235,225,205,0.40)" }}
           >
             The Standard
           </span>
-          <div className="w-10 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
+          <div className="w-10 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
         </div>
 
         {/* Story cards — stacked, driven by scroll */}

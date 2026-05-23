@@ -60,14 +60,14 @@ export default function ComparisonSection() {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
+          <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
           <span
             className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
             style={{ color: "rgba(235,225,205,0.45)" }}
           >
             Why Orcred
           </span>
-          <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
+          <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
         </motion.div>
 
         {/* Headline */}
@@ -105,7 +105,7 @@ export default function ComparisonSection() {
         <div ref={ref} className="overflow-x-auto">
           <table className="w-full border-collapse min-w-[580px]">
             <thead>
-              <tr style={{ borderBottom: "1px solid rgba(235,225,205,0.27)" }}>
+              <tr style={{ borderBottom: "1px solid rgba(235,225,205,0.07)" }}>
                 {["", "What it proves", "What it misses"].map((col, i) => (
                   <th
                     key={i}
@@ -129,7 +129,7 @@ export default function ComparisonSection() {
                     borderBottom: `1px solid ${
                       row.orcred
                         ? "rgba(235,69,17,0.14)"
-                        : "rgba(235,225,205,0.24)"
+                        : "rgba(235,225,205,0.04)"
                     }`,
                   }}
                   initial={{ opacity: 0 }}
