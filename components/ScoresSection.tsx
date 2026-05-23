@@ -106,7 +106,7 @@ export default function ScoresSection() {
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: i * 0.12, ease: "easeOut" }}
-              whileHover={{ backgroundColor: "rgba(235,225,205,0.22)" }}
+              whileHover={{ backgroundColor: "rgba(235,225,205,0.05)" }}
             >
               {/* Roman numeral */}
               <div className="col-span-1 py-8 sm:py-10 lg:py-12 pr-4">

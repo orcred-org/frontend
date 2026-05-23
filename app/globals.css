@@ -150,6 +150,7 @@ section[id] {
 
 /* ── Hide scrollbar — bottom progress bar replaces it ── */
 html, body {
+  overflow-x: hidden;          /* Prevent horizontal bleed from any oversized element */
   scrollbar-width: none;       /* Firefox */
   -ms-overflow-style: none;    /* IE / Edge */
 }
