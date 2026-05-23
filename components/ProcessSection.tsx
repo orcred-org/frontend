@@ -413,12 +413,12 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
         {step.numeral}
       </motion.div>
 
-      {/* Grid */}
-      <div className="w-full max-w-[1400px] mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
+      {/* Grid — isolated stacking context, always above watermark */}
+      <div className="w-full max-w-[1400px] mx-auto relative z-10 isolate grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
 
         {/* ── Text block ── */}
         <div
-          className={`lg:col-span-4 flex flex-col gap-7
+          className={`relative lg:col-span-4 flex flex-col gap-7
             ${step.flip ? "lg:col-start-9 lg:order-2" : "lg:col-start-1 lg:order-1"}`}
         >
           {/* Chapter marker */}
@@ -513,7 +513,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
 
         {/* ── Visual — curtain reveal ── */}
         <motion.div
-          className={`lg:col-span-7 overflow-hidden
+          className={`relative lg:col-span-7 overflow-hidden
             ${step.flip ? "lg:col-start-1 lg:order-1" : "lg:col-start-6 lg:order-2"}`}
           initial={{ clipPath: "inset(0 0 100% 0)" }}
           animate={inView ? { clipPath: "inset(0 0 0% 0)" } : {}}
