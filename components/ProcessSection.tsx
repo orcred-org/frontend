@@ -399,7 +399,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
           fontWeight: 300,
           fontSize: "clamp(200px, 32vw, 440px)",
           lineHeight: 0.85,
-          color: "rgba(235,225,205,0.10)",
+          color: "rgba(235,225,205,0.05)",
           right:  step.flip ? "auto" : "-1%",
           left:   step.flip ? "-1%" : "auto",
           bottom: "-6%",
