@@ -390,9 +390,9 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
         backgroundColor: "#010204",
       }}
     >
-      {/* Giant watermark numeral */}
+      {/* Giant watermark numeral — desktop only */}
       <motion.div
-        className="absolute pointer-events-none select-none"
+        className="absolute hidden lg:block pointer-events-none select-none"
         style={{
           fontFamily: "'Cormorant Garamond', Georgia, serif",
           fontStyle: "italic",
@@ -404,6 +404,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
           left:   step.flip ? "-1%" : "auto",
           bottom: "-6%",
           userSelect: "none",
+          zIndex: 0,
         }}
         initial={{ opacity: 0, x: step.flip ? -60 : 60 }}
         animate={inView ? { opacity: 1, x: 0 } : {}}
