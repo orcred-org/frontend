@@ -50,7 +50,11 @@ export default function Navbar() {
         />
 
         {/* Logo */}
-        <Link href="/" className="relative flex items-center gap-3 z-10">
+        <Link
+          href="/"
+          className="relative flex items-center gap-3 z-10"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
           <div
             className="w-[15px] h-[15px] rounded-full bg-accent-orange flex-shrink-0"
             style={{ boxShadow: "0 0 10px 3px rgba(235,69,17,0.38)" }}
