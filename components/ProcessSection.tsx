@@ -34,7 +34,7 @@ function SubmissionVisual({ inView }: { inView: boolean }) {
         >
           Project Submission
         </span>
-        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
         <div
           className="w-[6px] h-[6px] rounded-full"
           style={{ background: "#eb4511", boxShadow: "0 0 6px 2px rgba(235,69,17,0.4)" }}
@@ -43,7 +43,7 @@ function SubmissionVisual({ inView }: { inView: boolean }) {
 
       {/* Fields */}
       {fields.map((field, i) => (
-        <div key={field.label} className="py-4" style={{ borderBottom: "1px solid rgba(235,225,205,0.06)" }}>
+        <div key={field.label} className="py-4" style={{ borderBottom: "1px solid rgba(235,225,205,0.26)" }}>
           <div className="flex items-baseline gap-5">
             {/* Label */}
             <span
@@ -69,7 +69,7 @@ function SubmissionVisual({ inView }: { inView: boolean }) {
 
           {/* Thin fill line */}
           <div className="mt-3 ml-[116px] h-[1px] overflow-hidden"
-            style={{ background: "rgba(235,225,205,0.05)" }}>
+            style={{ background: "rgba(235,225,205,0.25)" }}>
             <motion.div
               className="h-full"
               style={{ background: "rgba(235,69,17,0.3)" }}
@@ -110,14 +110,14 @@ function ConversationVisual({ inView }: { inView: boolean }) {
         animate={inView ? { opacity: 1 } : {}}
         transition={{ duration: 0.8 }}
       >
-        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
         <span
           className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
           style={{ color: "rgba(235,69,17,0.6)" }}
         >
           Session Transcript
         </span>
-        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
       </motion.div>
 
       {/* Exchanges */}
@@ -132,13 +132,13 @@ function ConversationVisual({ inView }: { inView: boolean }) {
           >
             <span
               className="font-label-sm uppercase tracking-widest text-[9px] mt-0.5 w-4 flex-shrink-0"
-              style={{ color: "rgba(235,225,205,0.22)" }}
+              style={{ color: "rgba(235,225,205,0.42)" }}
             >
               Q
             </span>
             <p
               className="text-[13px] font-light italic leading-relaxed"
-              style={{ color: "rgba(235,225,205,0.32)" }}
+              style={{ color: "rgba(235,225,205,0.52)" }}
             >
               {ex.q}
             </p>
@@ -190,7 +190,7 @@ function VerdictVisual({ inView }: { inView: boolean }) {
           <circle
             cx="100" cy="100" r="90"
             fill="none"
-            stroke="rgba(235,225,205,0.04)"
+            stroke="rgba(235,225,205,0.24)"
             strokeWidth="1"
           />
 
@@ -259,7 +259,7 @@ function VerdictVisual({ inView }: { inView: boolean }) {
 
           <motion.span
             className="font-label-sm uppercase tracking-[0.35em] text-[8px] mt-2"
-            style={{ color: "rgba(235,225,205,0.2)" }}
+            style={{ color: "rgba(235,225,205,0.40)" }}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.9, delay: 1.5 }}
@@ -292,7 +292,7 @@ function VerdictVisual({ inView }: { inView: boolean }) {
         </div>
         <p
           className="font-label-sm uppercase tracking-[0.3em] text-[8px]"
-          style={{ color: "rgba(235,225,205,0.28)" }}
+          style={{ color: "rgba(235,225,205,0.48)" }}
         >
           Senior ML Engineer · Verified
         </p>
@@ -354,14 +354,14 @@ export default function ProcessSection() {
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 1, ease: "easeOut" }}
       >
-        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
         <span
           className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
-          style={{ color: "rgba(235,225,205,0.25)" }}
+          style={{ color: "rgba(235,225,205,0.45)" }}
         >
           Examination Procedure
         </span>
-        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
       </motion.div>
 
       {/* Steps */}
@@ -386,7 +386,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
       ref={ref}
       className="min-h-screen flex items-center border-b px-6 sm:px-10 lg:px-16 py-20 relative overflow-hidden"
       style={{
-        borderColor: "rgba(235,225,205,0.05)",
+        borderColor: "rgba(235,225,205,0.25)",
         backgroundColor: "#010204",
       }}
     >
@@ -399,7 +399,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
           fontWeight: 300,
           fontSize: "clamp(200px, 32vw, 440px)",
           lineHeight: 0.85,
-          color: "rgba(235,225,205,0.025)",
+          color: "rgba(235,225,205,0.23)",
           right:  step.flip ? "auto" : "-1%",
           left:   step.flip ? "-1%" : "auto",
           bottom: "-6%",
@@ -439,7 +439,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
             >
               {step.index}
             </span>
-            <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+            <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
             <span
               className="font-label-sm uppercase tracking-[0.38em] text-[9px]"
               style={{ color: "rgba(235,69,17,0.65)" }}
@@ -451,7 +451,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
           {/* Sub-label */}
           <motion.p
             className="font-label-sm uppercase tracking-[0.28em] text-[10px]"
-            style={{ color: "rgba(235,225,205,0.55)" }}
+            style={{ color: "rgba(235,225,205,0.75)" }}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.9, delay: 0.08 }}
@@ -499,7 +499,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
           <motion.p
             className="text-[14px] leading-[1.85] font-light pl-4"
             style={{
-              color: "rgba(235,225,205,0.46)",
+              color: "rgba(235,225,205,0.66)",
               borderLeft: "1px solid rgba(235,69,17,0.25)",
             }}
             initial={{ opacity: 0 }}

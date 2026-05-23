@@ -52,7 +52,7 @@ export default function CtaSection() {
         >
           The standard
           <br />
-          <span style={{ fontStyle: "italic", fontWeight: 300, color: "rgba(235,225,205,0.55)" }}>
+          <span style={{ fontStyle: "italic", fontWeight: 300, color: "rgba(235,225,205,0.75)" }}>
             starts with
           </span>
           <br />

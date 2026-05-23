@@ -60,14 +60,14 @@ export default function ComparisonSection() {
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+          <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
           <span
             className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
-            style={{ color: "rgba(235,225,205,0.25)" }}
+            style={{ color: "rgba(235,225,205,0.45)" }}
           >
             Why Orcred
           </span>
-          <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+          <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
         </motion.div>
 
         {/* Headline */}
@@ -105,13 +105,13 @@ export default function ComparisonSection() {
         <div ref={ref} className="overflow-x-auto">
           <table className="w-full border-collapse min-w-[580px]">
             <thead>
-              <tr style={{ borderBottom: "1px solid rgba(235,225,205,0.07)" }}>
+              <tr style={{ borderBottom: "1px solid rgba(235,225,205,0.27)" }}>
                 {["", "What it proves", "What it misses"].map((col, i) => (
                   <th
                     key={i}
                     className="py-5 text-left font-label-sm uppercase tracking-widest text-[9px]"
                     style={{
-                      color: "rgba(235,225,205,0.2)",
+                      color: "rgba(235,225,205,0.40)",
                       paddingRight: i < 2 ? "32px" : 0,
                     }}
                   >
@@ -129,7 +129,7 @@ export default function ComparisonSection() {
                     borderBottom: `1px solid ${
                       row.orcred
                         ? "rgba(235,69,17,0.14)"
-                        : "rgba(235,225,205,0.045)"
+                        : "rgba(235,225,205,0.24)"
                     }`,
                   }}
                   initial={{ opacity: 0 }}
@@ -165,8 +165,8 @@ export default function ComparisonSection() {
                     className="py-9 sm:py-11 pr-8 text-[13px] sm:text-[14px] font-light leading-relaxed"
                     style={{
                       color: row.orcred
-                        ? "rgba(235,225,205,0.55)"
-                        : "rgba(235,225,205,0.25)",
+                        ? "rgba(235,225,205,0.75)"
+                        : "rgba(235,225,205,0.45)",
                     }}
                   >
                     {row.proves}
@@ -178,7 +178,7 @@ export default function ComparisonSection() {
                     style={{
                       color: row.orcred
                         ? "rgba(235,69,17,0.85)"
-                        : "rgba(235,225,205,0.22)",
+                        : "rgba(235,225,205,0.42)",
                     }}
                   >
                     {row.misses}
@@ -204,7 +204,7 @@ export default function ComparisonSection() {
               fontStyle: "italic",
               fontWeight: 400,
               fontSize: "clamp(17px, 2.2vw, 26px)",
-              color: "rgba(235,225,205,0.50)",
+              color: "rgba(235,225,205,0.70)",
             }}
           >
             One conversation changes the signal permanently.

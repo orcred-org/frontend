@@ -65,7 +65,7 @@ function Field({
         htmlFor={def.id}
         className="font-label-sm uppercase tracking-[0.38em] text-[9px] block mb-2"
         style={{
-          color: focused ? "rgba(235,69,17,0.7)" : "rgba(235,225,205,0.25)",
+          color: focused ? "rgba(235,69,17,0.7)" : "rgba(235,225,205,0.45)",
           transition: "color 0.25s ease",
         }}
       >
@@ -85,7 +85,7 @@ function Field({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={base}
-          className="block placeholder:text-[rgba(235,225,205,0.18)]"
+          className="block placeholder:text-[rgba(235,225,205,0.38)]"
         />
       ) : (
         <input
@@ -97,13 +97,13 @@ function Field({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={{ ...base, display: "block" }}
-          className="placeholder:text-[rgba(235,225,205,0.18)]"
+          className="placeholder:text-[rgba(235,225,205,0.38)]"
         />
       )}
 
       <div
         className="w-full h-px mt-1 transition-colors duration-300"
-        style={{ background: focused ? "rgba(235,69,17,0.55)" : "rgba(235,225,205,0.1)" }}
+        style={{ background: focused ? "rgba(235,69,17,0.55)" : "rgba(235,225,205,0.30)" }}
       />
     </motion.div>
   );
@@ -168,7 +168,7 @@ function FormBlock({
         </motion.button>
         <p
           className="mt-4 font-label-sm uppercase tracking-[0.32em] text-[8px]"
-          style={{ color: "rgba(235,225,205,0.15)" }}
+          style={{ color: "rgba(235,225,205,0.35)" }}
         >
           Fields marked * are required
         </p>
@@ -216,7 +216,7 @@ function Success() {
         >
           We&apos;ll be in touch
           <br />
-          <span style={{ fontStyle: "italic", fontWeight: 300, color: "rgba(235,225,205,0.45)" }}>
+          <span style={{ fontStyle: "italic", fontWeight: 300, color: "rgba(235,225,205,0.65)" }}>
             shortly.
           </span>
         </h2>
@@ -226,7 +226,7 @@ function Success() {
 
       <p
         className="text-[13px] font-light leading-[1.9] max-w-xs"
-        style={{ color: "rgba(235,225,205,0.42)" }}
+        style={{ color: "rgba(235,225,205,0.62)" }}
       >
         We review every submission personally and will reach out to schedule next steps.
       </p>
@@ -264,7 +264,7 @@ export default function ContactPage() {
       {/* ── Header ── */}
       <header
         className="relative z-10 flex items-center justify-between flex-shrink-0 px-8 sm:px-12 lg:px-16"
-        style={{ height: "68px", borderBottom: "1px solid rgba(235,225,205,0.07)" }}
+        style={{ height: "68px", borderBottom: "1px solid rgba(235,225,205,0.27)" }}
       >
         <div className="flex items-center gap-3">
           <div
@@ -287,10 +287,10 @@ export default function ContactPage() {
         <motion.button
           onClick={() => router.back()}
           className="flex items-center gap-2 font-label-sm uppercase tracking-[0.32em] text-[10px]"
-          style={{ color: "rgba(235,225,205,0.3)" }}
+          style={{ color: "rgba(235,225,205,0.50)" }}
           whileHover={{ x: -3 }}
           onHoverStart={e => ((e.target as HTMLElement).style.color = "rgba(235,225,205,0.65)")}
-          onHoverEnd={e   => ((e.target as HTMLElement).style.color = "rgba(235,225,205,0.3)")}
+          onHoverEnd={e   => ((e.target as HTMLElement).style.color = "rgba(235,225,205,0.50)")}
           transition={{ duration: 0.2 }}
         >
           ← Back
@@ -307,20 +307,20 @@ export default function ContactPage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.9 }}
         >
-          <div className="w-8 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+          <div className="w-8 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
           <span
             className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
             style={{ color: "rgba(235,69,17,0.6)" }}
           >
             Get in touch
           </span>
-          <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.07)" }} />
+          <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.27)" }} />
         </motion.div>
 
         {/* Path selector */}
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 gap-0 mb-0"
-          style={{ borderBottom: path ? "1px solid rgba(235,225,205,0.07)" : "none" }}
+          style={{ borderBottom: path ? "1px solid rgba(235,225,205,0.27)" : "none" }}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.1, ease }}
@@ -348,7 +348,7 @@ export default function ContactPage() {
                 onClick={() => choosePath(active ? null : opt.key)}
                 className="relative text-left px-0 py-10 sm:py-12 flex flex-col gap-4 group"
                 style={{
-                  borderRight: i === 0 ? "1px solid rgba(235,225,205,0.07)" : "none",
+                  borderRight: i === 0 ? "1px solid rgba(235,225,205,0.27)" : "none",
                   paddingRight: i === 0 ? "48px" : "0",
                   paddingLeft:  i === 1 ? "48px" : "0",
                   opacity: faded ? 0.3 : 1,
@@ -360,7 +360,7 @@ export default function ContactPage() {
                 <span
                   className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
                   style={{
-                    color: active ? "rgba(235,69,17,0.7)" : "rgba(235,225,205,0.22)",
+                    color: active ? "rgba(235,69,17,0.7)" : "rgba(235,225,205,0.42)",
                     transition: "color 0.3s ease",
                   }}
                 >
@@ -387,7 +387,7 @@ export default function ContactPage() {
                 <span
                   className="text-[13px] font-light leading-relaxed max-w-xs block"
                   style={{
-                    color: active ? "rgba(235,225,205,0.55)" : "rgba(235,225,205,0.28)",
+                    color: active ? "rgba(235,225,205,0.75)" : "rgba(235,225,205,0.48)",
                     transition: "color 0.3s ease",
                   }}
                 >
@@ -421,7 +421,7 @@ export default function ContactPage() {
               <div className="mb-10">
                 <span
                   className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
-                  style={{ color: "rgba(235,225,205,0.2)" }}
+                  style={{ color: "rgba(235,225,205,0.40)" }}
                 >
                   {path === "verify" ? "Verification Application" : "Reviewer Application"}
                 </span>
