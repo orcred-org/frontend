@@ -355,7 +355,7 @@ export default function ContactPage() {
                   transition: "opacity 0.4s ease",
                 }}
                 initial="rest"
-                whileHover={!faded ? "hover" : "rest"}
+                whileHover={active ? "active" : faded ? "rest" : "hover"}
                 animate={active ? "active" : "rest"}
                 whileTap={{ scale: 0.98 }}
               >
