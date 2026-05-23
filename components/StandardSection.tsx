@@ -53,8 +53,8 @@ export default function StandardSection() {
       style={{ height: "270vh", backgroundColor: "#010204", position: "relative" }}
     >
       <div
-        className="sticky top-0 overflow-hidden"
-        style={{ height: "100vh" }}
+        className="sticky top-[68px]"
+        style={{ height: "calc(100vh - 68px)", overflow: "hidden" }}
       >
         {/* Ambient */}
         <div

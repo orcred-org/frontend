@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -261,6 +262,24 @@ export default function ContactPage() {
 
       {/* ── Main ── */}
       <div className="relative z-10 flex-1 flex flex-col max-w-[1100px] mx-auto w-full px-8 sm:px-12 lg:px-16 py-16 sm:py-20 lg:py-24">
+
+        {/* Back button */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="mb-10"
+        >
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 font-label-sm uppercase tracking-[0.32em] text-[10px] transition-colors duration-200"
+            style={{ color: "rgba(235,225,205,0.45)" }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "rgba(235,225,205,0.75)")}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(235,225,205,0.45)")}
+          >
+            ← Home
+          </Link>
+        </motion.div>
 
         {/* Section marker */}
         <motion.div

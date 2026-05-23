@@ -502,7 +502,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
               fontWeight: 300,
               fontSize: "clamp(160px, 22vw, 360px)",
               lineHeight: 0.85,
-              color: "rgba(235,225,205,0.05)",
+              color: "rgba(235,225,205,0.09)",
               justifyContent: step.flip ? "flex-start" : "flex-end",
               userSelect: "none",
             }}
