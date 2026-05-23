@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import OrcredMark from "@/components/OrcredMark";
 
 export default function Footer() {
   const router = useRouter();
@@ -37,13 +38,7 @@ export default function Footer() {
             padding: 0,
           }}
         >
-          <div
-            className="w-[11px] h-[11px] rounded-full flex-shrink-0"
-            style={{
-              background: "#eb4511",
-              boxShadow: "0 0 8px 2px rgba(235,69,17,0.32)",
-            }}
-          />
+          <OrcredMark size={12} glow />
           ORCRED
         </button>
 
