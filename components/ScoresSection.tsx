@@ -40,7 +40,7 @@ export default function ScoresSection() {
     <section
       id="scores"
       className="py-24 sm:py-32 lg:py-40 px-6 sm:px-10 lg:px-16"
-      style={{ backgroundColor: "#06090e" }}
+      style={{ backgroundColor: "#010204" }}
     >
       <div className="max-w-[1400px] mx-auto">
 

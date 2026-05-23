@@ -32,7 +32,7 @@ export default function PageLoader({ onDone }: PageLoaderProps) {
       {visible && (
         <motion.div
           className="fixed inset-0 z-[500] flex flex-col items-center justify-center"
-          style={{ backgroundColor: "#06090e" }}
+          style={{ backgroundColor: "#010204" }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >

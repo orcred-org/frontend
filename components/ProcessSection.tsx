@@ -344,7 +344,7 @@ const steps = [
 
 export default function ProcessSection() {
   return (
-    <section id="process" style={{ backgroundColor: "#06090e" }}>
+    <section id="process" style={{ backgroundColor: "#010204" }}>
 
       {/* Section title rule */}
       <motion.div
@@ -387,7 +387,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
       className="min-h-screen flex items-center border-b px-6 sm:px-10 lg:px-16 py-20 relative overflow-hidden"
       style={{
         borderColor: "rgba(235,225,205,0.05)",
-        backgroundColor: "#06090e",
+        backgroundColor: "#010204",
       }}
     >
       {/* Giant watermark numeral */}

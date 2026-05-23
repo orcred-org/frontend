@@ -35,7 +35,7 @@ export default function HeroSection({ onApply }: HeroProps) {
 
   // ── Palette switches on theme ──
   const c = isDark ? {
-    bg:          "#06090e",
+    bg:          "#010204",
     radial:      "rgba(235,69,17,0.05)",
     sealOuter:   "rgba(235,69,17,0.4)",
     sealInner:   "rgba(235,69,17,0.18)",
