@@ -3,29 +3,42 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+const SESSION_KEY = "orcred-loaded";
+
 interface PageLoaderProps {
   onDone?: () => void;
 }
 
 export default function PageLoader({ onDone }: PageLoaderProps) {
-  const [visible, setVisible] = useState(true);
+  // This component is loaded with { ssr: false }, so window/sessionStorage are
+  // always available at initialisation time — no hydration mismatch risk.
+  const [visible, setVisible] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return !sessionStorage.getItem(SESSION_KEY);
+  });
 
   useEffect(() => {
-    // Lenis starts paused (see LenisProvider) — nothing extra needed to lock
+    if (!visible) {
+      // Returning visitor — unlock Lenis immediately and let the page show
+      document.dispatchEvent(new Event("lenis:start"));
+      onDone?.();
+      return;
+    }
 
+    // First visit this session — run the full entrance, then mark as seen
     const t = setTimeout(() => {
       setVisible(false);
-      // Fire immediately so Lenis unlocks in the same frame the loader begins fading
       document.dispatchEvent(new Event("lenis:start"));
+      sessionStorage.setItem(SESSION_KEY, "1");
       onDone?.();
     }, 2200);
 
     return () => {
       clearTimeout(t);
-      // Safety: always unlock if the component unmounts early
       document.dispatchEvent(new Event("lenis:start"));
     };
-  }, [onDone]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // intentionally run once on mount
 
   return (
     <AnimatePresence>
