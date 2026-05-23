@@ -26,8 +26,8 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
       className="relative min-h-screen flex items-center px-6 sm:px-10 lg:px-16"
       style={{
         backgroundColor: "#010204",
-        borderTop: "1px solid rgba(235,225,205,0.05)",
-        borderBottom: "1px solid rgba(235,225,205,0.05)",
+        borderTop: "1px solid rgba(235,225,205,0.25)",
+        borderBottom: "1px solid rgba(235,225,205,0.25)",
       }}
     >
       {/* Ambient warm left */}
@@ -68,7 +68,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             </span>
             <div
               className="flex-1 h-px"
-              style={{ background: "rgba(235,225,205,0.07)" }}
+              style={{ background: "rgba(235,225,205,0.27)" }}
             />
             <span
               className="font-label-sm uppercase tracking-[0.38em] text-[9px]"
@@ -166,7 +166,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
           <div
             className="relative border p-10 sm:p-12"
             style={{
-              borderColor: "rgba(235,225,205,0.07)",
+              borderColor: "rgba(235,225,205,0.27)",
               background: "#050709",
             }}
           >
@@ -199,7 +199,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
                   fontWeight: 300,
                   fontSize: "clamp(72px, 11vw, 110px)",
                   lineHeight: 1,
-                  color: "rgba(235,225,205,0.07)",
+                  color: "rgba(235,225,205,0.27)",
                   display: "block",
                 }}
               >
@@ -207,7 +207,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
               </span>
               <span
                 className="font-label-sm uppercase tracking-[0.35em] text-[8px]"
-                style={{ color: "rgba(235,225,205,0.2)", marginTop: "-4px", display: "block" }}
+                style={{ color: "rgba(235,225,205,0.40)", marginTop: "-4px", display: "block" }}
               >
                 spots remaining
               </span>
@@ -216,13 +216,13 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             {/* Divider */}
             <div
               className="w-full h-px mb-8"
-              style={{ background: "rgba(235,225,205,0.05)" }}
+              style={{ background: "rgba(235,225,205,0.25)" }}
             />
 
             {/* Description */}
             <p
               className="text-[13px] sm:text-[14px] font-light leading-[1.85] mb-10"
-              style={{ color: "rgba(235,225,205,0.52)" }}
+              style={{ color: "rgba(235,225,205,0.72)" }}
             >
               This is not a gig.
               <br />
@@ -253,7 +253,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             {/* Fine print */}
             <p
               className="text-center mt-5 font-label-sm uppercase tracking-[0.3em] text-[8px]"
-              style={{ color: "rgba(235,225,205,0.15)" }}
+              style={{ color: "rgba(235,225,205,0.35)" }}
             >
               Equity included
             </p>

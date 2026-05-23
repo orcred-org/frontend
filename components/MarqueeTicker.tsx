@@ -21,8 +21,8 @@ export default function MarqueeTicker() {
       className="overflow-hidden py-[11px] relative"
       style={{
         backgroundColor: "#010204",
-        borderTop: "1px solid rgba(235,225,205,0.05)",
-        borderBottom: "1px solid rgba(235,225,205,0.05)",
+        borderTop: "1px solid rgba(235,225,205,0.25)",
+        borderBottom: "1px solid rgba(235,225,205,0.25)",
       }}
     >
       {/* Left + Right fade masks */}
@@ -48,7 +48,7 @@ export default function MarqueeTicker() {
             key={i}
             className="inline-flex items-center gap-5 mx-5 font-label-sm uppercase tracking-[0.45em] text-[9px]"
           >
-            <span style={{ color: "rgba(235,225,205,0.14)" }}>{item}</span>
+            <span style={{ color: "rgba(235,225,205,0.34)" }}>{item}</span>
             <span style={{ color: "rgba(235,69,17,0.32)" }}>·</span>
           </span>
         ))}

@@ -80,7 +80,7 @@ export default function PageLoader({ onDone }: PageLoaderProps) {
           {/* Brand name */}
           <motion.p
             className="font-label-sm uppercase tracking-[0.5em] text-[10px] mb-2"
-            style={{ color: "rgba(235,225,205,0.4)" }}
+            style={{ color: "rgba(235,225,205,0.60)" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.45 }}
@@ -94,7 +94,7 @@ export default function PageLoader({ onDone }: PageLoaderProps) {
               fontStyle: "italic",
               fontWeight: 300,
               fontSize: "14px",
-              color: "rgba(235,225,205,0.2)",
+              color: "rgba(235,225,205,0.40)",
               letterSpacing: "0.05em",
             }}
             initial={{ opacity: 0 }}
