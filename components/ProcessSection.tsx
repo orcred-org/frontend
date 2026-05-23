@@ -390,31 +390,8 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
         backgroundColor: "#010204",
       }}
     >
-      {/* Giant watermark numeral — desktop only */}
-      <motion.div
-        className="absolute hidden lg:block pointer-events-none select-none"
-        style={{
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-          fontStyle: "italic",
-          fontWeight: 300,
-          fontSize: "clamp(200px, 32vw, 440px)",
-          lineHeight: 0.85,
-          color: "rgba(235,225,205,0.05)",
-          right:  step.flip ? "auto" : "-1%",
-          left:   step.flip ? "-1%" : "auto",
-          bottom: "-6%",
-          userSelect: "none",
-          zIndex: 0,
-        }}
-        initial={{ opacity: 0, x: step.flip ? -60 : 60 }}
-        animate={inView ? { opacity: 1, x: 0 } : {}}
-        transition={{ duration: 1.6, ease: "easeOut" }}
-      >
-        {step.numeral}
-      </motion.div>
-
-      {/* Grid — isolated stacking context, always above watermark */}
-      <div className="w-full max-w-[1400px] mx-auto relative z-10 isolate grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
+      {/* Grid */}
+      <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
 
         {/* ── Text block ── */}
         <div
@@ -511,16 +488,38 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
           </motion.p>
         </div>
 
-        {/* ── Visual — curtain reveal ── */}
-        <motion.div
+        {/* ── Visual — column owns the numeral, overflow-hidden clips it ── */}
+        <div
           className={`relative lg:col-span-7 overflow-hidden
             ${step.flip ? "lg:col-start-1 lg:order-1" : "lg:col-start-6 lg:order-2"}`}
-          initial={{ clipPath: "inset(0 0 100% 0)" }}
-          animate={inView ? { clipPath: "inset(0 0 0% 0)" } : {}}
-          transition={{ duration: 1.35, delay: 0.08, ease }}
         >
-          {visual}
-        </motion.div>
+          {/* Roman numeral — lives inside the column, can never bleed out */}
+          <div
+            className="absolute inset-0 hidden lg:flex items-end pointer-events-none select-none"
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontStyle: "italic",
+              fontWeight: 300,
+              fontSize: "clamp(160px, 22vw, 360px)",
+              lineHeight: 0.85,
+              color: "rgba(235,225,205,0.05)",
+              justifyContent: step.flip ? "flex-start" : "flex-end",
+              userSelect: "none",
+            }}
+          >
+            {step.numeral}
+          </div>
+
+          {/* Curtain reveal — always above the numeral */}
+          <motion.div
+            className="relative z-[1]"
+            initial={{ clipPath: "inset(0 0 100% 0)" }}
+            animate={inView ? { clipPath: "inset(0 0 0% 0)" } : {}}
+            transition={{ duration: 1.35, delay: 0.08, ease }}
+          >
+            {visual}
+          </motion.div>
+        </div>
 
       </div>
     </div>
