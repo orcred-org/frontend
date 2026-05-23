@@ -30,8 +30,8 @@ export default function Navbar() {
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backdropFilter: useTransform(blur, (v) => `blur(${v}px) saturate(180%)`),
-          WebkitBackdropFilter: useTransform(blur, (v) => `blur(${v}px) saturate(180%)`),
+          backdropFilter: useTransform(blur, (v) => `blur(${v}px)`),
+          WebkitBackdropFilter: useTransform(blur, (v) => `blur(${v}px)`),
           borderBottom: scrolled ? "1px solid rgba(235,225,205,0.13)" : "1px solid transparent",
           transition: "border-color 0.5s ease",
         }}
