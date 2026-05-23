@@ -505,7 +505,7 @@ function EditorialPanel({
 
 export default function PlatformSection() {
   return (
-    <section id="platform" className="relative" style={{ backgroundColor: "#06090e" }}>
+    <section id="platform" className="relative" style={{ backgroundColor: "#010204" }}>
 
       {/* Section title rule */}
       <motion.div

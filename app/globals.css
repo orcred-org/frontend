@@ -23,9 +23,9 @@
 
 html.dark {
   /* Dark mode (midnight navy) */
-  --bg-page: #06090e;
-  --bg-alt: #0a0f18;
-  --bg-card: #0d1420;
+  --bg-page: #010204;
+  --bg-alt: #040608;
+  --bg-card: #07090e;
   --fg: #ebe1cd;
   --fg-muted: rgba(235,225,205,0.5);
   --fg-faint: rgba(235,225,205,0.25);
@@ -137,7 +137,7 @@ html.dark .text-3d-enhanced {
 }
 
 html.dark .mesh-gradient {
-  background-color: #06090e;
+  background-color: #010204;
   background-image:
     radial-gradient(at 100% 0%, hsla(20, 85%, 45%, 0.07) 0%, hsla(20, 85%, 45%, 0) 50%),
     radial-gradient(at 0% 50%, hsla(225, 39%, 30%, 0.05) 0%, hsla(225, 39%, 30%, 0) 50%),

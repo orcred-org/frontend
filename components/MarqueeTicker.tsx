@@ -20,7 +20,7 @@ export default function MarqueeTicker() {
     <div
       className="overflow-hidden py-[11px] relative"
       style={{
-        backgroundColor: "#06090e",
+        backgroundColor: "#010204",
         borderTop: "1px solid rgba(235,225,205,0.05)",
         borderBottom: "1px solid rgba(235,225,205,0.05)",
       }}
@@ -30,14 +30,14 @@ export default function MarqueeTicker() {
         className="absolute left-0 top-0 bottom-0 w-16 pointer-events-none z-10"
         style={{
           background:
-            "linear-gradient(to right, #06090e, transparent)",
+            "linear-gradient(to right, #010204, transparent)",
         }}
       />
       <div
         className="absolute right-0 top-0 bottom-0 w-16 pointer-events-none z-10"
         style={{
           background:
-            "linear-gradient(to left, #06090e, transparent)",
+            "linear-gradient(to left, #010204, transparent)",
         }}
       />
 

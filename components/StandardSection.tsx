@@ -50,7 +50,7 @@ export default function StandardSection() {
   return (
     <div
       ref={containerRef}
-      style={{ height: "270vh", backgroundColor: "#06090e", position: "relative" }}
+      style={{ height: "270vh", backgroundColor: "#010204", position: "relative" }}
     >
       <div
         className="sticky top-0 overflow-hidden"

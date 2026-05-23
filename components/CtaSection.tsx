@@ -11,7 +11,7 @@ export default function CtaSection() {
   return (
     <section
       className="min-h-screen flex flex-col justify-center items-center px-6 sm:px-10 lg:px-16 text-center relative overflow-hidden"
-      style={{ backgroundColor: "#06090e" }}
+      style={{ backgroundColor: "#010204" }}
     >
       {/* Ambient warm glow */}
       <div

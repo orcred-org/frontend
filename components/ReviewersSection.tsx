@@ -25,7 +25,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
       id="reviewers"
       className="relative min-h-screen flex items-center px-6 sm:px-10 lg:px-16"
       style={{
-        backgroundColor: "#06090e",
+        backgroundColor: "#010204",
         borderTop: "1px solid rgba(235,225,205,0.05)",
         borderBottom: "1px solid rgba(235,225,205,0.05)",
       }}
@@ -167,7 +167,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             className="relative border p-10 sm:p-12"
             style={{
               borderColor: "rgba(235,225,205,0.07)",
-              background: "#0d1118",
+              background: "#050709",
             }}
           >
             {/* Corner accent — top-left L */}

@@ -39,7 +39,7 @@ export default function ComparisonSection() {
   return (
     <section
       className="relative py-24 sm:py-32 lg:py-40 px-6 sm:px-10 lg:px-16"
-      style={{ backgroundColor: "#06090e" }}
+      style={{ backgroundColor: "#010204" }}
     >
       {/* Ambient */}
       <div
