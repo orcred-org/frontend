@@ -285,7 +285,7 @@ export default function ContactPage() {
         </div>
 
         <motion.button
-          onClick={() => router.back()}
+          onClick={() => router.push("/")}
           className="flex items-center gap-2 font-label-sm uppercase tracking-[0.32em] text-[10px]"
           style={{ color: "rgba(235,225,205,0.50)" }}
           whileHover={{ x: -3 }}
@@ -293,7 +293,7 @@ export default function ContactPage() {
           onHoverEnd={e   => ((e.target as HTMLElement).style.color = "rgba(235,225,205,0.50)")}
           transition={{ duration: 0.2 }}
         >
-          ← Back
+          ← Home
         </motion.button>
       </header>
 

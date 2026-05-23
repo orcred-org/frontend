@@ -37,8 +37,8 @@ export default function Footer() {
         {/* Links + copyright */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-8">
           {[
-            { label: "Terms",   href: "#"        },
-            { label: "Privacy", href: "#"        },
+            { label: "Terms",   href: "/terms"   },
+            { label: "Privacy", href: "/privacy" },
             { label: "Contact", href: "/contact" },
           ].map((item) => (
             <Link
