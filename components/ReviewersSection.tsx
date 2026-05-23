@@ -26,8 +26,8 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
       className="relative min-h-screen flex items-center px-6 sm:px-10 lg:px-16"
       style={{
         backgroundColor: "#010204",
-        borderTop: "1px solid rgba(235,225,205,0.05)",
-        borderBottom: "1px solid rgba(235,225,205,0.05)",
+        borderTop: "1px solid rgba(235,225,205,0.11)",
+        borderBottom: "1px solid rgba(235,225,205,0.11)",
       }}
     >
       {/* Ambient warm left */}
@@ -68,7 +68,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             </span>
             <div
               className="flex-1 h-px"
-              style={{ background: "rgba(235,225,205,0.07)" }}
+              style={{ background: "rgba(235,225,205,0.13)" }}
             />
             <span
               className="font-label-sm uppercase tracking-[0.38em] text-[9px]"
@@ -166,7 +166,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
           <div
             className="relative border p-10 sm:p-12"
             style={{
-              borderColor: "rgba(235,225,205,0.07)",
+              borderColor: "rgba(235,225,205,0.13)",
               background: "#050709",
             }}
           >
@@ -199,7 +199,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
                   fontWeight: 300,
                   fontSize: "clamp(72px, 11vw, 110px)",
                   lineHeight: 1,
-                  color: "rgba(235,225,205,0.07)",
+                  color: "rgba(235,225,205,0.13)",
                   display: "block",
                 }}
               >
@@ -216,7 +216,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             {/* Divider */}
             <div
               className="w-full h-px mb-8"
-              style={{ background: "rgba(235,225,205,0.05)" }}
+              style={{ background: "rgba(235,225,205,0.11)" }}
             />
 
             {/* Description */}
