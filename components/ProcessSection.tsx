@@ -390,8 +390,26 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
         backgroundColor: "#010204",
       }}
     >
-      {/* Grid */}
-      <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
+      {/* Roman numeral watermark — full section, behind grid */}
+      <div
+        className="absolute inset-0 hidden lg:flex items-end pointer-events-none select-none"
+        style={{
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+          fontStyle: "italic",
+          fontWeight: 300,
+          fontSize: "clamp(160px, 22vw, 360px)",
+          lineHeight: 0.85,
+          color: "rgba(235,225,205,0.09)",
+          justifyContent: step.flip ? "flex-start" : "flex-end",
+          userSelect: "none",
+          zIndex: 0,
+        }}
+      >
+        {step.numeral}
+      </div>
+
+      {/* Grid — sits above numeral via z-index:1 stacking context */}
+      <div className="relative z-[1] w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
 
         {/* ── Text block ── */}
         <div
@@ -488,31 +506,13 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
           </motion.p>
         </div>
 
-        {/* ── Visual — column owns the numeral, overflow-hidden clips it ── */}
+        {/* ── Visual ── */}
         <div
-          className={`relative lg:col-span-7 overflow-hidden
+          className={`relative lg:col-span-7
             ${step.flip ? "lg:col-start-1 lg:order-1" : "lg:col-start-6 lg:order-2"}`}
         >
-          {/* Roman numeral — lives inside the column, can never bleed out */}
-          <div
-            className="absolute inset-0 hidden lg:flex items-end pointer-events-none select-none"
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontStyle: "italic",
-              fontWeight: 300,
-              fontSize: "clamp(160px, 22vw, 360px)",
-              lineHeight: 0.85,
-              color: "rgba(235,225,205,0.09)",
-              justifyContent: step.flip ? "flex-start" : "flex-end",
-              userSelect: "none",
-            }}
-          >
-            {step.numeral}
-          </div>
-
-          {/* Curtain reveal — always above the numeral */}
+          {/* Curtain reveal */}
           <motion.div
-            className="relative z-[1]"
             initial={{ clipPath: "inset(0 0 100% 0)" }}
             animate={inView ? { clipPath: "inset(0 0 0% 0)" } : {}}
             transition={{ duration: 1.35, delay: 0.08, ease }}
