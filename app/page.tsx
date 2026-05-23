@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import StandardSection from "@/components/StandardSection";
 import MarqueeTicker from "@/components/MarqueeTicker";
@@ -12,14 +10,11 @@ import ProcessSection from "@/components/ProcessSection";
 import ScoresSection from "@/components/ScoresSection";
 import ComparisonSection from "@/components/ComparisonSection";
 import CtaSection from "@/components/CtaSection";
-import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 
 const PageLoader = dynamic(() => import("@/components/PageLoader"), { ssr: false });
 
 export default function Home() {
-  const router = useRouter();
-  const handleApply = () => router.push("/apply");
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -30,11 +25,9 @@ export default function Home() {
       {/* Bottom scroll progress bar — only shown after loader clears */}
       {loaded && <ScrollProgress />}
 
-      <Navbar />
-
       <main>
         {/* 1 · Brand statement — the hero */}
-        <HeroSection onApply={handleApply} />
+        <HeroSection onApply={() => {}} />
 
         {/* Thin editorial ticker — after hero, before story */}
         <MarqueeTicker />
@@ -60,8 +53,6 @@ export default function Home() {
         {/* 7 · Final CTA */}
         <CtaSection />
       </main>
-
-      <Footer />
     </>
   );
 }

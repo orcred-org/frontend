@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -238,7 +237,6 @@ function Success() {
 type Path = "verify" | "reviewer" | null;
 
 export default function ContactPage() {
-  const router  = useRouter();
   const [path,  setPath]  = useState<Path>(null);
   const [sent,  setSent]  = useState(false);
 
@@ -260,42 +258,6 @@ export default function ContactPage() {
             "radial-gradient(ellipse 70% 55% at 50% 30%, rgba(235,69,17,0.045) 0%, transparent 70%)",
         }}
       />
-
-      {/* ── Header ── */}
-      <header
-        className="relative z-10 flex items-center justify-between flex-shrink-0 px-8 sm:px-12 lg:px-16"
-        style={{ height: "68px", borderBottom: "1px solid rgba(235,225,205,0.13)" }}
-      >
-        <div className="flex items-center gap-3">
-          <div
-            className="w-[13px] h-[13px] rounded-full"
-            style={{ background: "#eb4511", boxShadow: "0 0 10px 3px rgba(235,69,17,0.38)" }}
-          />
-          <span
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontWeight: 400,
-              fontSize: "19px",
-              letterSpacing: "0.13em",
-              color: "rgba(235,225,205,0.82)",
-            }}
-          >
-            ORCRED
-          </span>
-        </div>
-
-        <motion.button
-          onClick={() => router.push("/")}
-          className="flex items-center gap-2 font-label-sm uppercase tracking-[0.32em] text-[10px]"
-          style={{ color: "rgba(235,225,205,0.50)" }}
-          whileHover={{ x: -3 }}
-          onHoverStart={e => ((e.target as HTMLElement).style.color = "rgba(235,225,205,0.65)")}
-          onHoverEnd={e   => ((e.target as HTMLElement).style.color = "rgba(235,225,205,0.50)")}
-          transition={{ duration: 0.2 }}
-        >
-          ← Home
-        </motion.button>
-      </header>
 
       {/* ── Main ── */}
       <div className="relative z-10 flex-1 flex flex-col max-w-[1100px] mx-auto w-full px-8 sm:px-12 lg:px-16 py-16 sm:py-20 lg:py-24">

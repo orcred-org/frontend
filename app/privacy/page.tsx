@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -64,40 +63,6 @@ export default function PrivacyPage() {
             "radial-gradient(ellipse 60% 45% at 50% 20%, rgba(235,69,17,0.03) 0%, transparent 70%)",
         }}
       />
-
-      {/* ── Header ── */}
-      <header
-        className="relative z-10 flex items-center justify-between flex-shrink-0 px-8 sm:px-12 lg:px-16"
-        style={{ height: "68px", borderBottom: "1px solid rgba(235,225,205,0.13)" }}
-      >
-        <Link href="/" className="flex items-center gap-3">
-          <div
-            className="w-[13px] h-[13px] rounded-full"
-            style={{ background: "#eb4511", boxShadow: "0 0 10px 3px rgba(235,69,17,0.38)" }}
-          />
-          <span
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontWeight: 400,
-              fontSize: "19px",
-              letterSpacing: "0.13em",
-              color: "rgba(235,225,205,0.82)",
-            }}
-          >
-            ORCRED
-          </span>
-        </Link>
-
-        <Link
-          href="/"
-          className="flex items-center gap-2 font-label-sm uppercase tracking-[0.32em] text-[10px] transition-colors duration-200"
-          style={{ color: "rgba(235,225,205,0.50)" }}
-          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "rgba(235,225,205,0.75)")}
-          onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(235,225,205,0.50)")}
-        >
-          ← Home
-        </Link>
-      </header>
 
       {/* ── Content ── */}
       <main className="relative z-10 flex-1 max-w-[760px] mx-auto w-full px-8 sm:px-12 lg:px-16 py-16 sm:py-20 lg:py-24">
@@ -190,14 +155,6 @@ export default function PrivacyPage() {
           ))}
         </div>
 
-        {/* Bottom rule */}
-        <div className="w-full h-px mt-16" style={{ background: "rgba(235,225,205,0.08)" }} />
-        <p
-          className="font-label-sm uppercase tracking-[0.3em] text-[8px] mt-6"
-          style={{ color: "rgba(235,225,205,0.28)" }}
-        >
-          © 2026 Orcred · All rights reserved
-        </p>
       </main>
 
     </div>
