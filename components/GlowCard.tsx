@@ -75,7 +75,7 @@ export default function GlowCard({
       onMouseLeave={onMouseLeave}
       className={`relative ${className}`}
       style={{
-        padding: "2px",                          // thicker border
+        padding: "1.5px",                        // 1.5px border
         background: "rgba(235,225,205,0.13)",   // dim base
       }}
     >
