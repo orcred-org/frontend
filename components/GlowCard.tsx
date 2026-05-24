@@ -19,7 +19,8 @@ import { useRef, useCallback } from "react";
 interface GlowCardProps {
   children: React.ReactNode;
   className?: string;
-  /** Radius of the glow hotspot in px (default 320) */
+  /** Radius of the glow hotspot in px (default 500 — large so the whole
+   *  border reacts even when the cursor isn't right on the edge) */
   radius?: number;
   /** Inner background colour (default page bg #010204) */
   bg?: string;
@@ -28,7 +29,7 @@ interface GlowCardProps {
 export default function GlowCard({
   children,
   className = "",
-  radius = 320,
+  radius = 500,
   bg = "#010204",
 }: GlowCardProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -42,7 +43,15 @@ export default function GlowCard({
       const { left, top } = wrap.getBoundingClientRect();
       const x = e.clientX - left;
       const y = e.clientY - top;
-      glow.style.background = `radial-gradient(circle ${radius}px at ${x}px ${y}px, rgba(235,69,17,0.82) 0%, rgba(235,69,17,0.22) 35%, transparent 65%)`;
+      // Three-stop gradient: bright core → mid orange → fade out
+      glow.style.background = [
+        `radial-gradient(circle ${radius}px at ${x}px ${y}px,`,
+        `  rgba(235,69,17,1.0)  0%,`,
+        `  rgba(235,69,17,0.55) 20%,`,
+        `  rgba(235,69,17,0.18) 45%,`,
+        `  transparent          70%`,
+        `)`,
+      ].join(" ");
       glow.style.opacity = "1";
     },
     [radius]
@@ -60,16 +69,16 @@ export default function GlowCard({
       className={`relative ${className}`}
       style={{
         padding: "1px",
-        background: "rgba(235,225,205,0.10)", // dim base border
+        background: "rgba(235,225,205,0.12)", // dim base border
       }}
     >
-      {/* Glow overlay — radial gradient follows cursor */}
+      {/* Glow overlay — radial gradient follows cursor, snappy in / smooth out */}
       <div
         ref={glowRef}
         className="absolute inset-0 pointer-events-none"
         style={{
           opacity: 0,
-          transition: "opacity 0.4s ease",
+          transition: "opacity 0.15s ease",
         }}
       />
 
