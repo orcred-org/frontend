@@ -1,17 +1,15 @@
 "use client";
 
 /**
- * GlowCard — wraps any box in a 1px border whose colour follows the cursor.
+ * GlowCard — thick glowing border that follows the cursor.
  *
- * Technique:
- *  • Outer div has a solid dim background (the "base border colour").
- *  • A glow overlay (absolutely positioned) carries a radial-gradient that
- *    moves with the mouse. Its opacity transitions 0 → 1 on enter / 1 → 0 on leave.
- *  • The inner div has the page background, sitting 1px inset — that 1px gap
- *    IS the visible border, showing whichever layer is on top.
+ * Layers (back → front):
+ *  1. Outer wrapper  — 2px padding, dim cream base (the "off" border colour)
+ *  2. Haze layer     — same gradient, blurred 6px → soft light bleeding inward
+ *  3. Sharp layer    — same gradient, no blur    → crisp bright edge on the border
+ *  4. Inner content  — solid page bg, covers everything except the 2px gap
  *
- * No re-renders: everything is driven by direct DOM style writes so there is
- * zero React state churn on mousemove.
+ * No re-renders — all updates go direct to DOM via style writes.
  */
 
 import { useRef, useCallback } from "react";
@@ -19,46 +17,55 @@ import { useRef, useCallback } from "react";
 interface GlowCardProps {
   children: React.ReactNode;
   className?: string;
-  /** Radius of the glow hotspot in px (default 500 — large so the whole
-   *  border reacts even when the cursor isn't right on the edge) */
+  /** Hotspot radius in px — larger = reacts from further away (default 520) */
   radius?: number;
-  /** Inner background colour (default page bg #010204) */
+  /** Inner background (default #010204) */
   bg?: string;
 }
 
 export default function GlowCard({
   children,
   className = "",
-  radius = 500,
+  radius = 520,
   bg = "#010204",
 }: GlowCardProps) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const glowRef = useRef<HTMLDivElement>(null);
+  const wrapRef  = useRef<HTMLDivElement>(null);
+  const sharpRef = useRef<HTMLDivElement>(null);
+  const hazeRef  = useRef<HTMLDivElement>(null);
 
-  const onMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const wrap = wrapRef.current;
-      const glow = glowRef.current;
-      if (!wrap || !glow) return;
-      const { left, top } = wrap.getBoundingClientRect();
-      const x = e.clientX - left;
-      const y = e.clientY - top;
-      // Three-stop gradient: bright core → mid orange → fade out
-      glow.style.background = [
+  const buildGradient = useCallback(
+    (x: number, y: number) =>
+      [
         `radial-gradient(circle ${radius}px at ${x}px ${y}px,`,
-        `  rgba(235,69,17,1.0)  0%,`,
-        `  rgba(235,69,17,0.55) 20%,`,
-        `  rgba(235,69,17,0.18) 45%,`,
-        `  transparent          70%`,
+        `  rgba(255,95,30,1.0)   0%,`,   // hot white-orange core
+        `  rgba(235,69,17,0.92)  6%,`,   // full brand orange
+        `  rgba(235,69,17,0.65) 18%,`,   // mid spread
+        `  rgba(235,69,17,0.22) 42%,`,   // tail
+        `  transparent           68%`,
         `)`,
-      ].join(" ");
-      glow.style.opacity = "1";
-    },
+      ].join(" "),
     [radius]
   );
 
+  const onMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const wrap  = wrapRef.current;
+      const sharp = sharpRef.current;
+      const haze  = hazeRef.current;
+      if (!wrap || !sharp || !haze) return;
+      const { left, top } = wrap.getBoundingClientRect();
+      const g = buildGradient(e.clientX - left, e.clientY - top);
+      sharp.style.background = g;
+      haze.style.background  = g;
+      sharp.style.opacity = "1";
+      haze.style.opacity  = "1";
+    },
+    [buildGradient]
+  );
+
   const onMouseLeave = useCallback(() => {
-    if (glowRef.current) glowRef.current.style.opacity = "0";
+    if (sharpRef.current) sharpRef.current.style.opacity = "0";
+    if (hazeRef.current)  hazeRef.current.style.opacity  = "0";
   }, []);
 
   return (
@@ -68,21 +75,25 @@ export default function GlowCard({
       onMouseLeave={onMouseLeave}
       className={`relative ${className}`}
       style={{
-        padding: "1px",
-        background: "rgba(235,225,205,0.12)", // dim base border
+        padding: "2px",                          // thicker border
+        background: "rgba(235,225,205,0.13)",   // dim base
       }}
     >
-      {/* Glow overlay — radial gradient follows cursor, snappy in / smooth out */}
+      {/* Haze — blurred copy of gradient, gives the "light bleeding inward" glow */}
       <div
-        ref={glowRef}
+        ref={hazeRef}
         className="absolute inset-0 pointer-events-none"
-        style={{
-          opacity: 0,
-          transition: "opacity 0.15s ease",
-        }}
+        style={{ opacity: 0, transition: "opacity 0.12s ease", filter: "blur(6px)" }}
       />
 
-      {/* Content — sits over the 1px border gap */}
+      {/* Sharp — crisp gradient, colours the 2px border precisely */}
+      <div
+        ref={sharpRef}
+        className="absolute inset-0 pointer-events-none"
+        style={{ opacity: 0, transition: "opacity 0.12s ease" }}
+      />
+
+      {/* Content */}
       <div className="relative" style={{ background: bg }}>
         {children}
       </div>
