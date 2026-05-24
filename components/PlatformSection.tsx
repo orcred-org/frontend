@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import GlowCard from "@/components/GlowCard";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -101,6 +102,7 @@ function SessionVisual() {
   });
 
   return (
+    <GlowCard className="w-full" radius={480}>
     <div className="w-full flex flex-col items-center justify-center gap-8 py-14 px-8">
       {/* Clock arc */}
       <div className="relative w-[220px] h-[220px] sm:w-[260px] sm:h-[260px]">
@@ -203,6 +205,7 @@ function SessionVisual() {
         One session · One verdict
       </motion.p>
     </div>
+    </GlowCard>
   );
 }
 

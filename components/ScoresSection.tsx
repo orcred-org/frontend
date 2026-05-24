@@ -2,7 +2,6 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import GlowCard from "@/components/GlowCard";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -91,15 +90,14 @@ export default function ScoresSection() {
           </div>
         </motion.div>
 
-        {/* Criteria table — wrapped in mouse-tracking glow border */}
-        <GlowCard>
-          {/* Top rule */}
-          <div
-            className="h-px"
-            style={{ background: "rgba(235,225,205,0.32)" }}
-          />
+        {/* Top rule */}
+        <div
+          className="h-px mb-0"
+          style={{ background: "rgba(235,225,205,0.32)" }}
+        />
 
-          <div ref={ref}>
+        {/* Criteria table */}
+        <div ref={ref}>
           {criteria.map((c, i) => (
             <motion.div
               key={c.roman}
@@ -162,8 +160,7 @@ export default function ScoresSection() {
               </div>
             </motion.div>
           ))}
-          </div>
-        </GlowCard>
+        </div>
 
         {/* Tagline */}
         <motion.div
