@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import OrcredMark from "@/components/OrcredMark";
 
 const SESSION_KEY = "orcred-loaded";
 
@@ -60,35 +61,15 @@ export default function PageLoader({ onDone }: PageLoaderProps) {
             }}
           />
 
-          {/* Concentric seal */}
-          <div className="relative w-[80px] h-[80px] mb-10">
-            <motion.div
-              className="absolute inset-0 rounded-full border"
-              style={{ borderColor: "rgba(235,69,17,0.38)" }}
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            />
-            <motion.div
-              className="absolute inset-[9px] rounded-full border"
-              style={{ borderColor: "rgba(235,69,17,0.18)" }}
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <motion.div
-                className="w-[15px] h-[15px] rounded-full"
-                style={{
-                  background: "#eb4511",
-                  boxShadow: "0 0 20px 5px rgba(235,69,17,0.5)",
-                }}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              />
-            </div>
-          </div>
+          {/* Fruit logomark */}
+          <motion.div
+            className="mb-10"
+            initial={{ scale: 0.6, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <OrcredMark size={88} glow />
+          </motion.div>
 
           {/* Brand name */}
           <motion.p
