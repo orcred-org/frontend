@@ -1,15 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import OrcredMark from "@/components/OrcredMark";
-import { useMark } from "@/lib/MarkContext";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const { scrollY } = useScroll();
-  const { markInNavbar } = useMark();
 
   useEffect(() => {
     const unsubscribe = scrollY.on("change", (v) => setScrolled(v > 80));
@@ -58,24 +56,7 @@ export default function Navbar() {
           className="relative flex items-center gap-3 z-10"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-          {/* Fixed-width slot so ORCRED text never shifts */}
-          <div style={{ width: 15, height: 19, flexShrink: 0 }}>
-            <AnimatePresence>
-              {markInNavbar && (
-                <motion.div
-                  layoutId="brand-mark"
-                  transition={{
-                    type: "spring",
-                    stiffness: 320,
-                    damping: 26,
-                    mass: 0.7,
-                  }}
-                >
-                  <OrcredMark size={15} glow />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+          <OrcredMark size={15} glow />
           <span
             style={{
               fontFamily: "'Cormorant Garamond', Georgia, serif",
