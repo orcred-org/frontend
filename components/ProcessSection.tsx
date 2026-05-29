@@ -384,7 +384,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
   return (
     <div
       ref={ref}
-      className="min-h-screen flex items-center border-b px-6 sm:px-10 lg:px-16 py-20 relative"
+      className="min-h-screen flex items-center border-b px-6 sm:px-10 lg:px-16 py-20 relative overflow-hidden"
       style={{
         borderColor: "rgba(235,225,205,0.11)",
         backgroundColor: "#010204",
@@ -392,22 +392,22 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
     >
       {/* Roman numeral watermark — anchored to bottom border */}
       <div
-        className="absolute inset-x-0 bottom-0 hidden lg:flex pointer-events-none select-none"
+        className="absolute inset-x-0 hidden lg:flex pointer-events-none select-none"
         style={{
           fontFamily: "'Cormorant Garamond', Georgia, serif",
           fontStyle: "italic",
           fontWeight: 300,
           fontSize: "clamp(160px, 22vw, 360px)",
-          lineHeight: 0.85,
+          lineHeight: 1,
           color: "rgba(235,225,205,0.09)",
           justifyContent: step.flip ? "flex-start" : "flex-end",
           alignItems: "flex-end",
           userSelect: "none",
           zIndex: 0,
-          /* Shift down by ~20% of line-box height so the empty descender
-             space slips below the section's overflow:hidden clip boundary
-             and the glyph foot lands exactly on the border line. */
-          transform: "translateY(20%)",
+          /* bottom: -0.22em slides the descender space (≈0.2em for
+             Cormorant Garamond) past the overflow:hidden clip point so
+             the glyph foot lands on the border. em = own font-size. */
+          bottom: "-0.22em",
         }}
       >
         {step.numeral}
