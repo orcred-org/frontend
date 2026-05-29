@@ -4,6 +4,7 @@ import LenisProvider from "@/components/LenisProvider";
 import CursorGlobal from "@/components/CursorGlobal";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { MarkProvider } from "@/lib/MarkContext";
 
 export const metadata: Metadata = {
   title: "Orcred | The Standard for AI/ML Intelligence",
@@ -31,10 +32,12 @@ export default function RootLayout({
       </head>
       <body className="selection:bg-accent-orange selection:text-white grainy-overlay">
         <LenisProvider>
-          <Navbar />
-          {children}
-          <Footer />
-          <CursorGlobal />
+          <MarkProvider>
+            <Navbar />
+            {children}
+            <Footer />
+            <CursorGlobal />
+          </MarkProvider>
         </LenisProvider>
       </body>
     </html>
