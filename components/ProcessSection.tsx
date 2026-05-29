@@ -390,28 +390,32 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
         backgroundColor: "#010204",
       }}
     >
-      {/* Roman numeral watermark — anchored to bottom border */}
-      <div
-        className="absolute inset-x-0 hidden lg:flex pointer-events-none select-none"
-        style={{
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-          fontStyle: "italic",
-          fontWeight: 300,
-          fontSize: "clamp(160px, 22vw, 360px)",
-          lineHeight: 1,
-          color: "rgba(235,225,205,0.09)",
-          justifyContent: step.flip ? "flex-start" : "flex-end",
-          alignItems: "flex-end",
-          userSelect: "none",
-          zIndex: 0,
-          /* bottom: -0.22em slides the descender space (≈0.2em for
-             Cormorant Garamond) past the overflow:hidden clip point so
-             the glyph foot lands on the border. em = own font-size. */
-          bottom: "-0.22em",
-        }}
-      >
-        {step.numeral}
-      </div>
+     {/* Roman numeral watermark — anchored to bottom border */}
+<div
+  className="absolute inset-0 hidden lg:flex pointer-events-none select-none overflow-hidden"
+  style={{
+    justifyContent: step.flip ? "flex-start" : "flex-end",
+    alignItems: "flex-end",
+    zIndex: 0,
+  }}
+>
+  <span
+    style={{
+      fontFamily: "'Cormorant Garamond', Georgia, serif",
+      fontStyle: "italic",
+      fontWeight: 300,
+      fontSize: "clamp(80px, 14vw, 220px)",
+      lineHeight: 0.85,
+      color: "rgba(235,225,205,0.045)",
+      userSelect: "none",
+      letterSpacing: "-0.02em",
+      marginBottom: "-0.1em",
+      ...(step.flip ? { marginLeft: "1rem" } : { marginRight: "1rem" }),
+    }}
+  >
+    {step.numeral}
+  </span>
+</div>
 
       {/* Grid — sits above numeral via z-index:1 stacking context */}
       <div className="relative z-[1] w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
