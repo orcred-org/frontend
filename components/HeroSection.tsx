@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/ThemeContext";
-import OrcredMark from "@/components/OrcredMark";
 
 interface HeroProps {
   onApply: () => void;
@@ -87,16 +86,6 @@ export default function HeroSection({ onApply }: HeroProps) {
 
       {/* ══ CONTENT ══ */}
       <div className="relative z-10 flex flex-col items-center text-center w-full max-w-3xl mx-auto pt-[120px] pb-[80px]">
-
-        {/* Fruit logomark */}
-        <motion.div
-          className="mb-10 sm:mb-12 flex justify-center"
-          variants={fadeIn(0.1)}
-          initial="hidden"
-          animate="show"
-        >
-          <OrcredMark size={72} glow />
-        </motion.div>
 
         {/* Category label */}
         <motion.p
