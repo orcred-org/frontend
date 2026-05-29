@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/ThemeContext";
+import OrcredMark from "@/components/OrcredMark";
 
 interface HeroProps {
   onApply: () => void;
@@ -37,8 +38,6 @@ export default function HeroSection({ onApply }: HeroProps) {
   const c = isDark ? {
     bg:          "#010204",
     radial:      "rgba(235,69,17,0.05)",
-    sealOuter:   "rgba(235,69,17,0.4)",
-    sealInner:   "rgba(235,69,17,0.18)",
     bottomRule:  "rgba(235,225,205,0.13)",
     label:       "rgba(235,225,205,0.52)",
     h1:          "rgba(235,225,205,0.95)",
@@ -49,8 +48,6 @@ export default function HeroSection({ onApply }: HeroProps) {
   } : {
     bg:          "#faf7f2",
     radial:      "rgba(235,69,17,0.06)",
-    sealOuter:   "rgba(235,69,17,0.38)",
-    sealInner:   "rgba(235,69,17,0.16)",
     bottomRule:  "rgba(26,22,20,0.07)",
     label:       "rgba(26,22,20,0.32)",
     h1:          "rgba(26,22,20,0.92)",
@@ -91,29 +88,14 @@ export default function HeroSection({ onApply }: HeroProps) {
       {/* ══ CONTENT ══ */}
       <div className="relative z-10 flex flex-col items-center text-center w-full max-w-3xl mx-auto pt-[120px] pb-[80px]">
 
-        {/* Formal concentric seal */}
+        {/* Fruit logomark */}
         <motion.div
-          className="mb-10 sm:mb-12"
+          className="mb-10 sm:mb-12 flex justify-center"
           variants={fadeIn(0.1)}
           initial="hidden"
           animate="show"
         >
-          <div className="relative w-[60px] h-[60px] sm:w-[72px] sm:h-[72px] mx-auto">
-            <div className="absolute inset-0 rounded-full border"
-              style={{ borderColor: c.sealOuter, transition: "border-color 0.45s ease" }} />
-            <div className="absolute inset-[7px] rounded-full border"
-              style={{ borderColor: c.sealInner, transition: "border-color 0.45s ease" }} />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-[14px] h-[14px] rounded-full"
-                style={{
-                  background: "#eb4511",
-                  boxShadow: isDark
-                    ? "0 0 18px 4px rgba(235,69,17,0.45)"
-                    : "0 0 14px 3px rgba(235,69,17,0.3)",
-                }}
-              />
-            </div>
-          </div>
+          <OrcredMark size={72} glow />
         </motion.div>
 
         {/* Category label */}
