@@ -390,9 +390,9 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
         backgroundColor: "#010204",
       }}
     >
-      {/* Roman numeral watermark — full section, behind grid */}
+      {/* Roman numeral watermark — anchored to bottom border */}
       <div
-        className="absolute inset-0 hidden lg:flex items-end pointer-events-none select-none"
+        className="absolute inset-x-0 bottom-0 hidden lg:flex pointer-events-none select-none"
         style={{
           fontFamily: "'Cormorant Garamond', Georgia, serif",
           fontStyle: "italic",
@@ -401,6 +401,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
           lineHeight: 0.85,
           color: "rgba(235,225,205,0.09)",
           justifyContent: step.flip ? "flex-start" : "flex-end",
+          alignItems: "flex-end",
           userSelect: "none",
           zIndex: 0,
         }}
