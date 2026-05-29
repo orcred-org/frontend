@@ -404,6 +404,10 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
           alignItems: "flex-end",
           userSelect: "none",
           zIndex: 0,
+          /* Shift down by ~20% of line-box height so the empty descender
+             space slips below the section's overflow:hidden clip boundary
+             and the glyph foot lands exactly on the border line. */
+          transform: "translateY(20%)",
         }}
       >
         {step.numeral}
