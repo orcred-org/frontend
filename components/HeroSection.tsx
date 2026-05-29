@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/lib/ThemeContext";
+import OrcredMark from "@/components/OrcredMark";
+import { useMark } from "@/lib/MarkContext";
 
 interface HeroProps {
   onApply: () => void;
@@ -23,6 +25,20 @@ const fadeIn = (delay = 0) => ({
 export default function HeroSection({ onApply }: HeroProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const { markInNavbar, setMarkInNavbar } = useMark();
+
+  /* Fire once when user first scrolls — mark flies to navbar */
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY > 60) {
+        setMarkInNavbar(true);
+        window.removeEventListener("scroll", onScroll);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /* Load Cormorant Garamond — used by CFA, law firms, exam bodies */
   useEffect(() => {
@@ -86,6 +102,25 @@ export default function HeroSection({ onApply }: HeroProps) {
 
       {/* ══ CONTENT ══ */}
       <div className="relative z-10 flex flex-col items-center text-center w-full max-w-3xl mx-auto pt-[120px] pb-[80px]">
+
+        {/* Brand mark — flies into navbar on first scroll */}
+        <AnimatePresence>
+          {!markInNavbar && (
+            <motion.div
+              layoutId="brand-mark"
+              className="mb-10 sm:mb-12 flex justify-center"
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                opacity: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+                scale:   { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+                layout:  { type: "spring", stiffness: 320, damping: 26, mass: 0.7 },
+              }}
+            >
+              <OrcredMark size={56} glow />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Category label */}
         <motion.p
