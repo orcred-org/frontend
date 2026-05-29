@@ -384,7 +384,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
   return (
     <div
       ref={ref}
-      className="min-h-screen flex items-center border-b px-6 sm:px-10 lg:px-16 py-20 relative overflow-hidden"
+      className="min-h-screen flex items-center border-b px-6 sm:px-10 lg:px-16 py-20 relative"
       style={{
         borderColor: "rgba(235,225,205,0.11)",
         backgroundColor: "#010204",
@@ -513,7 +513,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
 
         {/* ── Visual ── */}
         <div
-          className={`relative lg:col-span-7
+          className={`relative lg:col-span-7 overflow-hidden
             ${step.flip ? "lg:col-start-1 lg:order-1" : "lg:col-start-6 lg:order-2"}`}
         >
           {/* Curtain reveal */}
