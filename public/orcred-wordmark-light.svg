@@ -1,0 +1,21 @@
+<svg width="300" height="56" viewBox="0 0 150 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&amp;display=swap');
+    </style>
+  </defs>
+
+  <!-- Orange ball -->
+  <circle cx="8" cy="14" r="7" fill="#eb4511"/>
+
+  <!-- ORCRED wordmark — dark warm text for light backgrounds -->
+  <text
+    x="22"
+    y="21.5"
+    font-family="'Cormorant Garamond', Georgia, serif"
+    font-weight="400"
+    font-size="19"
+    letter-spacing="2.3"
+    fill="#1a1614"
+  >ORCRED</text>
+</svg>
