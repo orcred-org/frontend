@@ -44,13 +44,31 @@ export default function HeroSection({ onApply }: HeroProps) {
     return (
       <section
         id="hero-section"
-        className="mt-[-80px] relative overflow-hidden"
-        style={{ backgroundColor: "var(--bg-page)", minHeight: "100vh", display: "flex" }}
+        className="mt-[-80px] relative"
+        style={{ backgroundColor: "var(--bg-page)", minHeight: "100svh" }}
       >
-        <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12" style={{ minHeight: "100vh" }}>
+        {/*
+          Dark right-half background — absolutely positioned so it bleeds
+          all the way to the right viewport edge regardless of max-width.
+          Width formula:
+            • below 1400 px: 41.666vw  = 5/12 of viewport (matches the grid column)
+            • above 1400 px: calc(50vw - 116.67px)  = right-margin + col-width
+              (1400px × 5/12 = 583.33px;  margin = (vw-1400)/2;
+               total = vw/2 - 700 + 583.33 = 50vw - 116.67px)
+        */}
+        <div
+          className="absolute inset-y-0 right-0 hidden lg:block"
+          style={{ width: "max(41.666vw, calc(50vw - 116.67px))", backgroundColor: "#0f0d0c" }}
+        />
+
+        {/* Centered content grid — sits above the absolute bg */}
+        <div
+          className="relative z-10 w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12"
+          style={{ minHeight: "100svh" }}
+        >
 
           {/* ── Left: text ── */}
-          <div className="lg:col-span-7 flex flex-col justify-center px-6 sm:px-10 lg:px-16 pt-36 pb-16 lg:pt-0 lg:pb-0">
+          <div className="lg:col-span-7 flex flex-col justify-center px-6 sm:px-10 lg:px-16 pt-36 pb-12 lg:pt-0 lg:pb-0">
 
             {/* Eyebrow */}
             <motion.div
@@ -149,12 +167,47 @@ export default function HeroSection({ onApply }: HeroProps) {
               </Link>
             </motion.div>
 
+            {/* ── Mobile / tablet stats strip (hidden on lg+) ── */}
+            <motion.div
+              className="flex lg:hidden gap-0 mt-10 border-t"
+              style={{ borderColor: "rgba(15,13,12,0.14)" }}
+              variants={fadeIn(0.55)}
+              initial="hidden"
+              animate="show"
+            >
+              {stats.map((s, i) => (
+                <div
+                  key={i}
+                  className="flex-1 pt-6 pr-4"
+                  style={{ borderRight: i < stats.length - 1 ? "1px solid rgba(15,13,12,0.14)" : "none", paddingRight: i < stats.length - 1 ? "16px" : 0, marginRight: i < stats.length - 1 ? "16px" : 0 }}
+                >
+                  <div
+                    style={{
+                      fontSize: "clamp(20px, 4.5vw, 28px)",
+                      fontWeight: 700,
+                      color: "#0f0d0c",
+                      letterSpacing: "-0.03em",
+                      lineHeight: 1,
+                      marginBottom: "6px",
+                    }}
+                  >
+                    {s.value}
+                  </div>
+                  <div
+                    className="font-label-sm uppercase tracking-[0.22em] text-[8px]"
+                    style={{ color: "rgba(15,13,12,0.45)" }}
+                  >
+                    {s.label}
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+
           </div>
 
-          {/* ── Right: dark stats panel ── */}
+          {/* ── Right: dark stats panel (desktop only — bg from absolute div above) ── */}
           <motion.div
             className="hidden lg:flex lg:col-span-5 flex-col justify-center px-12 xl:px-16 gap-0"
-            style={{ backgroundColor: "#0f0d0c" }}
             variants={fadeIn(0.3)}
             initial="hidden"
             animate="show"
