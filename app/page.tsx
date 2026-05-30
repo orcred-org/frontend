@@ -20,11 +20,11 @@ export default function Home() {
         {/* 2 · The problem / the cost / the fix */}
         <PlatformSection />
 
-        {/* 3 · Process — how the review works */}
-        <ProcessSection />
-
-        {/* 4 · The Score — formal assessment framework */}
+        {/* 3 · The Score — formal assessment framework */}
         <ScoresSection />
+
+        {/* 4 · Process — how the review works */}
+        <ProcessSection />
 
         {/* 5 · Why Orcred — comparison vs alternatives */}
         <ComparisonSection />
