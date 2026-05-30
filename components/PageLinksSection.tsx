@@ -5,30 +5,90 @@ import { motion } from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
+/* ── Original SVG motifs — one per card ── */
+
+// About Us: Orcred mark (orange circle) + two horizontal rule lines
+function AboutVisual() {
+  return (
+    <svg width="100%" height="100%" viewBox="0 0 320 180" fill="none" preserveAspectRatio="xMidYMid meet">
+      {/* Circle mark */}
+      <circle cx="160" cy="82" r="28" fill="#eb4511" />
+      {/* Top rule */}
+      <line x1="40" y1="82" x2="120" y2="82" stroke="rgba(235,69,17,0.3)" strokeWidth="1" />
+      {/* Bottom rule */}
+      <line x1="200" y1="82" x2="280" y2="82" stroke="rgba(235,69,17,0.3)" strokeWidth="1" />
+      {/* Wordmark below */}
+      <text
+        x="160" y="132"
+        textAnchor="middle"
+        fill="rgba(255,255,255,0.35)"
+        fontFamily="Inter, system-ui, sans-serif"
+        fontWeight="700"
+        fontSize="13"
+        letterSpacing="0.22em"
+      >
+        ORCRED
+      </text>
+    </svg>
+  );
+}
+
+// Contact Us: simple speech bubble outline
+function ContactVisual() {
+  return (
+    <svg width="100%" height="100%" viewBox="0 0 320 180" fill="none" preserveAspectRatio="xMidYMid meet">
+      {/* Bubble */}
+      <rect x="100" y="54" width="120" height="76" rx="4"
+        stroke="rgba(235,69,17,0.6)" strokeWidth="1.5" />
+      {/* Tail */}
+      <polyline points="122,130 112,148 138,130"
+        stroke="rgba(235,69,17,0.6)" strokeWidth="1.5" strokeLinejoin="round" />
+      {/* Lines inside */}
+      <line x1="120" y1="80"  x2="200" y2="80"  stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="120" y1="96"  x2="200" y2="96"  stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="120" y1="112" x2="168" y2="112" stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
+// Become a Reviewer: code chevrons < > (same motif as ScoresSection icon)
+function ReviewerVisual() {
+  return (
+    <svg width="100%" height="100%" viewBox="0 0 320 180" fill="none" preserveAspectRatio="xMidYMid meet">
+      {/* Left chevron */}
+      <polyline points="128,62 88,90 128,118"
+        stroke="#eb4511" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      {/* Right chevron */}
+      <polyline points="192,62 232,90 192,118"
+        stroke="#eb4511" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      {/* Slash */}
+      <line x1="172" y1="56" x2="148" y2="124"
+        stroke="rgba(235,69,17,0.45)" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 const cards = [
   {
-    href:  "/who-we-are",
-    title: "About Us",
-    desc:  "Two founders, a clear problem, and a standard that doesn't bend. Learn what Orcred is and why we built it.",
-    cta:   "Learn more",
-    img:   "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=320&fit=crop&auto=format&q=80",
-    alt:   "Two people collaborating at a laptop",
+    href:    "/who-we-are",
+    title:   "About Us",
+    desc:    "Two founders, a clear problem, and a standard that doesn't bend. Learn what Orcred is and why we built it.",
+    cta:     "Learn more",
+    Visual:  AboutVisual,
   },
   {
-    href:  "/contact",
-    title: "Contact Us",
-    desc:  "Questions about verification, the process, or pricing. Reach us directly — every message is read by a founder.",
-    cta:   "Get in touch",
-    img:   "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=320&fit=crop&auto=format&q=80",
-    alt:   "Minimal office workspace",
+    href:    "/contact",
+    title:   "Contact Us",
+    desc:    "Questions about verification, the process, or pricing. Reach us directly — every message is read by a founder.",
+    cta:     "Get in touch",
+    Visual:  ContactVisual,
   },
   {
-    href:  "/contact",
-    title: "Become a Reviewer",
-    desc:  "Senior engineer with 5+ years in AI/ML? Five founding reviewer spots remain. Join us and help set the standard.",
-    cta:   "Apply",
-    img:   "https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=600&h=320&fit=crop&auto=format&q=80",
-    alt:   "Engineer reviewing code on screen",
+    href:    "/contact",
+    title:   "Become a Reviewer",
+    desc:    "Senior engineer with 5+ years in AI/ML? Five founding reviewer spots remain. Join us and help set the standard.",
+    cta:     "Apply",
+    Visual:  ReviewerVisual,
   },
 ];
 
@@ -43,7 +103,7 @@ export default function PageLinksSection() {
         {/* Divider */}
         <div className="w-full h-px mb-12 sm:mb-16" style={{ background: "var(--border)" }} />
 
-        {/* Cards — constrained width, centred */}
+        {/* Cards */}
         <div className="flex flex-col md:flex-row justify-center gap-6">
           {cards.map((card, i) => (
             <motion.div
@@ -58,61 +118,38 @@ export default function PageLinksSection() {
                 href={card.href}
                 className="group flex flex-col h-full"
                 style={{
-                  textDecoration: "none",
-                  border:         "1px solid rgba(15,13,12,0.14)",
+                  textDecoration:  "none",
+                  border:          "1px solid rgba(15,13,12,0.14)",
                   backgroundColor: "#ffffff",
                 }}
               >
-                {/* Image */}
+                {/* Visual panel */}
                 <div
                   className="relative overflow-hidden"
-                  style={{ height: "180px" }}
+                  style={{
+                    height:          "160px",
+                    backgroundColor: "#0f0d0c",
+                  }}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={card.img}
-                    alt={card.alt}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
+                  <card.Visual />
+                  {/* Subtle orange tint on hover */}
                   <div
-                    className="absolute inset-0 transition-opacity duration-300 group-hover:opacity-0"
-                    style={{ backgroundColor: "rgba(0,0,0,0.15)" }}
+                    className="absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                    style={{ backgroundColor: "rgba(235,69,17,0.06)" }}
                   />
                 </div>
 
                 {/* Body */}
                 <div className="flex flex-col flex-1 p-5">
 
-                  {/* Title */}
-                  <div
-                    style={{
-                      fontWeight:    600,
-                      fontSize:      "15px",
-                      letterSpacing: "-0.01em",
-                      lineHeight:    1.2,
-                      color:         "#0f0d0c",
-                      marginBottom:  "8px",
-                    }}
-                  >
+                  <div style={{ fontWeight: 600, fontSize: "15px", letterSpacing: "-0.01em", lineHeight: 1.2, color: "#0f0d0c", marginBottom: "8px" }}>
                     {card.title}
                   </div>
 
-                  {/* Description */}
-                  <div
-                    style={{
-                      fontSize:     "12px",
-                      fontWeight:   400,
-                      lineHeight:   1.75,
-                      color:        "rgba(15,13,12,0.55)",
-                      marginBottom: "16px",
-                      flex:         1,
-                    }}
-                  >
+                  <div style={{ fontSize: "12px", fontWeight: 400, lineHeight: 1.75, color: "rgba(15,13,12,0.55)", marginBottom: "16px", flex: 1 }}>
                     {card.desc}
                   </div>
 
-                  {/* CTA */}
                   <div
                     className="flex items-center gap-1.5 font-label-sm uppercase tracking-[0.15em] text-[10px]"
                     style={{ color: "#eb4511", fontWeight: 600 }}
