@@ -112,18 +112,36 @@ function Field({
 /* ─── form block ─── */
 function FormBlock({
   fields,
+  type,
   onSubmit,
 }: {
   fields: FieldDef[];
+  type: "verify" | "reviewer";
   onSubmit: () => void;
 }) {
-  const [values, setValues] = useState<Record<string, string>>(
+  const [values,      setValues]      = useState<Record<string, string>>(
     Object.fromEntries(fields.map(f => [f.id, ""]))
   );
+  const [submitting,  setSubmitting]  = useState(false);
+  const [error,       setError]       = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit();
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ type, ...values }),
+      });
+      if (!res.ok) throw new Error("send failed");
+      onSubmit();
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -149,14 +167,15 @@ function FormBlock({
       <div className="pt-4">
         <motion.button
           type="submit"
+          disabled={submitting}
           className="relative font-label-sm uppercase tracking-[0.3em] text-[11px] py-2"
-          style={{ color: "var(--fg)", background: "transparent" }}
+          style={{ color: submitting ? "var(--fg-faint)" : "var(--fg)", background: "transparent" }}
           initial="rest"
-          whileHover="hover"
+          whileHover={submitting ? "rest" : "hover"}
           animate="rest"
           whileTap={{ scale: 0.98 }}
         >
-          Submit
+          {submitting ? "Sending…" : "Submit"}
           <motion.span
             className="absolute bottom-0 left-0 h-[1px]"
             style={{ background: "#eb4511" }}
@@ -166,6 +185,11 @@ function FormBlock({
             }}
           />
         </motion.button>
+        {error && (
+          <p className="mt-3 font-label-sm text-[9px] tracking-[0.2em]" style={{ color: "#eb4511" }}>
+            {error}
+          </p>
+        )}
         <p
           className="mt-4 font-label-sm uppercase tracking-[0.32em] text-[8px]"
           style={{ color: "var(--fg-faint)" }}
@@ -445,6 +469,7 @@ export default function ContactPage() {
                   <FormBlock
                     key={path + "-form"}
                     fields={path === "verify" ? verifyFields : reviewerFields}
+                    type={path!}
                     onSubmit={() => setSent(true)}
                   />
                 )}
