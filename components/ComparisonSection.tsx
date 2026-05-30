@@ -53,24 +53,6 @@ export default function ComparisonSection() {
 
       <div className="relative z-10 max-w-[1400px] mx-auto">
 
-        {/* Section marker */}
-        <motion.div
-          className="flex items-center gap-5 mb-16 sm:mb-24"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-        >
-          <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-          <span
-            className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
-            style={{ color: "var(--fg-faint)" }}
-          >
-            Why Orcred
-          </span>
-          <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-        </motion.div>
-
         {/* Headline */}
         <motion.div
           className="mb-16 sm:mb-20 max-w-2xl"

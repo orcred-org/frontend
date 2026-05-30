@@ -51,7 +51,7 @@ export default function ProcessSection() {
           The verification process.
         </motion.div>
 
-        <div className="border-t" style={{ borderColor: "var(--border)" }}>
+        <div>
           {steps.map((step, i) => (
             <motion.div
               key={i}
