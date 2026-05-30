@@ -28,9 +28,9 @@ export default function Footer() {
           className="flex items-center gap-3"
           style={{
             fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontWeight: 400,
-            fontSize: "20px",
-            letterSpacing: "0.1em",
+            fontWeight: 500,
+            fontSize: "22px",
+            letterSpacing: "0.07em",
             color: "var(--fg-muted)",
             background: "none",
             border: "none",

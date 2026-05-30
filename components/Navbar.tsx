@@ -66,9 +66,9 @@ export default function Navbar() {
           <span
             style={{
               fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontWeight: 400,
-              fontSize: "20px",
-              letterSpacing: "0.12em",
+              fontWeight: 500,
+              fontSize: "22px",
+              letterSpacing: "0.07em",
               color: "var(--fg)",
               transition: "color 0.4s ease",
             }}
