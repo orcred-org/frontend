@@ -204,7 +204,7 @@ export default function ComparisonSection() {
               fontFamily: "'Cormorant Garamond', Georgia, serif",
               fontStyle: "italic",
               fontWeight: 400,
-              fontSize: "clamp(17px, 2.2vw, 26px)",
+              fontSize: "clamp(13px, 1.2vw, 16px)",
               color: "var(--fg-muted)",
             }}
           >

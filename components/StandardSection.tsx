@@ -51,7 +51,7 @@ function EditorialGrid() {
             className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
             style={{ color: "var(--fg-faint)" }}
           >
-            The Standard
+            The Case
           </span>
           <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
         </motion.div>
@@ -215,8 +215,9 @@ function StickyScroll() {
   );
 }
 
-/* ─── Export: theme-aware ─── */
+/* ─── Export: dark mode only — light mode handled by PlatformSection ─── */
 export default function StandardSection() {
   const { theme } = useTheme();
-  return theme === "light" ? <EditorialGrid /> : <StickyScroll />;
+  if (theme === "light") return null;
+  return <StickyScroll />;
 }

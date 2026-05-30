@@ -14,12 +14,12 @@
   --bg-page:       #faf7f2;
   --bg-alt:        #f0ebe0;
   --bg-card:       #f5f1e9;
-  --fg:            #1a1614;
-  --fg-muted:      rgba(26,22,20,0.65);
-  --fg-faint:      rgba(26,22,20,0.42);
-  --border:        rgba(26,22,20,0.12);
-  --border-strong: rgba(26,22,20,0.22);
-  --watermark:     rgba(26,22,20,0.07);
+  --fg:            #0f0d0c;
+  --fg-muted:      rgba(15,13,12,0.78);
+  --fg-faint:      rgba(15,13,12,0.55);
+  --border:        rgba(15,13,12,0.16);
+  --border-strong: rgba(15,13,12,0.32);
+  --watermark:     rgba(15,13,12,0.07);
   /* Orange — deeper + more opaque so it pops on parchment */
   --orange:        #c8340a;
   --orange-muted:  rgba(180,45,5,0.88);
@@ -90,11 +90,94 @@ html:not(.dark) div > .absolute.inset-0.pointer-events-none:not([class*="backdro
   display: none !important;
 }
 
-html:not(.dark) body,
+html:not(.dark) body {
+  background-color: var(--bg-page) !important;
+  background-image: none !important;
+}
+
+/* Force Inter across every element in light mode */
+html:not(.dark) * {
+  font-family: "Inter", system-ui, -apple-system, sans-serif !important;
+}
+
+/* Light mode type hierarchy */
+html:not(.dark) h1 {
+  font-weight: 600 !important;
+  font-size: clamp(28px, 3.8vw, 48px) !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.15 !important;
+}
+
+html:not(.dark) h2 {
+  font-weight: 600 !important;
+  font-size: clamp(22px, 2.8vw, 36px) !important;
+  letter-spacing: -0.015em !important;
+  line-height: 1.2 !important;
+}
+
+html:not(.dark) h3,
+html:not(.dark) h4 {
+  font-weight: 500 !important;
+  font-size: clamp(16px, 1.8vw, 24px) !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* Body text — regular weight, no font-size override (let components control sizing) */
+html:not(.dark) p,
+html:not(.dark) li {
+  font-weight: 400 !important;
+}
+
+html:not(.dark) .font-light,
+html:not(.dark) [class*="font-light"] {
+  font-weight: 400 !important;
+}
+
+/* All text pure black — no grey */
+html:not(.dark) h1,
+html:not(.dark) h2,
+html:not(.dark) h3,
+html:not(.dark) h4,
+html:not(.dark) p,
+html:not(.dark) li,
+html:not(.dark) span,
+html:not(.dark) button,
+html:not(.dark) a {
+  color: #0f0d0c !important;
+}
+
 html:not(.dark) section,
 html:not(.dark) footer {
   background-color: var(--bg-page) !important;
   background-image: none !important;
+}
+
+/* Remove full-height steps in light mode — ProcessSection */
+html:not(.dark) #process .min-h-screen {
+  min-height: 0 !important;
+}
+
+/* Remove step dividers in light mode — keep only the section label rule */
+html:not(.dark) #process .border-b {
+  border-bottom: none !important;
+}
+
+
+/* Hide watermark numerals in light mode */
+html:not(.dark) .watermark-numeral {
+  display: none !important;
+}
+
+/* Alternating section backgrounds — light mode only */
+html:not(.dark) #comparison {
+  background-color: var(--bg-alt) !important;
+  padding-top: 2.5rem !important;
+  padding-bottom: 2.5rem !important;
+}
+
+html:not(.dark) #scores {
+  padding-top: 2.5rem !important;
+  padding-bottom: 2.5rem !important;
 }
 
 html.dark .glass-panel {
