@@ -31,7 +31,8 @@ export default function Navbar() {
     return unsubscribe;
   }, [scrollY]);
 
-  const blur = useTransform(scrollY, [0, 100], [0, 20]);
+  const blur        = useTransform(scrollY, [0, 100], [0, 20]);
+  const blurFilter  = useTransform(blur, (v) => `blur(${v}px)`);
 
   /* ── Light mode navbar ── */
   if (!isDark) {
@@ -117,8 +118,8 @@ export default function Navbar() {
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backdropFilter: useTransform(blur, (v) => `blur(${v}px)`),
-          WebkitBackdropFilter: useTransform(blur, (v) => `blur(${v}px)`),
+          backdropFilter: blurFilter,
+          WebkitBackdropFilter: blurFilter,
           borderBottom: scrolled ? "1px solid var(--border)" : "1px solid transparent",
           transition: "border-color 0.5s ease",
         }}
