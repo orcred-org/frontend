@@ -7,12 +7,6 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 const rows = [
   {
-    platform: "Orcred",
-    proves:   "You understand what you built.",
-    misses:   "Nothing. The gap is closed.",
-    highlight: true,
-  },
-  {
     platform: "GitHub",
     proves:   "You pushed code.",
     misses:   "Whether you understand any of it.",
@@ -29,6 +23,12 @@ const rows = [
     proves:   "You finished the course.",
     misses:   "Whether you can apply any of it.",
     highlight: false,
+  },
+  {
+    platform: "Orcred",
+    proves:   "You understand what you built.",
+    misses:   "Nothing. The gap is closed.",
+    highlight: true,
   },
 ];
 
