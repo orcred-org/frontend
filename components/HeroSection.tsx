@@ -77,16 +77,7 @@ export default function HeroSection({ onApply }: HeroProps) {
       {/* ══ CONTENT ══ */}
       <div className="relative z-10 flex flex-col items-center text-center w-full max-w-3xl mx-auto pt-[120px] pb-[80px]">
 
-        {/* Category label */}
-        <motion.p
-          className="font-label-sm uppercase tracking-[0.38em] text-[9px] sm:text-[10px] mb-8 sm:mb-10"
-          style={{ color: c.label, transition: "color 0.45s ease" }}
-          variants={fadeIn(0.2)}
-          initial="hidden"
-          animate="show"
-        >
-          Professional Credentialing · AI / ML Engineering
-        </motion.p>
+
 
         {/* Primary headline — Cormorant Garamond */}
         <motion.h1
