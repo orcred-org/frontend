@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import OrcredMark from "@/components/OrcredMark";
 
 export default function Footer() {
   const router = useRouter();
@@ -38,7 +37,9 @@ export default function Footer() {
             padding: 0,
           }}
         >
-          <OrcredMark size={12} glow />
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+            <circle cx="6" cy="6" r="5.5" fill="#eb4511"/>
+          </svg>
           ORCRED
         </button>
 
