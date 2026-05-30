@@ -36,7 +36,7 @@ export default function ProcessSection() {
         {/* Section heading — CFA style large title */}
         <motion.div
           style={{
-            fontSize: "clamp(28px, 3.5vw, 44px)",
+            fontSize: "clamp(32px, 3.8vw, 52px)",
             fontWeight: 600,
             letterSpacing: "-0.02em",
             lineHeight: 1.15,
