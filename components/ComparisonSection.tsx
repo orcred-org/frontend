@@ -5,31 +5,35 @@ import { useRef } from "react";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const rows = [
+const aspects = [
   {
-    platform: "GitHub",
-    proves: "You pushed code.",
-    misses: "Whether you understand any of it.",
-    orcred: false,
+    aspect:       "What it proves",
+    orcred:       "You understand what you built.",
+    github:       "You pushed code.",
+    leetcode:     "You memorised patterns.",
+    certificates: "You finished the course.",
   },
   {
-    platform: "LeetCode",
-    proves: "You can memorise patterns.",
-    misses: "Whether you can engineer a real system.",
-    orcred: false,
+    aspect:       "How it works",
+    orcred:       "45-min live review. A senior engineer. Your project, your decisions.",
+    github:       "Commit history and repository activity.",
+    leetcode:     "Timed algorithmic problem-solving.",
+    certificates: "Course modules and a completion test.",
   },
   {
-    platform: "Certificates",
-    proves: "You watched the videos.",
-    misses: "Whether you can apply any of it.",
-    orcred: false,
+    aspect:       "What it misses",
+    orcred:       "Nothing. Understanding is directly assessed.",
+    github:       "Whether you understand any of it.",
+    leetcode:     "Whether you can engineer a real system.",
+    certificates: "Whether you can apply any of it.",
   },
-  {
-    platform: "Orcred",
-    proves: "You understand what you built.",
-    misses: "Nothing. The gap is closed.",
-    orcred: true,
-  },
+];
+
+const cols = [
+  { key: "orcred",       label: "Orcred",       highlight: true  },
+  { key: "github",       label: "GitHub",        highlight: false },
+  { key: "leetcode",     label: "LeetCode",      highlight: false },
+  { key: "certificates", label: "Certificates",  highlight: false },
 ];
 
 export default function ComparisonSection() {
@@ -39,133 +43,157 @@ export default function ComparisonSection() {
   return (
     <section
       id="comparison"
-      className="relative py-24 sm:py-32 lg:py-40 px-6 sm:px-10 lg:px-16"
-      style={{ backgroundColor: "var(--bg-page)" }}
+      className="py-16 sm:py-20 px-6 sm:px-10 lg:px-16"
+      style={{ backgroundColor: "var(--bg-alt)" }}
     >
-      {/* Ambient */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 55% 50% at 50% 50%, var(--orange-tint) 0%, transparent 70%)",
-        }}
-      />
+      <div className="max-w-[1400px] mx-auto">
 
-      <div className="relative z-10 max-w-[1400px] mx-auto">
-
-        {/* Headline */}
+        {/* Heading */}
         <motion.div
-          className="mb-16 sm:mb-20 max-w-2xl"
-          initial={{ opacity: 0, y: 16 }}
+          className="mb-6"
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 1.05, ease }}
+          transition={{ duration: 0.9, ease }}
         >
-          <h2
+          <div
             style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontWeight: 400,
-              fontSize: "clamp(36px, 5vw, 66px)",
-              lineHeight: 1.05,
-              color: "var(--fg)",
+              fontSize:      "clamp(28px, 3.8vw, 52px)",
+              fontWeight:    600,
+              letterSpacing: "-0.02em",
+              lineHeight:    1.1,
+              color:         "#0f0d0c",
+              maxWidth:      "720px",
             }}
           >
-            Everything else shows.
-            <br />
-            <span
-              style={{
-                fontStyle: "italic",
-                fontWeight: 300,
-                color: "var(--fg-muted)",
-              }}
-            >
-              Orcred proves.
-            </span>
-          </h2>
+            How Orcred compares to other credentials
+          </div>
+        </motion.div>
+
+        {/* Intro */}
+        <motion.div
+          className="mb-12 sm:mb-14"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9, delay: 0.1, ease }}
+        >
+          <div
+            style={{
+              fontSize:   "clamp(14px, 1.2vw, 16px)",
+              fontWeight: 400,
+              lineHeight: 1.8,
+              color:      "rgba(15,13,12,0.6)",
+              maxWidth:   "640px",
+            }}
+          >
+            GitHub shows commits. LeetCode shows patterns. Certificates show completions.
+            None of them answer the one question every hiring manager actually has:
+            does this person understand what they built?
+          </div>
+          <div
+            style={{
+              fontSize:   "clamp(14px, 1.2vw, 16px)",
+              fontWeight: 400,
+              lineHeight: 1.8,
+              color:      "rgba(15,13,12,0.6)",
+              maxWidth:   "640px",
+              marginTop:  "14px",
+            }}
+          >
+            Here&apos;s how they compare.
+          </div>
         </motion.div>
 
         {/* Table */}
         <div ref={ref} className="overflow-x-auto">
-          <table className="w-full border-collapse min-w-[580px]">
+          <table className="w-full border-collapse" style={{ minWidth: "620px" }}>
+
+            {/* Column headers */}
             <thead>
-              <tr style={{ borderBottom: "1px solid var(--border)" }}>
-                {["", "What it proves", "What it misses"].map((col, i) => (
+              <tr style={{ borderBottom: "2px solid rgba(15,13,12,0.15)" }}>
+                {/* Aspect header */}
+                <th
+                  className="text-left pb-4 pr-6"
+                  style={{
+                    fontSize:      "11px",
+                    fontWeight:    700,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    color:         "#0f0d0c",
+                    width:         "14%",
+                  }}
+                >
+                  Aspect
+                </th>
+
+                {cols.map((col) => (
                   <th
-                    key={i}
-                    className="py-5 text-left font-label-sm uppercase tracking-widest text-[9px]"
+                    key={col.key}
+                    className="text-left pb-4 pr-6"
                     style={{
-                      color: "var(--fg-faint)",
-                      paddingRight: i < 2 ? "32px" : 0,
+                      fontSize:      "11px",
+                      fontWeight:    700,
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color:         col.highlight ? "#eb4511" : "#0f0d0c",
+                      width:         "21.5%",
                     }}
                   >
-                    {col}
+                    {col.label}
                   </th>
                 ))}
               </tr>
             </thead>
+
+            {/* Rows */}
             <tbody>
-              {rows.map((row, i) => (
+              {aspects.map((row, i) => (
                 <motion.tr
-                  key={row.platform}
-                  className="group cursor-default"
-                  style={{
-                    borderBottom: `1px solid ${
-                      row.orcred
-                        ? "var(--orange-tint)"
-                        : "var(--border)"
-                    }`,
-                  }}
-                  initial={{ opacity: 0 }}
-                  animate={inView ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.65, delay: i * 0.1, ease: "easeOut" }}
+                  key={row.aspect}
+                  style={{ borderBottom: "1px solid rgba(15,13,12,0.1)" }}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
                 >
-                  {/* Platform name */}
-                  <td className="py-9 sm:py-11 pr-8 whitespace-nowrap">
-                    <motion.span
+                  {/* Aspect label */}
+                  <td
+                    className="py-6 pr-6 align-top"
+                    style={{
+                      fontSize:      "11px",
+                      fontWeight:    700,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      color:         "#0f0d0c",
+                      whiteSpace:    "nowrap",
+                    }}
+                  >
+                    {row.aspect}
+                  </td>
+
+                  {cols.map((col) => (
+                    <td
+                      key={col.key}
+                      className="py-6 pr-6 align-top"
                       style={{
-                        fontFamily: "'Cormorant Garamond', Georgia, serif",
-                        fontWeight: row.orcred ? 400 : 300,
-                        fontSize: "clamp(22px, 2.8vw, 36px)",
-                        color: row.orcred
-                          ? "#eb4511"
-                          : "var(--fg-muted)",
-                        lineHeight: 1,
-                        display: "block",
-                        transition: "color 0.3s ease",
+                        fontSize:          "clamp(13px, 1.1vw, 15px)",
+                        fontWeight:        col.highlight ? 500 : 400,
+                        lineHeight:        1.7,
+                        color:             col.highlight
+                                             ? "#0f0d0c"
+                                             : "rgba(15,13,12,0.55)",
+                        backgroundColor:   col.highlight
+                                             ? "rgba(235,69,17,0.04)"
+                                             : "transparent",
+                        paddingLeft:       col.highlight ? "12px" : undefined,
+                        borderLeft:        col.highlight
+                                             ? "2px solid rgba(235,69,17,0.3)"
+                                             : undefined,
                       }}
-                      whileHover={
-                        !row.orcred
-                          ? { color: "var(--fg)" }
-                          : {}
-                      }
                     >
-                      {row.platform}
-                    </motion.span>
-                  </td>
-
-                  {/* Proves */}
-                  <td
-                    className="py-9 sm:py-11 pr-8 text-[13px] sm:text-[14px] font-light leading-relaxed"
-                    style={{
-                      color: row.orcred
-                        ? "var(--fg-muted)"
-                        : "var(--fg-faint)",
-                    }}
-                  >
-                    {row.proves}
-                  </td>
-
-                  {/* Misses */}
-                  <td
-                    className="py-9 sm:py-11 text-[13px] sm:text-[14px] font-light leading-relaxed"
-                    style={{
-                      color: row.orcred
-                        ? "var(--orange-muted)"
-                        : "var(--fg-faint)",
-                    }}
-                  >
-                    {row.misses}
-                  </td>
+                      {row[col.key as keyof typeof row]}
+                    </td>
+                  ))}
                 </motion.tr>
               ))}
             </tbody>
@@ -174,24 +202,24 @@ export default function ComparisonSection() {
 
         {/* Tagline */}
         <motion.div
-          className="mt-16 sm:mt-20 flex items-center gap-4"
+          className="mt-12 flex items-center gap-4"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          <div className="w-8 h-px bg-accent-orange opacity-70" />
-          <p
+          <div className="w-8 h-px" style={{ backgroundColor: "#eb4511", opacity: 0.7 }} />
+          <div
             style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontStyle: "italic",
-              fontWeight: 400,
-              fontSize: "clamp(13px, 1.2vw, 16px)",
-              color: "var(--fg-muted)",
+              fontSize:      "clamp(13px, 1.2vw, 15px)",
+              fontWeight:    400,
+              fontStyle:     "italic",
+              color:         "rgba(15,13,12,0.5)",
+              letterSpacing: "0.01em",
             }}
           >
             One conversation changes the signal permanently.
-          </p>
+          </div>
         </motion.div>
 
       </div>
