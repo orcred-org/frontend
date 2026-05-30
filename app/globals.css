@@ -6,11 +6,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Theme Variables ── */
+/* ── Theme Variables (light mode only) ── */
 :root {
   scroll-behavior: auto;
 
-  /* Light mode (warm parchment) */
   --bg-page:       #faf7f2;
   --bg-alt:        #f0ebe0;
   --bg-card:       #f5f1e9;
@@ -20,31 +19,11 @@
   --border:        rgba(15,13,12,0.16);
   --border-strong: rgba(15,13,12,0.32);
   --watermark:     rgba(15,13,12,0.07);
-  /* Orange — deeper + more opaque so it pops on parchment */
   --orange:        #c8340a;
   --orange-muted:  rgba(180,45,5,0.88);
   --orange-faint:  rgba(180,45,5,0.65);
   --orange-dim:    rgba(180,45,5,0.45);
   --orange-tint:   rgba(180,45,5,0.18);
-}
-
-html.dark {
-  /* Dark mode (midnight navy) */
-  --bg-page:       #010204;
-  --bg-alt:        #040608;
-  --bg-card:       #07090e;
-  --fg:            #ebe1cd;
-  --fg-muted:      rgba(235,225,205,0.70);
-  --fg-faint:      rgba(235,225,205,0.45);
-  --border:        rgba(235,225,205,0.13);
-  --border-strong: rgba(235,225,205,0.34);
-  --watermark:     rgba(235,225,205,0.09);
-  /* Orange — same vibrant brand values in dark mode */
-  --orange:        #eb4511;
-  --orange-muted:  rgba(235,69,17,0.75);
-  --orange-faint:  rgba(235,69,17,0.55);
-  --orange-dim:    rgba(235,69,17,0.40);
-  --orange-tint:   rgba(235,69,17,0.15);
 }
 
 html {
@@ -53,21 +32,114 @@ html {
 
 * {
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Force Inter across all elements */
+* {
+  font-family: "Inter", system-ui, -apple-system, sans-serif !important;
 }
 
 body {
-  font-family: "Source Serif 4", "Source Serif Pro", Georgia, serif;
   background-color: var(--bg-page);
   color: var(--fg);
-  transition: background-color 0.45s ease, color 0.45s ease;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "kern" 1, "liga" 1;
+  background-image: none !important;
 }
 
 ::selection {
   background-color: #eb4511;
   color: #ffffff;
+}
+
+/* ── Type hierarchy ── */
+h1 {
+  font-weight: 600 !important;
+  font-size: clamp(28px, 3.8vw, 48px) !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.15 !important;
+}
+
+h2 {
+  font-weight: 600 !important;
+  font-size: clamp(22px, 2.8vw, 36px) !important;
+  letter-spacing: -0.015em !important;
+  line-height: 1.2 !important;
+}
+
+h3,
+h4 {
+  font-weight: 500 !important;
+  font-size: clamp(16px, 1.8vw, 24px) !important;
+  letter-spacing: -0.01em !important;
+}
+
+p,
+li {
+  font-weight: 400 !important;
+}
+
+.font-light,
+[class*="font-light"] {
+  font-weight: 400 !important;
+}
+
+/* All text pure dark */
+h1, h2, h3, h4, p, li, span, button, a {
+  color: #0f0d0c !important;
+}
+
+section,
+footer {
+  background-color: var(--bg-page) !important;
+  background-image: none !important;
+}
+
+/* ── Process section overrides ── */
+#process .min-h-screen {
+  min-height: 0 !important;
+}
+
+#process .border-b {
+  border-bottom: none !important;
+}
+
+/* Hide watermark numerals */
+.watermark-numeral {
+  display: none !important;
+}
+
+/* Alternating section backgrounds */
+#comparison {
+  background-color: var(--bg-alt) !important;
+  padding-top: 2.5rem !important;
+  padding-bottom: 2.5rem !important;
+}
+
+#scores {
+  padding-top: 2.5rem !important;
+  padding-bottom: 2.5rem !important;
+}
+
+/* ── Hide decorative gradient overlays ── */
+.fixed.inset-0.pointer-events-none,
+section > .absolute.inset-0.pointer-events-none,
+div > .absolute.inset-0.pointer-events-none:not([class*="backdrop"]) {
+  display: none !important;
+}
+
+/* ── Hide scrollbar ── */
+html, body {
+  overflow-x: clip;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+section[id] {
+  scroll-margin-top: 80px;
 }
 
 .glass-panel {
@@ -79,243 +151,8 @@ body {
     0 20px 40px -10px rgba(0, 0, 0, 0.1);
 }
 
-/* ── Light mode: plain flat background — no grain, no gradients ── */
-html:not(.dark) .grainy-overlay::before { display: none; }
-html:not(.dark) .mesh-gradient { background-image: none !important; }
-
-/* Kill ALL decorative gradient overlays (fixed or absolute) */
-html:not(.dark) .fixed.inset-0.pointer-events-none,
-html:not(.dark) section > .absolute.inset-0.pointer-events-none,
-html:not(.dark) div > .absolute.inset-0.pointer-events-none:not([class*="backdrop"]) {
-  display: none !important;
-}
-
-html:not(.dark) body {
-  background-color: var(--bg-page) !important;
-  background-image: none !important;
-}
-
-/* Force Inter across every element in light mode */
-html:not(.dark) * {
-  font-family: "Inter", system-ui, -apple-system, sans-serif !important;
-}
-
-/* Light mode type hierarchy */
-html:not(.dark) h1 {
-  font-weight: 600 !important;
-  font-size: clamp(28px, 3.8vw, 48px) !important;
-  letter-spacing: -0.02em !important;
-  line-height: 1.15 !important;
-}
-
-html:not(.dark) h2 {
-  font-weight: 600 !important;
-  font-size: clamp(22px, 2.8vw, 36px) !important;
-  letter-spacing: -0.015em !important;
-  line-height: 1.2 !important;
-}
-
-html:not(.dark) h3,
-html:not(.dark) h4 {
-  font-weight: 500 !important;
-  font-size: clamp(16px, 1.8vw, 24px) !important;
-  letter-spacing: -0.01em !important;
-}
-
-/* Body text — regular weight, no font-size override (let components control sizing) */
-html:not(.dark) p,
-html:not(.dark) li {
-  font-weight: 400 !important;
-}
-
-html:not(.dark) .font-light,
-html:not(.dark) [class*="font-light"] {
-  font-weight: 400 !important;
-}
-
-/* All text pure black — no grey */
-html:not(.dark) h1,
-html:not(.dark) h2,
-html:not(.dark) h3,
-html:not(.dark) h4,
-html:not(.dark) p,
-html:not(.dark) li,
-html:not(.dark) span,
-html:not(.dark) button,
-html:not(.dark) a {
-  color: #0f0d0c !important;
-}
-
-html:not(.dark) section,
-html:not(.dark) footer {
-  background-color: var(--bg-page) !important;
-  background-image: none !important;
-}
-
-/* Remove full-height steps in light mode — ProcessSection */
-html:not(.dark) #process .min-h-screen {
-  min-height: 0 !important;
-}
-
-/* Remove step dividers in light mode — keep only the section label rule */
-html:not(.dark) #process .border-b {
-  border-bottom: none !important;
-}
-
-
-/* Hide watermark numerals in light mode */
-html:not(.dark) .watermark-numeral {
-  display: none !important;
-}
-
-/* Alternating section backgrounds — light mode only */
-html:not(.dark) #comparison {
-  background-color: var(--bg-alt) !important;
-  padding-top: 2.5rem !important;
-  padding-bottom: 2.5rem !important;
-}
-
-html:not(.dark) #scores {
-  padding-top: 2.5rem !important;
-  padding-bottom: 2.5rem !important;
-}
-
-html.dark .glass-panel {
-  background: rgba(235, 225, 205, 0.03);
-  border-color: rgba(235, 225, 205, 0.08);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35),
-    0 0 0 1px rgba(235, 225, 205, 0.05) inset,
-    0 20px 40px -10px rgba(0, 0, 0, 0.5);
-}
-
-.text-3d-enhanced {
-  color: #1a1614;
-  position: relative;
-  text-shadow: 0.5px 0.5px 0 #eb4511, 1px 1px 0 #eb4511,
-    1.5px 1.5px 0 #eb4511, 2px 2px 0 #eb4511, 2.5px 2.5px 0 #eb4511,
-    3px 3px 0 #eb4511, 3.5px 3.5px 0 #eb4511,
-    4px 4px 15px rgba(235, 69, 17, 0.3);
-}
-
-html.dark .text-3d-enhanced {
-  color: #ebe1cd;
-  text-shadow: 0.5px 0.5px 0 rgba(235,69,17,0.9),
-    1px 1px 0 rgba(235,69,17,0.8),
-    1.5px 1.5px 0 rgba(235,69,17,0.7),
-    2px 2px 0 rgba(235,69,17,0.6),
-    2.5px 2.5px 0 rgba(235,69,17,0.5),
-    3px 3px 0 rgba(235,69,17,0.4),
-    3.5px 3.5px 0 rgba(235,69,17,0.3),
-    4px 4px 15px rgba(235,69,17,0.35);
-}
-
-.text-3d-lg-enhanced {
-  text-shadow: 2px 2px 0 rgba(139, 40, 5, 0.8),
-    4px 4px 0 rgba(139, 40, 5, 0.6), 6px 6px 0 rgba(139, 40, 5, 0.4),
-    8px 8px 30px rgba(235, 69, 17, 0.2);
-  letter-spacing: -0.04em;
-}
-
-.mesh-gradient {
-  background-color: var(--bg-page);
-  background-image: radial-gradient(
-      at 0% 0%,
-      hsla(253, 16%, 7%, 0) 0,
-      hsla(253, 16%, 7%, 0) 50%
-    ),
-    radial-gradient(
-      at 50% 0%,
-      hsla(225, 39%, 30%, 0.03) 0,
-      hsla(225, 39%, 30%, 0) 50%
-    ),
-    radial-gradient(
-      at 100% 0%,
-      hsla(20, 85%, 45%, 0.05) 0,
-      hsla(20, 85%, 45%, 0) 50%
-    ),
-    radial-gradient(
-      at 0% 100%,
-      hsla(253, 16%, 7%, 0) 0,
-      hsla(253, 16%, 7%, 0) 50%
-    ),
-    radial-gradient(
-      at 50% 100%,
-      hsla(225, 39%, 30%, 0) 0,
-      hsla(225, 39%, 30%, 0) 50%
-    ),
-    radial-gradient(
-      at 100% 100%,
-      hsla(339, 49%, 30%, 0.03) 0,
-      hsla(339, 49%, 30%, 0) 50%
-    );
-  background-attachment: fixed;
-}
-
-html.dark .mesh-gradient {
-  background-color: #010204;
-  background-image:
-    radial-gradient(at 100% 0%, hsla(20, 85%, 45%, 0.07) 0%, hsla(20, 85%, 45%, 0) 50%),
-    radial-gradient(at 0% 50%, hsla(225, 39%, 30%, 0.05) 0%, hsla(225, 39%, 30%, 0) 50%),
-    radial-gradient(at 50% 100%, hsla(20, 70%, 30%, 0.04) 0%, hsla(20, 70%, 30%, 0) 50%);
-}
-
-section[id] {
-  scroll-margin-top: 80px;
-}
-
-/* ── Hide scrollbar — bottom progress bar replaces it ── */
-html, body {
-  overflow-x: clip;            /* Clip horizontal bleed without making body a scroll container */
-  scrollbar-width: none;       /* Firefox */
-  -ms-overflow-style: none;    /* IE / Edge */
-}
-::-webkit-scrollbar {
-  display: none;               /* Chrome / Safari / Opera */
-}
-
-
-.grainy-overlay {
-  position: relative;
-}
-
-.grainy-overlay::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.04;
-  pointer-events: none;
-  background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCErD3N3Z14tJ4bkkjdKGSbudVeP1Tih-uYBcIMYbrkFvKjWFel3PymvnNgU37sdzjC8tyBpPxLP3k0BNqhm0LLG3eNljb7UnuHX5h4JsgYTw9atZWq02AWocpdWfrzhL6q1ZziLm7Opw9opN7F35wmZdrmTwRvLwRe9KTS5vx2dJ5Ud3mOVnANn3UO8EiripXVFXlD9U3BtZnOYcb1OIhA53HU7fgMVRZaiO07vTwET8oRcETJXVdfs-0azmBNn4MNOEdxz60laS4");
-  z-index: 10;
-}
-
-#hero-section::before {
-  display: none;
-}
-
 .glow-hover:hover {
   box-shadow: 0 0 30px 2px rgba(235, 69, 17, 0.15);
-}
-
-.asymmetric-dot {
-  width: 8px;
-  height: 8px;
-  background: #eb4511;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-/* Prevent layout shift during animations */
-.framer-motion-fix {
-  will-change: opacity;
-  transform: translateZ(0);
-}
-
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ── Marquee ticker ── */
@@ -326,9 +163,4 @@ html, body {
 .animate-marquee {
   animation: marquee 38s linear infinite;
   will-change: transform;
-}
-
-/* ── Tally form dark override ── */
-.tally-dark iframe {
-  color-scheme: dark;
 }

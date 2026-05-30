@@ -2,7 +2,6 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { useTheme } from "@/lib/ThemeContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -507,70 +506,10 @@ function EditorialPanel({
 ───────────────────────────────────────── */
 
 export default function PlatformSection() {
-  const { theme } = useTheme();
-
-  /* ── Light mode: combined single section replacing both StandardSection + PlatformSection ── */
-  if (theme === "light") {
-    return (
-      <section id="story" className="relative" style={{ backgroundColor: "var(--bg-page)" }}>
-
-        {/* Section label */}
-        <motion.div
-          className="px-6 sm:px-10 lg:px-16 pt-10 pb-0 max-w-[1400px] mx-auto flex items-center gap-5"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-        >
-          <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-          <span
-            className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
-            style={{ color: "var(--fg-faint)" }}
-          >
-            The Standard
-          </span>
-          <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-        </motion.div>
-
-        <EditorialPanel
-          index={1}
-          chapter="The Problem"
-          headline="Everyone has a project."
-          italic="Yours is different."
-          body="Someone spent six months building something real. Someone else spent a weekend prompting ChatGPT. Right now their portfolios look identical — and that gap is costing real builders their careers."
-          visual={<SignalGrid />}
-          compact
-        />
-
-        <EditorialPanel
-          index={2}
-          chapter="The Session"
-          headline="45 minutes."
-          italic="One engineer. Your work."
-          body="Not a quiz. Not a take-home test. A real conversation — about the project you built, every decision you made, every tradeoff you chose. The ones who built it for real talk about it differently."
-          visual={<SessionVisual />}
-          flip
-          compact
-        />
-
-        <EditorialPanel
-          index={3}
-          chapter="The Proof"
-          headline="Now there's"
-          italic="proof."
-          body="An Orcred Score. A verified credential backed by a senior engineer's sign-off. Something you carry into any room and say — a real engineer reviewed this work. It passed."
-          visual={<ScoreVisual />}
-          compact
-        />
-
-      </section>
-    );
-  }
-
-  /* ── Dark mode: original, completely unchanged ── */
   return (
-    <section id="platform" className="relative" style={{ backgroundColor: "var(--bg-page)" }}>
+    <section id="story" className="relative" style={{ backgroundColor: "var(--bg-page)" }}>
 
+      {/* Section label */}
       <motion.div
         className="px-6 sm:px-10 lg:px-16 pt-10 pb-0 max-w-[1400px] mx-auto flex items-center gap-5"
         initial={{ opacity: 0 }}
@@ -583,7 +522,7 @@ export default function PlatformSection() {
           className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
           style={{ color: "var(--fg-faint)" }}
         >
-          The Verification
+          The Standard
         </span>
         <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
       </motion.div>
@@ -593,8 +532,9 @@ export default function PlatformSection() {
         chapter="The Problem"
         headline="Everyone has a project."
         italic="Yours is different."
-        body="Right now no one can tell the difference between someone who spent months building something real and someone who spent a weekend prompting ChatGPT. That gap is costing real builders their careers."
+        body="Someone spent six months building something real. Someone else spent a weekend prompting ChatGPT. Right now their portfolios look identical — and that gap is costing real builders their careers."
         visual={<SignalGrid />}
+        compact
       />
 
       <EditorialPanel
@@ -605,6 +545,7 @@ export default function PlatformSection() {
         body="Not a quiz. Not a take-home test. A real conversation — about the project you built, every decision you made, every tradeoff you chose. The ones who built it for real talk about it differently."
         visual={<SessionVisual />}
         flip
+        compact
       />
 
       <EditorialPanel
@@ -614,6 +555,7 @@ export default function PlatformSection() {
         italic="proof."
         body="An Orcred Score. A verified credential backed by a senior engineer's sign-off. Something you carry into any room and say — a real engineer reviewed this work. It passed."
         visual={<ScoreVisual />}
+        compact
       />
 
     </section>
