@@ -371,27 +371,34 @@ export default function ProcessSection() {
           key={step.numeral}
           step={step}
           i={i}
-          footer={i === steps.length - 1 ? (
-            <div className="flex justify-end">
-              <Link
-                href="/how-it-works"
-                className="font-label-sm uppercase tracking-[0.25em] text-[11px] transition-colors duration-200 flex items-center gap-2"
-                style={{ color: "var(--fg-muted)" }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg)")}
-                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg-muted)")}
-              >
-                See the full process
-                <span style={{ letterSpacing: 0 }}>→</span>
-              </Link>
-            </div>
-          ) : undefined}
         />
       ))}
+
+      {/* See the full process — bottom-right corner of section */}
+      <motion.div
+        className="px-6 sm:px-10 lg:px-16 py-6 max-w-[1400px] mx-auto flex justify-end"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+      >
+        <Link
+          href="/how-it-works"
+          className="font-label-sm uppercase tracking-[0.25em] text-[11px] transition-colors duration-200 flex items-center gap-2"
+          style={{ color: "var(--fg-muted)" }}
+          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg)")}
+          onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg-muted)")}
+        >
+          See the full process
+          <span style={{ letterSpacing: 0 }}>→</span>
+        </Link>
+      </motion.div>
+
     </section>
   );
 }
 
-function ProcessStep({ step, i, footer }: { step: (typeof steps)[0]; i: number; footer?: React.ReactNode }) {
+function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
   const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.15 });
 
@@ -529,15 +536,6 @@ function ProcessStep({ step, i, footer }: { step: (typeof steps)[0]; i: number; 
             {step.detail}
           </motion.p>
 
-          {footer && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ duration: 1, delay: 0.55, ease: "easeOut" }}
-            >
-              {footer}
-            </motion.div>
-          )}
         </div>
 
         {/* ── Visual ── */}
