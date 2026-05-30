@@ -30,26 +30,26 @@ export default function ProcessSection() {
   return (
     <section id="process" style={{ backgroundColor: "var(--bg-page)" }}>
 
-      {/* Section label */}
-      <motion.div
-        className="px-6 sm:px-10 lg:px-16 pt-6 pb-0 max-w-[1400px] mx-auto flex items-center gap-5"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-      >
-        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-        <div
-          className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
-          style={{ color: "var(--fg-faint)" }}
-        >
-          How It Works
-        </div>
-        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-      </motion.div>
-
       {/* Steps list */}
       <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 pt-10 pb-12 sm:pb-16">
+
+        {/* Section heading — CFA style large title */}
+        <motion.div
+          style={{
+            fontSize: "clamp(28px, 3.5vw, 44px)",
+            fontWeight: 700,
+            letterSpacing: "-0.02em",
+            lineHeight: 1.15,
+            color: "#0f0d0c",
+            marginBottom: "clamp(28px, 3vw, 40px)",
+          }}
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.8, ease }}
+        >
+          The verification process.
+        </motion.div>
 
         <div className="border-t" style={{ borderColor: "var(--border)" }}>
           {steps.map((step, i) => (
