@@ -42,6 +42,24 @@ export default function ScoresSection() {
       className="py-24 sm:py-32 lg:py-40 px-6 sm:px-10 lg:px-16"
       style={{ backgroundColor: "var(--bg-page)" }}
     >
+      {/* Section label — full-width divider */}
+      <motion.div
+        className="flex items-center gap-5 mb-10 max-w-[1400px] mx-auto"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+      >
+        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+        <span
+          className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
+          style={{ color: "var(--fg-faint)" }}
+        >
+          Assessment Framework
+        </span>
+        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+      </motion.div>
+
       <div className="max-w-[1400px] mx-auto">
 
         {/* Header */}
@@ -53,12 +71,6 @@ export default function ScoresSection() {
           transition={{ duration: 0.9, ease: "easeOut" }}
         >
           <div>
-            <span
-              className="font-label-sm uppercase tracking-[0.35em] text-[9px] sm:text-[10px] block mb-5"
-              style={{ color: "var(--orange-muted)" }}
-            >
-              Assessment Framework
-            </span>
             <h2
               style={{
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
@@ -176,7 +188,7 @@ export default function ScoresSection() {
               fontFamily: "'Cormorant Garamond', Georgia, serif",
               fontStyle: "italic",
               fontWeight: 400,
-              fontSize: "clamp(18px, 2.5vw, 28px)",
+              fontSize: "clamp(14px, 1.4vw, 18px)",
               color: "var(--orange-muted)",
             }}
           >

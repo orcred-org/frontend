@@ -7,7 +7,6 @@ import { useTheme } from "@/lib/ThemeContext";
 
 const navLinks = [
   { label: "The Standard",         href: "#story"      },
-  { label: "The Story",            href: "#platform"   },
   { label: "How It Works",         href: "#process"    },
   { label: "Assessment Framework", href: "#scores"     },
   { label: "Why Orcred",           href: "#comparison" },
@@ -40,55 +39,103 @@ export default function Navbar() {
       <motion.header
         className="sticky top-0 z-50"
         style={{
-          backgroundColor: "rgba(250,247,242,0.95)",
-          borderBottom: "1px solid var(--border)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
+          backgroundColor: "var(--bg-page)",
+          borderBottom: "1px solid #e2dbd4",
+          boxShadow: "0 1px 12px rgba(0,0,0,0.05)",
         }}
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="max-w-[1400px] mx-auto flex items-center justify-between h-[68px] px-6 sm:px-10 lg:px-16">
+        <div className="max-w-[1400px] mx-auto flex items-center justify-between h-[80px] px-6 sm:px-10 lg:px-16">
 
-          {/* Brand — orange circle only */}
-          <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
-              <circle cx="13" cy="13" r="12" fill="#eb4511"/>
+          {/* Brand */}
+          <Link href="/" className="flex items-center gap-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+            <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+              <circle cx="21" cy="21" r="20" fill="#eb4511"/>
             </svg>
+            <span
+              style={{
+                fontFamily: "Inter, system-ui, sans-serif",
+                fontWeight: 700,
+                fontSize: "26px",
+                letterSpacing: "-0.01em",
+                color: "#0f0d0c",
+              }}
+            >
+              Orcred
+            </span>
           </Link>
 
           {/* Nav links */}
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <button
-                key={link.href}
-                onClick={() => scrollTo(link.href)}
-                className="font-label-sm uppercase tracking-[0.32em] text-[9px] transition-colors duration-200"
-                style={{ color: "var(--fg-muted)", background: "none", border: "none", cursor: "pointer" }}
-                onMouseEnter={e => (e.currentTarget.style.color = "var(--fg)")}
-                onMouseLeave={e => (e.currentTarget.style.color = "var(--fg-muted)")}
-              >
-                {link.label}
-              </button>
-            ))}
+            {navLinks.map((link) =>
+              link.href.startsWith("/") ? (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="transition-colors duration-200 relative group"
+                  style={{
+                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    letterSpacing: "0.01em",
+                    color: "#4a4440",
+                  }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#1a1714")}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "#4a4440")}
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <button
+                  key={link.href}
+                  onClick={() => scrollTo(link.href)}
+                  className="transition-colors duration-200"
+                  style={{
+                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontWeight: 500,
+                    fontSize: "16px",
+                    letterSpacing: "0.01em",
+                    color: "#4a4440",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.color = "#1a1714")}
+                  onMouseLeave={e => (e.currentTarget.style.color = "#4a4440")}
+                >
+                  {link.label}
+                </button>
+              )
+            )}
           </nav>
 
-          {/* Right side — Contact + theme toggle */}
+          {/* Right — Apply + theme toggle */}
           <div className="flex items-center gap-4">
             <Link
               href="/contact"
-              className="font-label-sm uppercase tracking-[0.32em] text-[9px] px-4 py-2 border transition-colors duration-200"
-              style={{ borderColor: "#eb4511", color: "#eb4511" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = "#eb4511"; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; (e.currentTarget as HTMLElement).style.color = "#eb4511"; }}
+              className="font-label-sm uppercase tracking-[0.2em] text-[11px] px-5 py-2.5 transition-all duration-200"
+              style={{
+                backgroundColor: "#eb4511",
+                color: "#ffffff",
+                border: "1px solid #eb4511",
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
+                (e.currentTarget as HTMLElement).style.color = "#eb4511";
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.backgroundColor = "#eb4511";
+                (e.currentTarget as HTMLElement).style.color = "#ffffff";
+              }}
             >
-              Contact Us
+              Apply Now
             </Link>
             <button
               onClick={toggleTheme}
               className="flex items-center justify-center w-8 h-8"
-              style={{ color: "var(--fg-muted)", background: "none", border: "none", cursor: "pointer" }}
+              style={{ color: "#6b6460", background: "none", border: "none", cursor: "pointer" }}
               aria-label="Switch to dark mode"
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">

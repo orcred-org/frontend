@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
@@ -72,7 +73,7 @@ function SubmissionVisual({ inView }: { inView: boolean }) {
             style={{ background: "var(--border)" }}>
             <motion.div
               className="h-full"
-              style={{ background: "var(--orange-tint)" }}
+              style={{ background: "#eb4511", opacity: 0.5 }}
               initial={{ width: 0 }}
               animate={inView ? { width: "100%" } : {}}
               transition={{ duration: 0.9, delay: 0.45 + i * 0.22, ease: "easeOut" }}
@@ -348,7 +349,7 @@ export default function ProcessSection() {
 
       {/* Section title rule */}
       <motion.div
-        className="px-6 sm:px-10 lg:px-16 pt-24 pb-0 max-w-[1400px] mx-auto flex items-center gap-5"
+        className="px-6 sm:px-10 lg:px-16 pt-6 pb-0 max-w-[1400px] mx-auto flex items-center gap-5"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.5 }}
@@ -366,13 +367,31 @@ export default function ProcessSection() {
 
       {/* Steps */}
       {steps.map((step, i) => (
-        <ProcessStep key={step.numeral} step={step} i={i} />
+        <ProcessStep
+          key={step.numeral}
+          step={step}
+          i={i}
+          footer={i === steps.length - 1 ? (
+            <div className="flex justify-end">
+              <Link
+                href="/how-it-works"
+                className="font-label-sm uppercase tracking-[0.25em] text-[11px] transition-colors duration-200 flex items-center gap-2"
+                style={{ color: "var(--fg-muted)" }}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg)")}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg-muted)")}
+              >
+                See the full process
+                <span style={{ letterSpacing: 0 }}>→</span>
+              </Link>
+            </div>
+          ) : undefined}
+        />
       ))}
     </section>
   );
 }
 
-function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
+function ProcessStep({ step, i, footer }: { step: (typeof steps)[0]; i: number; footer?: React.ReactNode }) {
   const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.15 });
 
@@ -384,7 +403,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
   return (
     <div
       ref={ref}
-      className="min-h-screen flex items-center border-b px-6 sm:px-10 lg:px-16 py-20 relative overflow-hidden"
+      className="min-h-screen flex items-center border-b px-6 sm:px-10 lg:px-16 py-20 relative"
       style={{
         borderColor: "var(--border)",
         backgroundColor: "var(--bg-page)",
@@ -392,7 +411,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
     >
       {/* Roman numeral watermark — anchored to bottom border */}
       <div
-        className="absolute inset-x-0 hidden lg:flex pointer-events-none select-none"
+        className="absolute inset-x-0 hidden lg:flex pointer-events-none select-none watermark-numeral"
         style={{
           fontFamily: "'Cormorant Garamond', Georgia, serif",
           fontStyle: "italic",
@@ -509,6 +528,16 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
           >
             {step.detail}
           </motion.p>
+
+          {footer && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ duration: 1, delay: 0.55, ease: "easeOut" }}
+            >
+              {footer}
+            </motion.div>
+          )}
         </div>
 
         {/* ── Visual ── */}
