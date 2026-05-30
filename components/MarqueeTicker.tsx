@@ -25,20 +25,14 @@ export default function MarqueeTicker() {
         borderBottom: "1px solid var(--border)",
       }}
     >
-      {/* Left + Right fade masks */}
+      {/* Left + Right fade masks — use bg-page so they work in both modes */}
       <div
         className="absolute left-0 top-0 bottom-0 w-16 pointer-events-none z-10"
-        style={{
-          background:
-            "linear-gradient(to right, #010204, transparent)",
-        }}
+        style={{ background: "linear-gradient(to right, var(--bg-page), transparent)" }}
       />
       <div
         className="absolute right-0 top-0 bottom-0 w-16 pointer-events-none z-10"
-        style={{
-          background:
-            "linear-gradient(to left, #010204, transparent)",
-        }}
+        style={{ background: "linear-gradient(to left, var(--bg-page), transparent)" }}
       />
 
       {/* Marquee row */}
