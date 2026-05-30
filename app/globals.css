@@ -11,14 +11,14 @@
   scroll-behavior: auto;
 
   /* Light mode (warm parchment) */
-  --bg-page: #faf7f2;
-  --bg-alt: #f0ebe0;
-  --bg-card: #f5f1e9;
-  --fg: #1a1614;
-  --fg-muted: rgba(26,22,20,0.55);
-  --fg-faint: rgba(26,22,20,0.28);
-  --border: rgba(26,22,20,0.07);
-  --border-strong: rgba(26,22,20,0.13);
+  --bg-page:      #faf7f2;
+  --bg-alt:       #f0ebe0;
+  --bg-card:      #f5f1e9;
+  --fg:           #1a1614;
+  --fg-muted:     rgba(26,22,20,0.65);
+  --fg-faint:     rgba(26,22,20,0.42);
+  --border:       rgba(26,22,20,0.12);
+  --border-strong: rgba(26,22,20,0.22);
 }
 
 html.dark {
