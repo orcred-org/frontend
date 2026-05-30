@@ -167,7 +167,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             className="relative border p-10 sm:p-12"
             style={{
               borderColor: "var(--border)",
-              background: "#050709",
+              background: "var(--bg-alt)",
             }}
           >
             {/* Corner accent — top-left L */}

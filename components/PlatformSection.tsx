@@ -34,7 +34,7 @@ function SignalGrid() {
             style={{
               width:      i === signal ? 12 : 8,
               height:     i === signal ? 12 : 8,
-              background: i === signal ? "#eb4511" : "rgba(235,225,205,0.15)",
+              background: i === signal ? "#eb4511" : "var(--border-strong)",
               boxShadow:  i === signal ? "0 0 14px 5px rgba(235,69,17,0.38)" : "none",
               alignSelf:  "center",
               justifySelf: "center",
@@ -168,7 +168,7 @@ function SessionVisual() {
               fontWeight: 400,
               fontSize: "clamp(38px, 6vw, 54px)",
               lineHeight: 1,
-              color: "rgba(235,225,205,0.9)",
+              color: "var(--fg)",
               letterSpacing: "-0.02em",
             }}
             initial={{ opacity: 0 }}
@@ -237,7 +237,7 @@ function ScoreVisual() {
               fontWeight: 300,
               fontSize: "clamp(64px, 11vw, 110px)",
               lineHeight: 0.88,
-              color: "rgba(235,225,205,0.9)",
+              color: "var(--fg)",
               letterSpacing: "-0.02em",
             }}
           >

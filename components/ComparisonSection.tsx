@@ -84,7 +84,7 @@ export default function ComparisonSection() {
               fontWeight: 400,
               fontSize: "clamp(36px, 5vw, 66px)",
               lineHeight: 1.05,
-              color: "rgba(235,225,205,0.9)",
+              color: "var(--fg)",
             }}
           >
             Everything else shows.

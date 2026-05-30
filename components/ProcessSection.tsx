@@ -237,7 +237,7 @@ function VerdictVisual({ inView }: { inView: boolean }) {
                 fontWeight: 300,
                 fontSize: "60px",
                 lineHeight: 0.9,
-                color: "rgba(235,225,205,0.9)",
+                color: "var(--fg)",
                 letterSpacing: "-0.02em",
               }}
             >
@@ -399,7 +399,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
           fontWeight: 300,
           fontSize: "clamp(160px, 22vw, 360px)",
           lineHeight: 1,
-          color: "var(--border)",
+          color: "var(--watermark)",
           justifyContent: step.flip ? "flex-start" : "flex-end",
           alignItems: "flex-end",
           userSelect: "none",
