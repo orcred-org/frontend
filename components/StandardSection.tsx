@@ -49,6 +49,7 @@ export default function StandardSection() {
 
   return (
     <div
+      id="story"
       ref={containerRef}
       style={{ height: "270vh", backgroundColor: "var(--bg-page)", position: "relative" }}
     >
