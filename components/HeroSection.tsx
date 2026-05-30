@@ -122,7 +122,7 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
             animate="show"
           >
             <Link
-              href="/contact"
+              href="/get-verified"
               className="inline-flex items-center gap-2 px-7 py-3.5 font-label-sm uppercase tracking-[0.18em] text-[11px] transition-all duration-200"
               style={{ backgroundColor: "#eb4511", color: "#ffffff", border: "1px solid #eb4511" }}
               onMouseEnter={e => {

@@ -105,7 +105,7 @@ export default function Navbar() {
 
         {/* Apply Now */}
         <Link
-          href="/contact"
+          href="/get-verified"
           className="font-label-sm uppercase tracking-[0.2em] text-[11px] px-5 py-2.5 transition-all duration-200"
           style={{
             backgroundColor: "#eb4511",
