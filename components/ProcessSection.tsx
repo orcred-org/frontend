@@ -359,7 +359,7 @@ export default function ProcessSection() {
           className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
           style={{ color: "var(--fg-faint)" }}
         >
-          Examination Procedure
+          How It Works
         </span>
         <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
       </motion.div>
