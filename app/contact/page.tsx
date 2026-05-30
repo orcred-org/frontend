@@ -65,13 +65,13 @@ function Field({
         htmlFor={def.id}
         className="font-label-sm uppercase tracking-[0.38em] text-[9px] block mb-2"
         style={{
-          color: focused ? "rgba(235,69,17,0.7)" : "var(--fg-faint)",
+          color: focused ? "var(--orange-muted)" : "var(--fg-faint)",
           transition: "color 0.25s ease",
         }}
       >
         {def.label}
         {def.required && (
-          <span style={{ color: "rgba(235,69,17,0.5)", marginLeft: "4px" }}>*</span>
+          <span style={{ color: "var(--orange-faint)", marginLeft: "4px" }}>*</span>
         )}
       </label>
 
@@ -103,7 +103,7 @@ function Field({
 
       <div
         className="w-full h-px mt-1 transition-colors duration-300"
-        style={{ background: focused ? "rgba(235,69,17,0.55)" : "var(--border-strong)" }}
+        style={{ background: focused ? "var(--orange-faint)" : "var(--border-strong)" }}
       />
     </motion.div>
   );
@@ -188,12 +188,12 @@ function Success() {
       transition={{ duration: 0.9, ease }}
     >
       <div className="relative w-[56px] h-[56px]">
-        <div className="absolute inset-0 rounded-full border" style={{ borderColor: "rgba(235,69,17,0.4)" }} />
-        <div className="absolute inset-[7px] rounded-full border" style={{ borderColor: "rgba(235,69,17,0.18)" }} />
+        <div className="absolute inset-0 rounded-full border" style={{ borderColor: "var(--orange-dim)" }} />
+        <div className="absolute inset-[7px] rounded-full border" style={{ borderColor: "var(--orange-tint)" }} />
         <div className="absolute inset-0 flex items-center justify-center">
           <div
             className="w-[11px] h-[11px] rounded-full"
-            style={{ background: "#eb4511", boxShadow: "0 0 14px 4px rgba(235,69,17,0.45)" }}
+            style={{ background: "#eb4511", boxShadow: "0 0 14px 4px var(--orange-dim)" }}
           />
         </div>
       </div>
@@ -201,7 +201,7 @@ function Success() {
       <div>
         <p
           className="font-label-sm uppercase tracking-[0.42em] text-[9px] mb-5"
-          style={{ color: "rgba(235,69,17,0.65)" }}
+          style={{ color: "var(--orange-faint)" }}
         >
           Received
         </p>
@@ -291,7 +291,7 @@ export default function ContactPage() {
           <div className="w-8 h-px" style={{ background: "var(--border)" }} />
           <span
             className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
-            style={{ color: "rgba(235,69,17,0.6)" }}
+            style={{ color: "var(--orange-faint)" }}
           >
             Get in touch
           </span>
@@ -347,8 +347,8 @@ export default function ContactPage() {
                   className="absolute inset-0 pointer-events-none"
                   style={{
                     background: i === 0
-                      ? "radial-gradient(ellipse 80% 100% at 20% 50%, rgba(235,69,17,0.06) 0%, transparent 70%)"
-                      : "radial-gradient(ellipse 80% 100% at 80% 50%, rgba(235,69,17,0.06) 0%, transparent 70%)",
+                      ? "radial-gradient(ellipse 80% 100% at 20% 50%, var(--orange-tint) 0%, transparent 70%)"
+                      : "radial-gradient(ellipse 80% 100% at 80% 50%, var(--orange-tint) 0%, transparent 70%)",
                   }}
                   variants={{ rest: { opacity: 0 }, hover: { opacity: 1 }, active: { opacity: 0 } }}
                   transition={{ duration: 0.4 }}
@@ -359,8 +359,8 @@ export default function ContactPage() {
                   className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
                   variants={{
                     rest:   { color: "var(--fg-faint)", x: 0   },
-                    hover:  { color: "rgba(235,69,17,0.75)",   x: i === 0 ? 4 : -4 },
-                    active: { color: "rgba(235,69,17,0.80)",   x: 0   },
+                    hover:  { color: "var(--orange-muted)",   x: i === 0 ? 4 : -4 },
+                    active: { color: "var(--orange-muted)",   x: 0   },
                   }}
                   transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 >

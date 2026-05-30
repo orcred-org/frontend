@@ -22,7 +22,7 @@ export default function OrcredMark({
       xmlns="http://www.w3.org/2000/svg"
       style={
         glow
-          ? { filter: "drop-shadow(0 0 7px rgba(235,69,17,0.48))", flexShrink: 0 }
+          ? { filter: "drop-shadow(0 0 7px var(--orange-dim))", flexShrink: 0 }
           : { flexShrink: 0 }
       }
     >

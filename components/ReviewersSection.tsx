@@ -35,7 +35,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 50% 65% at 25% 50%, rgba(235,69,17,0.05) 0%, transparent 70%)",
+            "radial-gradient(ellipse 50% 65% at 25% 50%, var(--orange-tint) 0%, transparent 70%)",
         }}
       />
 
@@ -61,7 +61,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
                 fontWeight: 300,
                 fontSize: "13px",
                 letterSpacing: "0.1em",
-                color: "rgba(235,69,17,0.65)",
+                color: "var(--orange-faint)",
               }}
             >
               04
@@ -72,7 +72,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             />
             <span
               className="font-label-sm uppercase tracking-[0.38em] text-[9px]"
-              style={{ color: "rgba(235,69,17,0.65)" }}
+              style={{ color: "var(--orange-faint)" }}
             >
               For Engineers
             </span>
@@ -143,7 +143,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
               >
                 <div
                   className="w-px h-[14px] flex-shrink-0"
-                  style={{ background: "rgba(235,69,17,0.55)" }}
+                  style={{ background: "var(--orange-faint)" }}
                 />
                 <span
                   className="text-[13px] font-light"
@@ -184,7 +184,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             <div className="mb-6">
               <span
                 className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
-                style={{ color: "rgba(235,69,17,0.7)" }}
+                style={{ color: "var(--orange-muted)" }}
               >
                 Founding Cohort
               </span>

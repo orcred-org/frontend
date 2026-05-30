@@ -36,7 +36,7 @@ export default function HeroSection({ onApply }: HeroProps) {
   // ── Palette — all use CSS variables now ──
   const c = {
     bg:         "var(--bg-page)",
-    radial:     isDark ? "rgba(235,69,17,0.05)" : "rgba(235,69,17,0.06)",
+    radial:     isDark ? "var(--orange-tint)" : "var(--orange-tint)",
     bottomRule: "var(--border)",
     label:      "var(--fg-faint)",
     h1:         "var(--fg)",
@@ -135,7 +135,7 @@ export default function HeroSection({ onApply }: HeroProps) {
         >
           <div className="flex-1 h-px" style={{ background: c.ruleLine, transition: "background 0.45s ease" }} />
           <div className="w-[5px] h-[5px] rotate-45 border"
-            style={{ borderColor: "rgba(235,69,17,0.55)" }} />
+            style={{ borderColor: "var(--orange-faint)" }} />
           <div className="flex-1 h-px" style={{ background: c.ruleLine, transition: "background 0.45s ease" }} />
         </motion.div>
 

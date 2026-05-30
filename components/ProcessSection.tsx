@@ -30,14 +30,14 @@ function SubmissionVisual({ inView }: { inView: boolean }) {
       >
         <span
           className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
-          style={{ color: "rgba(235,69,17,0.6)" }}
+          style={{ color: "var(--orange-faint)" }}
         >
           Project Submission
         </span>
         <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
         <div
           className="w-[6px] h-[6px] rounded-full"
-          style={{ background: "#eb4511", boxShadow: "0 0 6px 2px rgba(235,69,17,0.4)" }}
+          style={{ background: "#eb4511", boxShadow: "0 0 6px 2px var(--orange-dim)" }}
         />
       </motion.div>
 
@@ -48,7 +48,7 @@ function SubmissionVisual({ inView }: { inView: boolean }) {
             {/* Label */}
             <span
               className="font-label-sm uppercase tracking-[0.32em] text-[8px] flex-shrink-0 w-24"
-              style={{ color: "rgba(235,69,17,0.55)" }}
+              style={{ color: "var(--orange-faint)" }}
             >
               {field.label}
             </span>
@@ -72,7 +72,7 @@ function SubmissionVisual({ inView }: { inView: boolean }) {
             style={{ background: "var(--border)" }}>
             <motion.div
               className="h-full"
-              style={{ background: "rgba(235,69,17,0.3)" }}
+              style={{ background: "var(--orange-tint)" }}
               initial={{ width: 0 }}
               animate={inView ? { width: "100%" } : {}}
               transition={{ duration: 0.9, delay: 0.45 + i * 0.22, ease: "easeOut" }}
@@ -113,7 +113,7 @@ function ConversationVisual({ inView }: { inView: boolean }) {
         <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
         <span
           className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
-          style={{ color: "rgba(235,69,17,0.6)" }}
+          style={{ color: "var(--orange-faint)" }}
         >
           Session Transcript
         </span>
@@ -198,7 +198,7 @@ function VerdictVisual({ inView }: { inView: boolean }) {
           <motion.circle
             cx="100" cy="100" r={r}
             fill="none"
-            stroke="rgba(235,69,17,0.55)"
+            stroke="var(--orange-faint)"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeDasharray={circ}
@@ -212,7 +212,7 @@ function VerdictVisual({ inView }: { inView: boolean }) {
           <motion.circle
             cx="100" cy="100" r={r - 8}
             fill="none"
-            stroke="rgba(235,69,17,0.12)"
+            stroke="var(--orange-tint)"
             strokeWidth="1"
             strokeDasharray={2 * Math.PI * (r - 8)}
             transform="rotate(-90 100 100)"
@@ -279,13 +279,13 @@ function VerdictVisual({ inView }: { inView: boolean }) {
         <div
           className="border px-6 py-2"
           style={{
-            borderColor: "rgba(235,69,17,0.45)",
+            borderColor: "var(--orange-dim)",
             transform: "rotate(-2deg)",
           }}
         >
           <span
             className="font-label-sm uppercase tracking-[0.5em] text-[11px]"
-            style={{ color: "rgba(235,69,17,0.85)" }}
+            style={{ color: "var(--orange-muted)" }}
           >
             Passed
           </span>
@@ -435,7 +435,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
                 fontWeight: 300,
                 fontSize: "13px",
                 letterSpacing: "0.1em",
-                color: "rgba(235,69,17,0.65)",
+                color: "var(--orange-faint)",
               }}
             >
               {step.index}
@@ -443,7 +443,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
             <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
             <span
               className="font-label-sm uppercase tracking-[0.38em] text-[9px]"
-              style={{ color: "rgba(235,69,17,0.65)" }}
+              style={{ color: "var(--orange-faint)" }}
             >
               {step.label}
             </span>
@@ -501,7 +501,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
             className="text-[14px] leading-[1.85] font-light pl-4"
             style={{
               color: "var(--fg-muted)",
-              borderLeft: "1px solid rgba(235,69,17,0.25)",
+              borderLeft: "1px solid var(--orange-tint)",
             }}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}

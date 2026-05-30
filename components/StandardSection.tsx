@@ -61,7 +61,7 @@ export default function StandardSection() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse 55% 50% at 50% 50%, rgba(235,69,17,0.04) 0%, transparent 70%)",
+              "radial-gradient(ellipse 55% 50% at 50% 50%, var(--orange-tint) 0%, transparent 70%)",
           }}
         />
 
@@ -88,7 +88,7 @@ export default function StandardSection() {
               {/* Eyebrow */}
               <p
                 className="font-label-sm uppercase tracking-[0.48em] text-[9px] mb-7"
-                style={{ color: "rgba(235,69,17,0.65)" }}
+                style={{ color: "var(--orange-faint)" }}
               >
                 {story[i].eyebrow}
               </p>

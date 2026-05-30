@@ -20,6 +20,12 @@
   --border:        rgba(26,22,20,0.12);
   --border-strong: rgba(26,22,20,0.22);
   --watermark:     rgba(26,22,20,0.07);
+  /* Orange — deeper + more opaque so it pops on parchment */
+  --orange:        #c8340a;
+  --orange-muted:  rgba(180,45,5,0.88);
+  --orange-faint:  rgba(180,45,5,0.65);
+  --orange-dim:    rgba(180,45,5,0.45);
+  --orange-tint:   rgba(180,45,5,0.18);
 }
 
 html.dark {
@@ -33,6 +39,12 @@ html.dark {
   --border:        rgba(235,225,205,0.13);
   --border-strong: rgba(235,225,205,0.34);
   --watermark:     rgba(235,225,205,0.09);
+  /* Orange — same vibrant brand values in dark mode */
+  --orange:        #eb4511;
+  --orange-muted:  rgba(235,69,17,0.75);
+  --orange-faint:  rgba(235,69,17,0.55);
+  --orange-dim:    rgba(235,69,17,0.40);
+  --orange-tint:   rgba(235,69,17,0.15);
 }
 
 html {

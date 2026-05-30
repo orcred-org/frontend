@@ -35,7 +35,7 @@ function SignalGrid() {
               width:      i === signal ? 12 : 8,
               height:     i === signal ? 12 : 8,
               background: i === signal ? "#eb4511" : "var(--border-strong)",
-              boxShadow:  i === signal ? "0 0 14px 5px rgba(235,69,17,0.38)" : "none",
+              boxShadow:  i === signal ? "0 0 14px 5px var(--orange-dim)" : "none",
               alignSelf:  "center",
               justifySelf: "center",
             }}
@@ -119,7 +119,7 @@ function SessionVisual() {
           <motion.circle
             cx="100" cy="100" r={r}
             fill="none"
-            stroke="rgba(235,69,17,0.55)"
+            stroke="var(--orange-faint)"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeDasharray={circ}
@@ -319,7 +319,7 @@ function ScoreVisual() {
             >
               <motion.div
                 className="h-full"
-                style={{ background: "rgba(235,69,17,0.5)" }}
+                style={{ background: "var(--orange-faint)" }}
                 initial={{ width: 0 }}
                 whileInView={{ width: b.w }}
                 viewport={{ once: true }}
@@ -349,7 +349,7 @@ function ScoreVisual() {
         </p>
         <div
           className="border px-3 py-1"
-          style={{ borderColor: "rgba(235,69,17,0.35)" }}
+          style={{ borderColor: "var(--orange-dim)" }}
         >
           <span
             className="font-label-sm uppercase tracking-[0.35em] text-[8px]"
@@ -417,7 +417,7 @@ function EditorialPanel({
                 fontWeight: 300,
                 fontSize: "13px",
                 letterSpacing: "0.1em",
-                color: "rgba(235,69,17,0.65)",
+                color: "var(--orange-faint)",
               }}
             >
               {num}
@@ -428,7 +428,7 @@ function EditorialPanel({
             />
             <span
               className="font-label-sm uppercase tracking-[0.38em] text-[9px]"
-              style={{ color: "rgba(235,69,17,0.65)" }}
+              style={{ color: "var(--orange-faint)" }}
             >
               {chapter}
             </span>

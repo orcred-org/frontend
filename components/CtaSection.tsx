@@ -18,7 +18,7 @@ export default function CtaSection() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 65% 55% at 50% 50%, rgba(235,69,17,0.06) 0%, transparent 70%)",
+            "radial-gradient(ellipse 65% 55% at 50% 50%, var(--orange-tint) 0%, transparent 70%)",
         }}
       />
 

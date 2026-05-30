@@ -49,7 +49,7 @@ export default function MarqueeTicker() {
             className="inline-flex items-center gap-5 mx-5 font-label-sm uppercase tracking-[0.45em] text-[9px]"
           >
             <span style={{ color: "var(--border-strong)" }}>{item}</span>
-            <span style={{ color: "rgba(235,69,17,0.32)" }}>·</span>
+            <span style={{ color: "var(--orange-dim)" }}>·</span>
           </span>
         ))}
       </div>

@@ -55,7 +55,7 @@ export default function ScoresSection() {
           <div>
             <span
               className="font-label-sm uppercase tracking-[0.35em] text-[9px] sm:text-[10px] block mb-5"
-              style={{ color: "rgba(235,69,17,0.7)" }}
+              style={{ color: "var(--orange-muted)" }}
             >
               Assessment Framework
             </span>
@@ -177,7 +177,7 @@ export default function ScoresSection() {
               fontStyle: "italic",
               fontWeight: 400,
               fontSize: "clamp(18px, 2.5vw, 28px)",
-              color: "rgba(235,69,17,0.85)",
+              color: "var(--orange-muted)",
             }}
           >
             Not everyone passes. That&apos;s the point.
