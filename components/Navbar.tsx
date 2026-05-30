@@ -21,9 +21,9 @@ export default function Navbar() {
     <motion.header
       className="sticky top-0 z-50"
       style={{
-        backgroundColor: scrolled
-          ? theme === "dark" ? "rgba(1,2,4,0.92)" : "rgba(250,247,242,0.92)"
-          : "transparent",
+        backgroundColor: theme === "dark"
+          ? (scrolled ? "rgba(1,2,4,0.92)" : "transparent")
+          : "rgba(250,247,242,0.95)", /* always solid in light mode — consistent across all pages */
         transition: "background-color 0.5s ease",
       }}
       initial={{ opacity: 0 }}
@@ -67,8 +67,8 @@ export default function Navbar() {
             style={{
               fontFamily: "'Cormorant Garamond', Georgia, serif",
               fontWeight: 500,
-              fontSize: "22px",
-              letterSpacing: "0.07em",
+              fontSize: "20px",
+              letterSpacing: "0.09em",
               color: "var(--fg)",
               transition: "color 0.4s ease",
             }}

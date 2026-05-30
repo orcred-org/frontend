@@ -29,8 +29,8 @@ export default function Footer() {
           style={{
             fontFamily: "'Cormorant Garamond', Georgia, serif",
             fontWeight: 500,
-            fontSize: "22px",
-            letterSpacing: "0.07em",
+            fontSize: "20px",
+            letterSpacing: "0.09em",
             color: "var(--fg-muted)",
             background: "none",
             border: "none",
