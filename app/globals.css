@@ -79,9 +79,20 @@ body {
     0 20px 40px -10px rgba(0, 0, 0, 0.1);
 }
 
-/* ── Light mode section/visual bg override ── */
-html:not(.dark) section {
-  background-color: var(--bg-page);
+/* ── Light mode: plain flat background — no grain, no gradients ── */
+html:not(.dark) .grainy-overlay::before { display: none; }
+html:not(.dark) .mesh-gradient { background-image: none !important; }
+
+/* Kill all inline radial-gradient decorative overlays in sections */
+html:not(.dark) section > .absolute.inset-0.pointer-events-none {
+  display: none !important;
+}
+
+html:not(.dark) body,
+html:not(.dark) section,
+html:not(.dark) footer {
+  background-color: var(--bg-page) !important;
+  background-image: none !important;
 }
 
 html.dark .glass-panel {
