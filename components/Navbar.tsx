@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 const navLinks = [
-  { label: "The Standard",         href: "#story"      },
-  { label: "How It Works",         href: "#process"    },
-  { label: "Assessment Framework", href: "#scores"     },
-  { label: "Why Orcred",           href: "#comparison" },
+  { label: "Standard", href: "#story"      },
+  { label: "Process",  href: "#process"    },
+  { label: "Scoring",  href: "#scores"     },
+  { label: "Compare",  href: "#comparison" },
 ];
 
 function scrollTo(href: string) {
