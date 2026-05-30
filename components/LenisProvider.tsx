@@ -2,9 +2,15 @@
 
 import { useEffect } from "react";
 import Lenis from "lenis";
+import { useTheme } from "@/lib/ThemeContext";
 
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
+  const { theme } = useTheme();
+
   useEffect(() => {
+    // Disable smooth scroll in light mode — native scroll only
+    if (theme === "light") return;
+
     const lenis = new Lenis({
       duration: 0.9,
       easing: (t: number) => 1 - Math.pow(1 - t, 3),
@@ -34,7 +40,7 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       document.removeEventListener("lenis:start", onStart);
       document.removeEventListener("lenis:stop",  onStop);
     };
-  }, []);
+  }, [theme]);
 
   return <>{children}</>;
 }
