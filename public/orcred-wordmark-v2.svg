@@ -1,0 +1,19 @@
+<svg width="300" height="56" viewBox="0 0 150 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&amp;display=swap');</style>
+  </defs>
+
+  <!-- Orange circle = the O -->
+  <circle cx="10" cy="14" r="8" stroke="#eb4511" stroke-width="2" fill="none"/>
+
+  <!-- RCRED -->
+  <text
+    x="25"
+    y="21.5"
+    font-family="'Cormorant Garamond', Georgia, serif"
+    font-weight="400"
+    font-size="19"
+    letter-spacing="2.3"
+    fill="#ebe1cd"
+  >RCRED</text>
+</svg>

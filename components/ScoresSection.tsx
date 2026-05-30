@@ -40,7 +40,7 @@ export default function ScoresSection() {
     <section
       id="scores"
       className="py-24 sm:py-32 lg:py-40 px-6 sm:px-10 lg:px-16"
-      style={{ backgroundColor: "#010204" }}
+      style={{ backgroundColor: "var(--bg-page)" }}
     >
       <div className="max-w-[1400px] mx-auto">
 
@@ -79,8 +79,8 @@ export default function ScoresSection() {
             <p
               className="text-[15px] font-light leading-relaxed pb-4 border-b"
               style={{
-                color: "rgba(235,225,205,0.62)",
-                borderColor: "rgba(235,225,205,0.13)",
+                color: "var(--fg-muted)",
+                borderColor: "var(--border)",
               }}
             >
               Not a grade. A signal.
@@ -93,7 +93,7 @@ export default function ScoresSection() {
         {/* Top rule */}
         <div
           className="h-px mb-0"
-          style={{ background: "rgba(235,225,205,0.32)" }}
+          style={{ background: "var(--border-strong)" }}
         />
 
         {/* Criteria table */}
@@ -102,7 +102,7 @@ export default function ScoresSection() {
             <motion.div
               key={c.roman}
               className="group grid grid-cols-12 items-center border-b cursor-default"
-              style={{ borderColor: "rgba(235,225,205,0.13)" }}
+              style={{ borderColor: "var(--border)" }}
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: i * 0.12, ease: "easeOut" }}
@@ -116,7 +116,7 @@ export default function ScoresSection() {
                     fontStyle: "italic",
                     fontWeight: 300,
                     fontSize: "clamp(16px, 2vw, 22px)",
-                    color: "rgba(235,225,205,0.42)",
+                    color: "var(--fg-faint)",
                   }}
                 >
                   {c.roman}
@@ -133,7 +133,7 @@ export default function ScoresSection() {
                 </h3>
                 <p
                   className="text-[13px] sm:text-[14px] leading-relaxed font-light"
-                  style={{ color: "rgba(235,225,205,0.62)" }}
+                  style={{ color: "var(--fg-muted)" }}
                 >
                   {c.desc}
                 </p>
@@ -148,7 +148,7 @@ export default function ScoresSection() {
                     fontWeight: 300,
                     fontSize: "clamp(28px, 4vw, 48px)",
                     lineHeight: 1,
-                    color: "rgba(235,225,205,0.38)",
+                    color: "var(--fg-faint)",
                   }}
                   whileHover={{
                     color: "#eb4511",

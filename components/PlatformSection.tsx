@@ -60,7 +60,7 @@ function SignalGrid() {
             fontWeight: 300,
             fontSize: "clamp(28px, 4vw, 46px)",
             lineHeight: 1.1,
-            color: "rgba(235,225,205,0.72)",
+            color: "var(--fg-muted)",
           }}
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -71,7 +71,7 @@ function SignalGrid() {
         </motion.p>
         <motion.p
           className="font-label-sm uppercase tracking-[0.42em] text-[9px] mt-3"
-          style={{ color: "rgba(235,225,205,0.42)" }}
+          style={{ color: "var(--fg-faint)" }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -109,11 +109,11 @@ function SessionVisual() {
         <svg viewBox="0 0 200 200" className="w-full h-full" style={{ overflow: "visible" }}>
           {/* Outer faint orbit */}
           <circle cx="100" cy="100" r="96"
-            fill="none" stroke="rgba(235,225,205,0.10)" strokeWidth="1" />
+            fill="none" stroke="var(--border)" strokeWidth="1" />
 
           {/* Track ring */}
           <circle cx="100" cy="100" r={r}
-            fill="none" stroke="rgba(235,225,205,0.12)" strokeWidth="1" />
+            fill="none" stroke="var(--border)" strokeWidth="1" />
 
           {/* Animated progress arc */}
           <motion.circle
@@ -134,7 +134,7 @@ function SessionVisual() {
           {ticks.map((t, i) => (
             <line key={i}
               x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2}
-              stroke="rgba(235,225,205,0.38)" strokeWidth="1"
+              stroke="var(--fg-faint)" strokeWidth="1"
             />
           ))}
 
@@ -148,7 +148,7 @@ function SessionVisual() {
               <text key={i} x={lx} y={ly}
                 textAnchor="middle" dominantBaseline="central"
                 style={{
-                  fill: "rgba(235,225,205,0.38)",
+                  fill: "var(--fg-faint)",
                   fontSize: "8px",
                   fontFamily: "Inter, sans-serif",
                   letterSpacing: "0.05em",
@@ -180,7 +180,7 @@ function SessionVisual() {
           </motion.span>
           <span
             className="font-label-sm uppercase tracking-[0.35em] text-[7px] mt-1.5"
-            style={{ color: "rgba(235,225,205,0.40)" }}
+            style={{ color: "var(--fg-faint)" }}
           >
             minutes
           </span>
@@ -194,7 +194,7 @@ function SessionVisual() {
           fontStyle: "italic",
           fontWeight: 300,
           fontSize: "clamp(17px, 2.2vw, 24px)",
-          color: "rgba(235,225,205,0.62)",
+          color: "var(--fg-muted)",
           textAlign: "center",
         }}
         initial={{ opacity: 0, y: 8 }}
@@ -266,13 +266,13 @@ function ScoreVisual() {
         >
           <p
             className="font-label-sm uppercase tracking-[0.3em] text-[8px]"
-            style={{ color: "rgba(235,225,205,0.42)" }}
+            style={{ color: "var(--fg-faint)" }}
           >
             Orcred Score
           </p>
           <p
             className="font-label-sm uppercase tracking-[0.3em] text-[8px] mt-0.5"
-            style={{ color: "rgba(235,225,205,0.35)" }}
+            style={{ color: "var(--fg-faint)" }}
           >
             Founding Cohort · 2026
           </p>
@@ -282,7 +282,7 @@ function ScoreVisual() {
       {/* Thin divider */}
       <motion.div
         className="w-full h-px"
-        style={{ background: "rgba(235,225,205,0.13)" }}
+        style={{ background: "var(--border)" }}
         initial={{ scaleX: 0, originX: "left" }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true }}
@@ -302,20 +302,20 @@ function ScoreVisual() {
             <div className="flex justify-between mb-1.5">
               <span
                 className="font-label-sm uppercase tracking-widest text-[8px]"
-                style={{ color: "rgba(235,225,205,0.66)" }}
+                style={{ color: "var(--fg-muted)" }}
               >
                 {b.label}
               </span>
               <span
                 className="font-label-sm text-[9px]"
-                style={{ color: "rgba(235,225,205,0.75)" }}
+                style={{ color: "var(--fg-muted)" }}
               >
                 {b.pct}
               </span>
             </div>
             <div
               className="w-full h-[1.5px] overflow-hidden"
-              style={{ background: "rgba(235,225,205,0.12)" }}
+              style={{ background: "var(--border)" }}
             >
               <motion.div
                 className="h-full"
@@ -331,7 +331,7 @@ function ScoreVisual() {
       </div>
 
       {/* Thin divider */}
-      <div className="w-full h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+      <div className="w-full h-px" style={{ background: "var(--border)" }} />
 
       {/* Footer */}
       <motion.div
@@ -343,7 +343,7 @@ function ScoreVisual() {
       >
         <p
           className="font-label-sm uppercase tracking-[0.3em] text-[8px]"
-          style={{ color: "rgba(235,225,205,0.40)" }}
+          style={{ color: "var(--fg-faint)" }}
         >
           Senior ML Engineer · Verified
         </p>
@@ -394,7 +394,7 @@ function EditorialPanel({
     <div
       ref={ref}
       className="relative overflow-hidden min-h-screen flex items-center border-b py-16 px-6 sm:px-10 lg:px-16"
-      style={{ borderColor: "rgba(235,225,205,0.10)" }}
+      style={{ borderColor: "var(--border)" }}
     >
       <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
 
@@ -424,7 +424,7 @@ function EditorialPanel({
             </span>
             <div
               className="flex-1 h-px"
-              style={{ background: "rgba(235,225,205,0.13)" }}
+              style={{ background: "var(--border)" }}
             />
             <span
               className="font-label-sm uppercase tracking-[0.38em] text-[9px]"
@@ -446,7 +446,7 @@ function EditorialPanel({
                 fontWeight: 400,
                 fontSize: "clamp(32px, 3.8vw, 52px)",
                 lineHeight: 1.0,
-                color: "rgba(235,225,205,0.92)",
+                color: "var(--fg)",
               }}
             >
               {headline}
@@ -458,7 +458,7 @@ function EditorialPanel({
                 fontWeight: 300,
                 fontSize: "clamp(22px, 2.8vw, 38px)",
                 lineHeight: 1.1,
-                color: "rgba(235,225,205,0.70)",
+                color: "var(--fg-muted)",
                 marginTop: "4px",
               }}
             >
@@ -477,7 +477,7 @@ function EditorialPanel({
           {/* Body */}
           <motion.p
             className="text-[14px] sm:text-[15px] leading-[1.9] font-light"
-            style={{ color: "rgba(235,225,205,0.62)" }}
+            style={{ color: "var(--fg-muted)" }}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 1, delay: 0.42, ease: "easeOut" }}
@@ -508,7 +508,7 @@ function EditorialPanel({
 
 export default function PlatformSection() {
   return (
-    <section id="platform" className="relative" style={{ backgroundColor: "#010204" }}>
+    <section id="platform" className="relative" style={{ backgroundColor: "var(--bg-page)" }}>
 
       {/* Section title rule */}
       <motion.div
@@ -518,14 +518,14 @@ export default function PlatformSection() {
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 1, ease: "easeOut" }}
       >
-        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
         <span
           className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
-          style={{ color: "rgba(235,225,205,0.45)" }}
+          style={{ color: "var(--fg-faint)" }}
         >
           The Story
         </span>
-        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
       </motion.div>
 
       {/* Panel 1 — The problem */}

@@ -27,7 +27,7 @@ export default function GlowCard({
   children,
   className = "",
   radius = 520,
-  bg = "#010204",
+  bg = "var(--bg-page)",
 }: GlowCardProps) {
   const wrapRef  = useRef<HTMLDivElement>(null);
   const sharpRef = useRef<HTMLDivElement>(null);
@@ -76,7 +76,7 @@ export default function GlowCard({
       className={`relative ${className}`}
       style={{
         padding: "1.5px",                        // 1.5px border
-        background: "rgba(235,225,205,0.13)",   // dim base
+        background: "var(--border)",   // dim base
       }}
     >
       {/* Haze — blurred copy of gradient, gives the "light bleeding inward" glow */}

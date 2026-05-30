@@ -1,0 +1,8 @@
+<svg width="220" height="280" viewBox="0 0 22 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Leaf — slightly smaller -->
+  <ellipse cx="7.5" cy="5.5" rx="1.9" ry="3.3" fill="#eb4511" transform="rotate(-15 7.5 5.5)"/>
+  <!-- Stem — shorter -->
+  <path d="M10.5 10 C12 7.5 14 5.5 15.5 5" stroke="#eb4511" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <!-- Body -->
+  <circle cx="10.5" cy="19" r="9" fill="#eb4511"/>
+</svg>

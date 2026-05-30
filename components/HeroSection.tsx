@@ -33,27 +33,17 @@ export default function HeroSection({ onApply }: HeroProps) {
     return () => { if (document.head.contains(link)) document.head.removeChild(link); };
   }, []);
 
-  // ── Palette switches on theme ──
-  const c = isDark ? {
-    bg:          "#010204",
-    radial:      "rgba(235,69,17,0.05)",
-    bottomRule:  "rgba(235,225,205,0.13)",
-    label:       "rgba(235,225,205,0.52)",
-    h1:          "rgba(235,225,205,0.95)",
-    h1italic:    "rgba(235,225,205,0.68)",
-    ruleLine:    "rgba(235,225,205,0.30)",
-    body:        "rgba(235,225,205,0.60)",
-    bodySpan:    "rgba(235,225,205,0.68)",
-  } : {
-    bg:          "#faf7f2",
-    radial:      "rgba(235,69,17,0.06)",
-    bottomRule:  "rgba(26,22,20,0.07)",
-    label:       "rgba(26,22,20,0.32)",
-    h1:          "rgba(26,22,20,0.92)",
-    h1italic:    "rgba(26,22,20,0.42)",
-    ruleLine:    "rgba(26,22,20,0.1)",
-    body:        "rgba(26,22,20,0.42)",
-    bodySpan:    "rgba(26,22,20,0.72)",
+  // ── Palette — all use CSS variables now ──
+  const c = {
+    bg:         "var(--bg-page)",
+    radial:     isDark ? "rgba(235,69,17,0.05)" : "rgba(235,69,17,0.06)",
+    bottomRule: "var(--border)",
+    label:      "var(--fg-faint)",
+    h1:         "var(--fg)",
+    h1italic:   "var(--fg-muted)",
+    ruleLine:   "var(--border-strong)",
+    body:       "var(--fg-muted)",
+    bodySpan:   "var(--fg)",
   };
 
   return (

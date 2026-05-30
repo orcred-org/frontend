@@ -4,6 +4,7 @@ import LenisProvider from "@/components/LenisProvider";
 import CursorGlobal from "@/components/CursorGlobal";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { ThemeProvider } from "@/lib/ThemeContext";
 
 export const metadata: Metadata = {
   title: "Orcred | The Standard for AI/ML Intelligence",
@@ -30,12 +31,14 @@ export default function RootLayout({
         />
       </head>
       <body className="selection:bg-accent-orange selection:text-white grainy-overlay">
-        <LenisProvider>
-          <Navbar />
-          {children}
-          <Footer />
-          <CursorGlobal />
-        </LenisProvider>
+        <ThemeProvider>
+          <LenisProvider>
+            <Navbar />
+            {children}
+            <Footer />
+            <CursorGlobal />
+          </LenisProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

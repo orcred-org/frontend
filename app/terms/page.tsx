@@ -65,7 +65,7 @@ const sections = [
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#010204" }}>
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: "var(--bg-page)" }}>
 
       {/* Subtle ambient */}
       <div
@@ -89,9 +89,9 @@ export default function TermsPage() {
           <Link
             href="/"
             className="inline-flex items-center gap-2 font-label-sm uppercase tracking-[0.32em] text-[10px] transition-colors duration-200"
-            style={{ color: "rgba(235,225,205,0.45)" }}
-            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "rgba(235,225,205,0.75)")}
-            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(235,225,205,0.45)")}
+            style={{ color: "var(--fg-faint)" }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg-muted)")}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg-faint)")}
           >
             ← Home
           </Link>
@@ -104,14 +104,14 @@ export default function TermsPage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.9 }}
         >
-          <div className="w-8 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+          <div className="w-8 h-px" style={{ background: "var(--border)" }} />
           <span
             className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
             style={{ color: "rgba(235,69,17,0.6)" }}
           >
             Legal
           </span>
-          <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+          <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
         </motion.div>
 
         {/* Title */}
@@ -121,7 +121,7 @@ export default function TermsPage() {
             fontWeight: 400,
             fontSize: "clamp(36px, 5vw, 64px)",
             lineHeight: 1.05,
-            color: "rgba(235,225,205,0.92)",
+            color: "var(--fg)",
             marginBottom: "8px",
           }}
           initial={{ opacity: 0, y: 18 }}
@@ -136,7 +136,7 @@ export default function TermsPage() {
             fontStyle: "italic",
             fontWeight: 300,
             fontSize: "clamp(16px, 2vw, 22px)",
-            color: "rgba(235,225,205,0.45)",
+            color: "var(--fg-faint)",
             marginBottom: "48px",
           }}
           initial={{ opacity: 0 }}
@@ -149,7 +149,7 @@ export default function TermsPage() {
         {/* Divider */}
         <motion.div
           className="w-full h-px mb-12"
-          style={{ background: "rgba(235,225,205,0.13)" }}
+          style={{ background: "var(--border)" }}
           initial={{ scaleX: 0, originX: "left" }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 0.9, delay: 0.25, ease }}
@@ -175,7 +175,7 @@ export default function TermsPage() {
                   <p
                     key={j}
                     className="text-[14px] sm:text-[15px] font-light leading-[1.9]"
-                    style={{ color: "rgba(235,225,205,0.62)" }}
+                    style={{ color: "var(--fg-muted)" }}
                   >
                     {para}
                   </p>

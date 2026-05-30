@@ -16,8 +16,8 @@ export default function Footer() {
     <footer
       className="px-6 sm:px-10 lg:px-16 py-10 sm:py-12"
       style={{
-        backgroundColor: "#000000",
-        borderTop: "1px solid rgba(235,225,205,0.13)",
+        backgroundColor: "var(--bg-page)",
+        borderTop: "1px solid var(--border)",
       }}
     >
       <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
@@ -32,7 +32,7 @@ export default function Footer() {
             fontWeight: 400,
             fontSize: "20px",
             letterSpacing: "0.1em",
-            color: "rgba(235,225,205,0.72)",
+            color: "var(--fg-muted)",
             background: "none",
             border: "none",
             padding: 0,
@@ -53,7 +53,7 @@ export default function Footer() {
               key={item.label}
               href={item.href}
               className="font-label-sm uppercase tracking-widest text-[10px] transition-colors duration-200 hover:text-accent-orange"
-              style={{ color: "rgba(235,225,205,0.62)" }}
+              style={{ color: "var(--fg-muted)" }}
             >
               {item.label}
             </Link>
@@ -62,8 +62,8 @@ export default function Footer() {
           <span
             className="font-label-sm tracking-widest text-[9px] uppercase sm:pl-4 sm:border-l"
             style={{
-              color: "rgba(235,225,205,0.38)",
-              borderColor: "rgba(235,225,205,0.14)",
+              color: "var(--fg-faint)",
+              borderColor: "var(--border)",
             }}
           >
             © 2026 Orcred

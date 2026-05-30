@@ -1,0 +1,27 @@
+<!-- Concept 9: Minimal Crown — three angular points on a base band, orange gem at centre top.
+     Crowns = distinction, rank, merit. Used by review sites (Michelin), luxury marques,
+     and credentialing bodies to signal "earned, not given." Very spare / geometric here. -->
+<svg width="160" height="160" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="80" height="80" fill="#010204"/>
+
+  <!-- Crown outline — 3-point crown, open base band -->
+  <!-- Base band: y=56 to y=62 -->
+  <!-- Points at: left (18,34), centre (40,22), right (62,34), with valleys at (29,46) and (51,46) -->
+  <path d="M 14 62 L 14 56 L 26 46 L 18 34 L 40 46 L 62 34 L 54 46 L 66 56 L 66 62 Z"
+    stroke="rgba(235,225,205,0.30)" stroke-width="1" stroke-linejoin="round" fill="none"/>
+
+  <!-- Inner fill — very faint -->
+  <path d="M 14 62 L 14 56 L 26 46 L 18 34 L 40 46 L 62 34 L 54 46 L 66 56 L 66 62 Z"
+    fill="rgba(235,225,205,0.04)"/>
+
+  <!-- Orange gem at the centre peak -->
+  <circle cx="40" cy="22" r="4" fill="#eb4511"/>
+  <circle cx="40" cy="22" r="4" fill="none" stroke="rgba(235,69,17,0.3)" stroke-width="2.5"/>
+
+  <!-- Small dots at the two side peaks -->
+  <circle cx="18" cy="34" r="1.8" fill="rgba(235,225,205,0.22)"/>
+  <circle cx="62" cy="34" r="1.8" fill="rgba(235,225,205,0.22)"/>
+
+  <!-- Horizontal base rule -->
+  <line x1="14" y1="62" x2="66" y2="62" stroke="rgba(235,225,205,0.22)" stroke-width="0.8"/>
+</svg>

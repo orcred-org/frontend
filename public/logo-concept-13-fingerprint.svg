@@ -1,0 +1,16 @@
+<!-- Fingerprint Echo. Concentric offset arcs — simplified fingerprint / iris.
+     Identity, uniqueness, biometric verification. Each loop slightly shifted.
+     Bold orange, no fill. -->
+<svg width="160" height="160" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="80" height="80" fill="#010204"/>
+  <!-- Innermost tight arc — full orange -->
+  <path d="M 34 44 A 8 8 0 1 1 46 44" stroke="#eb4511" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+  <!-- Second arc — slightly offset center -->
+  <path d="M 27 47 A 14 13 0 1 1 53 47" stroke="rgba(235,69,17,0.82)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+  <!-- Third arc -->
+  <path d="M 20 50 A 21 20 0 1 1 60 50" stroke="rgba(235,69,17,0.62)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+  <!-- Outer arc — widest, faintest -->
+  <path d="M 13 54 A 28 27 0 1 1 67 54" stroke="rgba(235,69,17,0.38)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+  <!-- Core dot -->
+  <circle cx="40" cy="40" r="2.8" fill="#eb4511"/>
+</svg>

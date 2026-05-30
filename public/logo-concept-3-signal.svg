@@ -1,0 +1,33 @@
+<!-- Concept 3: Signal Grid — 4×4 grid, one orange dot.
+     "1 real signal in 16." Ties directly to the PlatformSection story. -->
+<svg width="160" height="160" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="80" height="80" fill="#010204"/>
+
+  <!-- 4×4 grid of dots, evenly spaced -->
+  <!-- Grid starts at x=18, y=18, spacing=15 -->
+
+  <!-- Row 1 -->
+  <circle cx="18" cy="18" r="2.8" fill="rgba(235,225,205,0.18)"/>
+  <circle cx="33" cy="18" r="2.8" fill="rgba(235,225,205,0.18)"/>
+  <circle cx="48" cy="18" r="2.8" fill="rgba(235,225,205,0.18)"/>
+  <circle cx="63" cy="18" r="2.8" fill="rgba(235,225,205,0.18)"/>
+
+  <!-- Row 2 -->
+  <circle cx="18" cy="33" r="2.8" fill="rgba(235,225,205,0.18)"/>
+  <circle cx="33" cy="33" r="2.8" fill="rgba(235,225,205,0.18)"/>
+  <!-- THE signal — one is real -->
+  <circle cx="48" cy="33" r="4.5" fill="#eb4511"/>
+  <circle cx="63" cy="33" r="2.8" fill="rgba(235,225,205,0.18)"/>
+
+  <!-- Row 3 -->
+  <circle cx="18" cy="48" r="2.8" fill="rgba(235,225,205,0.18)"/>
+  <circle cx="33" cy="48" r="2.8" fill="rgba(235,225,205,0.18)"/>
+  <circle cx="48" cy="48" r="2.8" fill="rgba(235,225,205,0.18)"/>
+  <circle cx="63" cy="48" r="2.8" fill="rgba(235,225,205,0.18)"/>
+
+  <!-- Row 4 -->
+  <circle cx="18" cy="63" r="2.8" fill="rgba(235,225,205,0.18)"/>
+  <circle cx="33" cy="63" r="2.8" fill="rgba(235,225,205,0.18)"/>
+  <circle cx="48" cy="63" r="2.8" fill="rgba(235,225,205,0.18)"/>
+  <circle cx="63" cy="63" r="2.8" fill="rgba(235,225,205,0.18)"/>
+</svg>
