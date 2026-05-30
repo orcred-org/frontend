@@ -73,7 +73,7 @@ export default function ScoresSection() {
           <div
             style={{
               fontSize: "clamp(28px, 3.5vw, 44px)",
-              fontWeight: 400,
+              fontWeight: 600,
               letterSpacing: "-0.02em",
               lineHeight: 1.15,
               color: "#0f0d0c",
