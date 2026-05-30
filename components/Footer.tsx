@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "@/lib/ThemeContext";
 
 const footerLinks = [
-  { label: "Terms",   href: "/terms"   },
-  { label: "Privacy", href: "/privacy" },
-  { label: "Contact", href: "/contact" },
+  { label: "Who We Are", href: "/who-we-are" },
+  { label: "Terms",      href: "/terms"      },
+  { label: "Privacy",    href: "/privacy"    },
+  { label: "Contact",    href: "/contact"    },
 ];
 
 export default function Footer() {
