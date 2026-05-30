@@ -103,7 +103,7 @@ export default function ScoresSection() {
               marginBottom:  "12px",
             }}
           >
-            Orcred Score.
+            Orcred score.
           </div>
           <div
             style={{
