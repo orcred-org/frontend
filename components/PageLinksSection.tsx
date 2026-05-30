@@ -64,7 +64,7 @@ export default function PageLinksSection() {
                 {/* Image */}
                 <div
                   className="relative overflow-hidden"
-                  style={{ height: "220px" }}
+                  style={{ height: "160px" }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -82,21 +82,21 @@ export default function PageLinksSection() {
 
                 {/* Card body */}
                 <div
-                  className="flex-1 flex flex-col pt-5 pb-2"
+                  className="flex-1 flex flex-col pt-4 pb-2"
                   style={{
                     borderLeft:  "1px solid var(--border)",
-                    paddingLeft: "20px",
+                    paddingLeft: "16px",
                   }}
                 >
                   {/* Title */}
                   <div
                     style={{
                       fontWeight:    600,
-                      fontSize:      "clamp(18px, 1.8vw, 22px)",
-                      letterSpacing: "-0.015em",
+                      fontSize:      "clamp(14px, 1.2vw, 16px)",
+                      letterSpacing: "-0.01em",
                       lineHeight:    1.2,
                       color:         "#0f0d0c",
-                      marginBottom:  "10px",
+                      marginBottom:  "6px",
                     }}
                   >
                     {card.title}
@@ -105,11 +105,11 @@ export default function PageLinksSection() {
                   {/* Description */}
                   <div
                     style={{
-                      fontSize:     "clamp(13px, 1.1vw, 14px)",
+                      fontSize:     "12px",
                       fontWeight:   400,
-                      lineHeight:   1.8,
-                      color:        "rgba(15,13,12,0.6)",
-                      marginBottom: "16px",
+                      lineHeight:   1.7,
+                      color:        "rgba(15,13,12,0.55)",
+                      marginBottom: "12px",
                       flex:         1,
                     }}
                   >
@@ -118,8 +118,8 @@ export default function PageLinksSection() {
 
                   {/* CTA */}
                   <div
-                    className="flex items-center gap-2 font-label-sm uppercase tracking-[0.18em] text-[11px]"
-                    style={{ color: "#eb4511", fontWeight: 600 }}
+                    className="flex items-center gap-1.5 font-label-sm uppercase tracking-[0.15em] text-[10px]"
+                    style={{ color: "#eb4511", fontWeight: 500 }}
                   >
                     {card.cta}
                     <span style={{ letterSpacing: 0 }}>→</span>
