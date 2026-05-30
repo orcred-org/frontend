@@ -1,8 +1,6 @@
 "use client";
 
 import HeroSection from "@/components/HeroSection";
-import StandardSection from "@/components/StandardSection";
-import MarqueeTicker from "@/components/MarqueeTicker";
 import PlatformSection from "@/components/PlatformSection";
 import ProcessSection from "@/components/ProcessSection";
 import ScoresSection from "@/components/ScoresSection";
@@ -19,28 +17,19 @@ export default function Home() {
         {/* 1 · Brand statement — the hero */}
         <HeroSection onApply={() => {}} />
 
-        {/* Thin editorial ticker — after hero, before story */}
-        <MarqueeTicker />
-
-        {/* 2 · The problem / the cost / the fix — sticky scroll story */}
-        <StandardSection />
-
-        {/* 3 · Platform — what Orcred is (3 editorial scroll panels) */}
+        {/* 2 · The problem / the cost / the fix */}
         <PlatformSection />
 
-        {/* Thin editorial ticker — between platform and process */}
-        <MarqueeTicker />
-
-        {/* 4 · Process — how the review works (dramatic full-height steps) */}
+        {/* 3 · Process — how the review works */}
         <ProcessSection />
 
-        {/* 5 · The Score — formal assessment framework */}
+        {/* 4 · The Score — formal assessment framework */}
         <ScoresSection />
 
-        {/* 6 · Why Orcred — comparison vs alternatives */}
+        {/* 5 · Why Orcred — comparison vs alternatives */}
         <ComparisonSection />
 
-        {/* 7 · Final CTA */}
+        {/* 6 · Final CTA */}
         <CtaSection />
       </main>
     </>
