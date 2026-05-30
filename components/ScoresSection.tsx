@@ -65,7 +65,7 @@ export default function ScoresSection() {
                 fontWeight: 400,
                 fontSize: "clamp(36px, 5.5vw, 68px)",
                 lineHeight: 1.05,
-                color: "rgba(235,225,205,0.9)",
+                color: "var(--fg)",
               }}
             >
               The Orcred
@@ -106,7 +106,7 @@ export default function ScoresSection() {
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
               transition={{ duration: 0.7, delay: i * 0.12, ease: "easeOut" }}
-              whileHover={{ backgroundColor: "rgba(235,225,205,0.05)" }}
+              whileHover={{ backgroundColor: "var(--border)" }}
             >
               {/* Roman numeral */}
               <div className="col-span-2 sm:col-span-1 py-8 sm:py-10 lg:py-12 pr-4">
@@ -127,7 +127,7 @@ export default function ScoresSection() {
               <div className="col-span-7 sm:col-span-9 py-8 sm:py-10 lg:py-12 pr-6">
                 <h3
                   className="font-label-sm uppercase tracking-[0.25em] text-[10px] sm:text-[11px] mb-2 transition-colors duration-300 group-hover:text-accent-orange"
-                  style={{ color: "rgba(235,225,205,0.9)" }}
+                  style={{ color: "var(--fg)" }}
                 >
                   {c.title}
                 </h3>
