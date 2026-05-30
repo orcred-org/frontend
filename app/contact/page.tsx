@@ -65,13 +65,13 @@ function Field({
         htmlFor={def.id}
         className="font-label-sm uppercase tracking-[0.38em] text-[9px] block mb-2"
         style={{
-          color: focused ? "var(--orange-muted)" : "var(--fg-faint)",
+          color: focused ? "var(--orange)" : "var(--fg-muted)",
           transition: "color 0.25s ease",
         }}
       >
         {def.label}
         {def.required && (
-          <span style={{ color: "var(--orange-faint)", marginLeft: "4px" }}>*</span>
+          <span style={{ color: "#eb4511", marginLeft: "4px" }}>*</span>
         )}
       </label>
 
@@ -103,7 +103,7 @@ function Field({
 
       <div
         className="w-full h-px mt-1 transition-colors duration-300"
-        style={{ background: focused ? "var(--orange-faint)" : "var(--border-strong)" }}
+        style={{ background: focused ? "#eb4511" : "var(--border-strong)" }}
       />
     </motion.div>
   );
