@@ -1,5 +1,7 @@
 "use client";
 
+import { useTheme } from "@/lib/ThemeContext";
+
 const items = [
   "VERIFIED",
   "EARNED",
@@ -16,6 +18,9 @@ const items = [
 ];
 
 export default function MarqueeTicker() {
+  const { theme } = useTheme();
+  if (theme === "light") return null;
+
   return (
     <div
       className="overflow-hidden py-[11px] relative"
