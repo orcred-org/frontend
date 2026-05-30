@@ -6,11 +6,11 @@ import Link from "next/link";
 import { useTheme } from "@/lib/ThemeContext";
 
 const navLinks = [
-  { label: "The Problem", href: "#story"      },
-  { label: "Platform",    href: "#platform"   },
-  { label: "Process",     href: "#process"    },
-  { label: "Scores",      href: "#scores"     },
-  { label: "Compare",     href: "#comparison" },
+  { label: "The Standard",         href: "#story"      },
+  { label: "The Story",            href: "#platform"   },
+  { label: "How It Works",         href: "#process"    },
+  { label: "Assessment Framework", href: "#scores"     },
+  { label: "Why Orcred",           href: "#comparison" },
 ];
 
 function scrollTo(href: string) {
