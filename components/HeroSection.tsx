@@ -70,9 +70,11 @@ export default function HeroSection({ onApply }: HeroProps) {
         }}
       />
 
-      {/* Bottom rule */}
-      <div className="absolute bottom-0 left-0 right-0 h-px"
-        style={{ background: c.bottomRule, transition: "background 0.45s ease" }} />
+      {/* Bottom rule — dark mode only (light mode navbar already has a border) */}
+      {isDark && (
+        <div className="absolute bottom-0 left-0 right-0 h-px"
+          style={{ background: c.bottomRule }} />
+      )}
 
       {/* ══ CONTENT ══ */}
       <div className="relative z-10 flex flex-col items-center text-center w-full max-w-3xl mx-auto pt-[120px] pb-[80px]">
