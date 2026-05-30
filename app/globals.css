@@ -191,7 +191,9 @@ html, body {
 }
 
 /* ── Link / interactive hover cursor hint ── */
-a, button, [data-magnetic] {
+html.dark a,
+html.dark button,
+html.dark [data-magnetic] {
   cursor: none;
 }
 
