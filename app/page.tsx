@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import dynamic from "next/dynamic";
 import HeroSection from "@/components/HeroSection";
 import StandardSection from "@/components/StandardSection";
 import MarqueeTicker from "@/components/MarqueeTicker";
@@ -12,18 +10,10 @@ import ComparisonSection from "@/components/ComparisonSection";
 import CtaSection from "@/components/CtaSection";
 import ScrollProgress from "@/components/ScrollProgress";
 
-const PageLoader = dynamic(() => import("@/components/PageLoader"), { ssr: false });
-
 export default function Home() {
-  const [loaded, setLoaded] = useState(false);
-
   return (
     <>
-      {/* Entrance loader — locks scroll, snaps to top, fades out after 2.2s */}
-      <PageLoader onDone={() => setLoaded(true)} />
-
-      {/* Bottom scroll progress bar — only shown after loader clears */}
-      {loaded && <ScrollProgress />}
+      <ScrollProgress />
 
       <main>
         {/* 1 · Brand statement — the hero */}

@@ -19,9 +19,6 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
       touchMultiplier: 0.8,
     });
 
-    // Start paused — PageLoader will fire 'lenis:start' when the screen clears
-    lenis.stop();
-
     let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
@@ -29,16 +26,9 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
     }
     rafId = requestAnimationFrame(raf);
 
-    const onStart = () => lenis.start();
-    const onStop  = () => lenis.stop();
-    document.addEventListener("lenis:start", onStart);
-    document.addEventListener("lenis:stop",  onStop);
-
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
-      document.removeEventListener("lenis:start", onStart);
-      document.removeEventListener("lenis:stop",  onStop);
     };
   }, [theme]);
 
