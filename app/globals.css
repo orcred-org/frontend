@@ -83,8 +83,10 @@ body {
 html:not(.dark) .grainy-overlay::before { display: none; }
 html:not(.dark) .mesh-gradient { background-image: none !important; }
 
-/* Kill all inline radial-gradient decorative overlays in sections */
-html:not(.dark) section > .absolute.inset-0.pointer-events-none {
+/* Kill ALL decorative gradient overlays (fixed or absolute) */
+html:not(.dark) .fixed.inset-0.pointer-events-none,
+html:not(.dark) section > .absolute.inset-0.pointer-events-none,
+html:not(.dark) div > .absolute.inset-0.pointer-events-none:not([class*="backdrop"]) {
   display: none !important;
 }
 
