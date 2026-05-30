@@ -256,7 +256,7 @@ export default function ContactPage() {
         className="fixed inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 70% 55% at 50% 30%, rgba(235,69,17,0.045) 0%, transparent 70%)",
+            "radial-gradient(ellipse 70% 55% at 50% 30%, var(--orange-tint) 0%, transparent 70%)",
         }}
       />
 
@@ -379,9 +379,9 @@ export default function ContactPage() {
                     transition: "font-style 0.2s ease",
                   }}
                   variants={{
-                    rest:   { color: "var(--fg)", scale: 1,    x: 0   },
-                    hover:  { color: "rgba(235,225,205,0.96)", scale: 1.03, x: i === 0 ? 6 : -6 },
-                    active: { color: "#eb4511",                scale: 1,    x: 0   },
+                    rest:   { color: "var(--fg)",       scale: 1,    x: 0   },
+                    hover:  { color: "var(--fg)",        scale: 1.03, x: i === 0 ? 6 : -6 },
+                    active: { color: "var(--orange)",    scale: 1,    x: 0   },
                   }}
                   transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 >
