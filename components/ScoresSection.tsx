@@ -95,8 +95,8 @@ export default function ScoresSection() {
         >
           <div
             style={{
-              fontSize:      "clamp(32px, 3.8vw, 52px)",
-              fontWeight:    600,
+              fontSize:      "clamp(22px, 2.8vw, 38px)",
+              fontWeight:    400,
               letterSpacing: "-0.02em",
               lineHeight:    1.1,
               color:         "#0f0d0c",
@@ -162,8 +162,8 @@ export default function ScoresSection() {
                     {c.title}
                   </div>
                   <div
-                    className="font-label-sm uppercase tracking-[0.2em] text-[9px]"
-                    style={{ color: "#eb4511", opacity: 0.8, flexShrink: 0 }}
+                    className="font-label-sm uppercase tracking-[0.15em]"
+                    style={{ color: "#eb4511", opacity: 0.9, flexShrink: 0, fontSize: "13px", fontWeight: 500 }}
                   >
                     {c.weight}
                   </div>
