@@ -38,7 +38,7 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
   return (
     <section
       id="hero-section"
-      className="mt-[-80px] relative"
+      className="mt-[-60px] relative"
       style={{ backgroundColor: "var(--bg-page)", minHeight: "100svh" }}
     >
       {/*

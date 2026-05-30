@@ -39,7 +39,7 @@ export default function Navbar() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="max-w-[1400px] mx-auto flex items-center justify-between h-[80px] px-6 sm:px-10 lg:px-16">
+      <div className="max-w-[1400px] mx-auto flex items-center justify-between h-[60px] px-6 sm:px-10 lg:px-16">
 
         {/* Brand */}
         <Link href="/" className="flex items-center gap-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
