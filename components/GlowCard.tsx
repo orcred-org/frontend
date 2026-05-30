@@ -39,7 +39,7 @@ export default function GlowCard({
         `radial-gradient(circle ${radius}px at ${x}px ${y}px,`,
         `  rgba(255,95,30,1.0)   0%,`,   // hot white-orange core
         `  rgba(235,69,17,0.92)  6%,`,   // full brand orange
-        `  rgba(235,69,17,0.65) 18%,`,   // mid spread
+        `  var(--orange-faint) 18%,`,   // mid spread
         `  rgba(235,69,17,0.22) 42%,`,   // tail
         `  transparent           68%`,
         `)`,

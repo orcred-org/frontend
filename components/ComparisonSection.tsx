@@ -46,7 +46,7 @@ export default function ComparisonSection() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 55% 50% at 50% 50%, rgba(235,69,17,0.035) 0%, transparent 70%)",
+            "radial-gradient(ellipse 55% 50% at 50% 50%, var(--orange-tint) 0%, transparent 70%)",
         }}
       />
 
@@ -128,7 +128,7 @@ export default function ComparisonSection() {
                   style={{
                     borderBottom: `1px solid ${
                       row.orcred
-                        ? "rgba(235,69,17,0.14)"
+                        ? "var(--orange-tint)"
                         : "var(--border)"
                     }`,
                   }}
@@ -177,7 +177,7 @@ export default function ComparisonSection() {
                     className="py-9 sm:py-11 text-[13px] sm:text-[14px] font-light leading-relaxed"
                     style={{
                       color: row.orcred
-                        ? "rgba(235,69,17,0.85)"
+                        ? "var(--orange-muted)"
                         : "var(--fg-faint)",
                     }}
                   >

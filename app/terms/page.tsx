@@ -72,7 +72,7 @@ export default function TermsPage() {
         className="fixed inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 60% 45% at 50% 20%, rgba(235,69,17,0.03) 0%, transparent 70%)",
+            "radial-gradient(ellipse 60% 45% at 50% 20%, var(--orange-tint) 0%, transparent 70%)",
         }}
       />
 
@@ -107,7 +107,7 @@ export default function TermsPage() {
           <div className="w-8 h-px" style={{ background: "var(--border)" }} />
           <span
             className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
-            style={{ color: "rgba(235,69,17,0.6)" }}
+            style={{ color: "var(--orange-faint)" }}
           >
             Legal
           </span>
@@ -166,7 +166,7 @@ export default function TermsPage() {
             >
               <h2
                 className="font-label-sm uppercase tracking-[0.32em] text-[10px] mb-4"
-                style={{ color: "rgba(235,69,17,0.7)" }}
+                style={{ color: "var(--orange-muted)" }}
               >
                 {s.title}
               </h2>

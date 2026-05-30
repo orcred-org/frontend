@@ -88,15 +88,15 @@ if (window.matchMedia("(pointer: coarse)").matches) return;
           translateX: "-50%",
           translateY: "-50%",
           backgroundColor: "#eb4511",
-          boxShadow: "0 0 12px 4px rgba(235,69,17,0.4)",
+          boxShadow: "0 0 12px 4px var(--orange-dim)",
         }}
         animate={{
           width: hovered ? 18 : 12,
           height: hovered ? 18 : 12,
           opacity: hidden ? 0 : 1,
           boxShadow: hovered
-            ? "0 0 20px 8px rgba(235,69,17,0.5)"
-            : "0 0 12px 4px rgba(235,69,17,0.35)",
+            ? "0 0 20px 8px var(--orange-faint)"
+            : "0 0 12px 4px var(--orange-dim)",
         }}
         transition={{
           width: { duration: 0.25, ease: "easeOut" },
