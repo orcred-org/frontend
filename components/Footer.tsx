@@ -21,26 +21,15 @@ export default function Footer() {
     >
       <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
 
-        {/* Brand */}
+        {/* Brand — orange circle only */}
         <button
           type="button"
           onClick={goHome}
-          className="flex items-center gap-3"
-          style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontWeight: 500,
-            fontSize: "20px",
-            letterSpacing: "0.09em",
-            color: "var(--fg-muted)",
-            background: "none",
-            border: "none",
-            padding: 0,
-          }}
+          style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
         >
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
-            <circle cx="6" cy="6" r="5.5" fill="#eb4511"/>
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="13" fill="#eb4511"/>
           </svg>
-          ORCRED
         </button>
 
         {/* Links + copyright */}
