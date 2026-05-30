@@ -6,7 +6,6 @@ import ProcessSection from "@/components/ProcessSection";
 import ScoresSection from "@/components/ScoresSection";
 import ComparisonSection from "@/components/ComparisonSection";
 import CtaSection from "@/components/CtaSection";
-import PageLinksSection from "@/components/PageLinksSection";
 import ScrollProgress from "@/components/ScrollProgress";
 
 export default function Home() {
@@ -32,9 +31,6 @@ export default function Home() {
 
         {/* 6 · Final CTA */}
         <CtaSection />
-
-        {/* 7 · Page links — About Us, Contact Us, Become a Reviewer */}
-        <PageLinksSection />
       </main>
     </>
   );
