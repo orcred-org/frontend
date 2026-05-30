@@ -2,9 +2,9 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "pruv-dev",
+      "name": "orcred-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--prefix", "pruv"],
+      "runtimeArgs": ["run", "dev"],
       "port": 3000
     }
   ]

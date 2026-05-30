@@ -1,0 +1,12 @@
+<!-- Bold Ring with slash-notch. A thick O (like a coin/medal) with a
+     diagonal cut through the top — the scoring mark. Clean, heavy, authoritative. -->
+<svg width="160" height="160" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="80" height="80" fill="#010204"/>
+  <circle cx="40" cy="42" r="24" stroke="#eb4511" stroke-width="8"/>
+  <!-- Diagonal slash — the grade/score mark cutting through the ring -->
+  <line x1="52" y1="18" x2="68" y2="30" stroke="#010204" stroke-width="9" stroke-linecap="butt"/>
+  <line x1="52" y1="18" x2="68" y2="30" stroke="#eb4511" stroke-width="3" stroke-linecap="round"/>
+  <!-- Two dots at slash ends — precision marks -->
+  <circle cx="52" cy="18" r="2.5" fill="#eb4511"/>
+  <circle cx="68" cy="30" r="2.5" fill="#eb4511"/>
+</svg>

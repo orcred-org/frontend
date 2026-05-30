@@ -44,7 +44,7 @@ function Field({
 
   const base: React.CSSProperties = {
     background: "transparent",
-    color: "rgba(235,225,205,0.88)",
+    color: "var(--fg)",
     outline: "none",
     width: "100%",
     fontFamily: "'Source Serif 4', Georgia, serif",
@@ -65,7 +65,7 @@ function Field({
         htmlFor={def.id}
         className="font-label-sm uppercase tracking-[0.38em] text-[9px] block mb-2"
         style={{
-          color: focused ? "rgba(235,69,17,0.7)" : "rgba(235,225,205,0.45)",
+          color: focused ? "rgba(235,69,17,0.7)" : "var(--fg-faint)",
           transition: "color 0.25s ease",
         }}
       >
@@ -85,7 +85,7 @@ function Field({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={base}
-          className="block placeholder:text-[rgba(235,225,205,0.38)]"
+          className="block placeholder:text-[var(--fg-faint)]"
         />
       ) : (
         <input
@@ -97,13 +97,13 @@ function Field({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={{ ...base, display: "block" }}
-          className="placeholder:text-[rgba(235,225,205,0.38)]"
+          className="placeholder:text-[var(--fg-faint)]"
         />
       )}
 
       <div
         className="w-full h-px mt-1 transition-colors duration-300"
-        style={{ background: focused ? "rgba(235,69,17,0.55)" : "rgba(235,225,205,0.30)" }}
+        style={{ background: focused ? "rgba(235,69,17,0.55)" : "var(--border-strong)" }}
       />
     </motion.div>
   );
@@ -150,7 +150,7 @@ function FormBlock({
         <motion.button
           type="submit"
           className="relative font-label-sm uppercase tracking-[0.3em] text-[11px] py-2"
-          style={{ color: "rgba(235,225,205,0.88)", background: "transparent" }}
+          style={{ color: "var(--fg)", background: "transparent" }}
           initial="rest"
           whileHover="hover"
           animate="rest"
@@ -168,7 +168,7 @@ function FormBlock({
         </motion.button>
         <p
           className="mt-4 font-label-sm uppercase tracking-[0.32em] text-[8px]"
-          style={{ color: "rgba(235,225,205,0.35)" }}
+          style={{ color: "var(--fg-faint)" }}
         >
           Fields marked * are required
         </p>
@@ -211,12 +211,12 @@ function Success() {
             fontWeight: 400,
             fontSize: "clamp(34px, 4vw, 56px)",
             lineHeight: 1.05,
-            color: "rgba(235,225,205,0.92)",
+            color: "var(--fg)",
           }}
         >
           We&apos;ll be in touch
           <br />
-          <span style={{ fontStyle: "italic", fontWeight: 300, color: "rgba(235,225,205,0.65)" }}>
+          <span style={{ fontStyle: "italic", fontWeight: 300, color: "var(--fg-muted)" }}>
             shortly.
           </span>
         </h2>
@@ -226,7 +226,7 @@ function Success() {
 
       <p
         className="text-[13px] font-light leading-[1.9] max-w-xs"
-        style={{ color: "rgba(235,225,205,0.62)" }}
+        style={{ color: "var(--fg-muted)" }}
       >
         We review every submission personally and will reach out to schedule next steps.
       </p>
@@ -249,7 +249,7 @@ export default function ContactPage() {
   return (
     <div
       className="min-h-screen flex flex-col"
-      style={{ backgroundColor: "#010204" }}
+      style={{ backgroundColor: "var(--bg-page)" }}
     >
       {/* Ambient glow */}
       <div
@@ -273,9 +273,9 @@ export default function ContactPage() {
           <Link
             href="/"
             className="inline-flex items-center gap-2 font-label-sm uppercase tracking-[0.32em] text-[10px] transition-colors duration-200"
-            style={{ color: "rgba(235,225,205,0.45)" }}
-            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "rgba(235,225,205,0.75)")}
-            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(235,225,205,0.45)")}
+            style={{ color: "var(--fg-faint)" }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg-muted)")}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg-faint)")}
           >
             ← Home
           </Link>
@@ -288,20 +288,20 @@ export default function ContactPage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.9 }}
         >
-          <div className="w-8 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+          <div className="w-8 h-px" style={{ background: "var(--border)" }} />
           <span
             className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
             style={{ color: "rgba(235,69,17,0.6)" }}
           >
             Get in touch
           </span>
-          <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+          <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
         </motion.div>
 
         {/* Path selector */}
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 gap-0 mb-0"
-          style={{ borderBottom: path ? "1px solid rgba(235,225,205,0.13)" : "none" }}
+          style={{ borderBottom: path ? "1px solid var(--border)" : "none" }}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.1, ease }}
@@ -333,7 +333,7 @@ export default function ContactPage() {
                     : "sm:pl-12"
                 }`}
                 style={{
-                  borderColor: "rgba(235,225,205,0.13)",
+                  borderColor: "var(--border)",
                   opacity: faded ? 0.25 : 1,
                   transition: "opacity 0.4s ease",
                 }}
@@ -358,7 +358,7 @@ export default function ContactPage() {
                 <motion.span
                   className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
                   variants={{
-                    rest:   { color: "rgba(235,225,205,0.42)", x: 0   },
+                    rest:   { color: "var(--fg-faint)", x: 0   },
                     hover:  { color: "rgba(235,69,17,0.75)",   x: i === 0 ? 4 : -4 },
                     active: { color: "rgba(235,69,17,0.80)",   x: 0   },
                   }}
@@ -379,7 +379,7 @@ export default function ContactPage() {
                     transition: "font-style 0.2s ease",
                   }}
                   variants={{
-                    rest:   { color: "rgba(235,225,205,0.82)", scale: 1,    x: 0   },
+                    rest:   { color: "var(--fg)", scale: 1,    x: 0   },
                     hover:  { color: "rgba(235,225,205,0.96)", scale: 1.03, x: i === 0 ? 6 : -6 },
                     active: { color: "#eb4511",                scale: 1,    x: 0   },
                   }}
@@ -392,9 +392,9 @@ export default function ContactPage() {
                 <motion.span
                   className="text-[13px] font-light leading-relaxed max-w-xs block"
                   variants={{
-                    rest:   { color: "rgba(235,225,205,0.48)", x: 0   },
-                    hover:  { color: "rgba(235,225,205,0.70)", x: i === 0 ? 4 : -4 },
-                    active: { color: "rgba(235,225,205,0.75)", x: 0   },
+                    rest:   { color: "var(--fg-faint)", x: 0   },
+                    hover:  { color: "var(--fg-muted)", x: i === 0 ? 4 : -4 },
+                    active: { color: "var(--fg-muted)", x: 0   },
                   }}
                   transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 >
@@ -432,7 +432,7 @@ export default function ContactPage() {
               <div className="mb-10">
                 <span
                   className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
-                  style={{ color: "rgba(235,225,205,0.40)" }}
+                  style={{ color: "var(--fg-faint)" }}
                 >
                   {path === "verify" ? "Verification Application" : "Reviewer Application"}
                 </span>

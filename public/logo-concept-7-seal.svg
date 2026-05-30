@@ -1,0 +1,40 @@
+<!-- Concept 7: Official Seal — three concentric rings, "ORCRED" text on the inner ring,
+     orange dot at centre. Feels like a notary seal, academic institution, or bar exam body.
+     Maximum authority / credential issuer energy. -->
+<svg width="160" height="160" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="80" height="80" fill="#010204"/>
+
+  <!-- Outer ring — faintest -->
+  <circle cx="40" cy="40" r="36" stroke="rgba(235,225,205,0.14)" stroke-width="0.7"/>
+
+  <!-- Text ring — "ORCRED · VERIFIED ·" traced along a circle -->
+  <defs>
+    <path id="text-ring"
+      d="M 40 8 A 32 32 0 1 1 39.99 8"
+      fill="none"/>
+  </defs>
+  <text
+    font-family="'Cormorant Garamond', Georgia, serif"
+    font-size="5.2"
+    letter-spacing="3.8"
+    fill="rgba(235,225,205,0.42)"
+    font-weight="400">
+    <textPath href="#text-ring" startOffset="4%">ORCRED · VERIFIED ·</textPath>
+  </text>
+
+  <!-- Middle ring -->
+  <circle cx="40" cy="40" r="26" stroke="rgba(235,225,205,0.22)" stroke-width="0.8"/>
+
+  <!-- 4 compass ticks on middle ring -->
+  <line x1="40" y1="12.5" x2="40" y2="15.5" stroke="rgba(235,225,205,0.30)" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="40" y1="64.5" x2="40" y2="67.5" stroke="rgba(235,225,205,0.30)" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="12.5" y1="40" x2="15.5" y2="40" stroke="rgba(235,225,205,0.30)" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="64.5" y1="40" x2="67.5" y2="40" stroke="rgba(235,225,205,0.30)" stroke-width="0.9" stroke-linecap="round"/>
+
+  <!-- Inner ring -->
+  <circle cx="40" cy="40" r="15" stroke="rgba(235,225,205,0.28)" stroke-width="0.8"/>
+
+  <!-- Orange centre dot — the credential point -->
+  <circle cx="40" cy="40" r="5.5" fill="#eb4511"/>
+  <circle cx="40" cy="40" r="5.5" fill="none" stroke="rgba(235,69,17,0.35)" stroke-width="3"/>
+</svg>

@@ -25,9 +25,9 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
       id="reviewers"
       className="relative min-h-screen flex items-center px-6 sm:px-10 lg:px-16"
       style={{
-        backgroundColor: "#010204",
-        borderTop: "1px solid rgba(235,225,205,0.11)",
-        borderBottom: "1px solid rgba(235,225,205,0.11)",
+        backgroundColor: "var(--bg-page)",
+        borderTop: "1px solid var(--border)",
+        borderBottom: "1px solid var(--border)",
       }}
     >
       {/* Ambient warm left */}
@@ -68,7 +68,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             </span>
             <div
               className="flex-1 h-px"
-              style={{ background: "rgba(235,225,205,0.13)" }}
+              style={{ background: "var(--border)" }}
             />
             <span
               className="font-label-sm uppercase tracking-[0.38em] text-[9px]"
@@ -90,7 +90,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
                 fontWeight: 400,
                 fontSize: "clamp(38px, 4.5vw, 72px)",
                 lineHeight: 1.0,
-                color: "rgba(235,225,205,0.92)",
+                color: "var(--fg)",
               }}
             >
               You know within
@@ -99,7 +99,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
                 style={{
                   fontStyle: "italic",
                   fontWeight: 300,
-                  color: "rgba(235,225,205,0.62)",
+                  color: "var(--fg-muted)",
                 }}
               >
                 60 seconds.
@@ -119,7 +119,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
           {/* Body */}
           <motion.p
             className="text-[14px] sm:text-[15px] leading-[1.9] font-light max-w-md mb-10"
-            style={{ color: "rgba(235,225,205,0.62)" }}
+            style={{ color: "var(--fg-muted)" }}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 1, delay: 0.38, ease: "easeOut" }}
@@ -147,7 +147,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
                 />
                 <span
                   className="text-[13px] font-light"
-                  style={{ color: "rgba(235,225,205,0.62)" }}
+                  style={{ color: "var(--fg-muted)" }}
                 >
                   {perk}
                 </span>
@@ -166,7 +166,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
           <div
             className="relative border p-10 sm:p-12"
             style={{
-              borderColor: "rgba(235,225,205,0.13)",
+              borderColor: "var(--border)",
               background: "#050709",
             }}
           >
@@ -199,7 +199,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
                   fontWeight: 300,
                   fontSize: "clamp(72px, 11vw, 110px)",
                   lineHeight: 1,
-                  color: "rgba(235,225,205,0.13)",
+                  color: "var(--border)",
                   display: "block",
                 }}
               >
@@ -207,7 +207,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
               </span>
               <span
                 className="font-label-sm uppercase tracking-[0.35em] text-[8px]"
-                style={{ color: "rgba(235,225,205,0.40)", marginTop: "-4px", display: "block" }}
+                style={{ color: "var(--fg-faint)", marginTop: "-4px", display: "block" }}
               >
                 spots remaining
               </span>
@@ -216,13 +216,13 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             {/* Divider */}
             <div
               className="w-full h-px mb-8"
-              style={{ background: "rgba(235,225,205,0.11)" }}
+              style={{ background: "var(--border)" }}
             />
 
             {/* Description */}
             <p
               className="text-[13px] sm:text-[14px] font-light leading-[1.85] mb-10"
-              style={{ color: "rgba(235,225,205,0.72)" }}
+              style={{ color: "var(--fg-muted)" }}
             >
               This is not a gig.
               <br />
@@ -233,7 +233,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             <motion.button
               onClick={onApply}
               className="relative w-full py-[15px] font-label-sm uppercase tracking-[0.3em] text-[10px]"
-              style={{ color: "rgba(235,225,205,0.88)", background: "transparent" }}
+              style={{ color: "var(--fg)", background: "transparent" }}
               initial="rest"
               whileHover="hover"
               animate="rest"
@@ -253,7 +253,7 @@ export default function ReviewersSection({ onApply }: ReviewersProps) {
             {/* Fine print */}
             <p
               className="text-center mt-5 font-label-sm uppercase tracking-[0.3em] text-[8px]"
-              style={{ color: "rgba(235,225,205,0.35)" }}
+              style={{ color: "var(--fg-faint)" }}
             >
               Equity included
             </p>

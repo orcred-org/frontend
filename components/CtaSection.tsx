@@ -11,7 +11,7 @@ export default function CtaSection() {
   return (
     <section
       className="min-h-screen flex flex-col justify-center items-center px-6 sm:px-10 lg:px-16 text-center relative overflow-hidden"
-      style={{ backgroundColor: "#010204" }}
+      style={{ backgroundColor: "var(--bg-page)" }}
     >
       {/* Ambient warm glow */}
       <div
@@ -43,7 +43,7 @@ export default function CtaSection() {
             fontSize: "clamp(52px, 9vw, 120px)",
             lineHeight: 1.0,
             letterSpacing: "-0.01em",
-            color: "rgba(235,225,205,0.92)",
+            color: "var(--fg)",
           }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -52,7 +52,7 @@ export default function CtaSection() {
         >
           The standard
           <br />
-          <span style={{ fontStyle: "italic", fontWeight: 300, color: "rgba(235,225,205,0.75)" }}>
+          <span style={{ fontStyle: "italic", fontWeight: 300, color: "var(--fg-muted)" }}>
             starts with
           </span>
           <br />
@@ -70,7 +70,7 @@ export default function CtaSection() {
           <motion.button
             onClick={() => router.push("/contact")}
             className="relative font-label-sm uppercase tracking-[0.3em] text-[11px] sm:text-[12px] py-2"
-            style={{ color: "rgba(235,225,205,0.88)", background: "transparent" }}
+            style={{ color: "var(--fg)", background: "transparent" }}
             initial="rest"
             whileHover="hover"
             animate="rest"

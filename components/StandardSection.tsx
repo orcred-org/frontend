@@ -50,7 +50,7 @@ export default function StandardSection() {
   return (
     <div
       ref={containerRef}
-      style={{ height: "270vh", backgroundColor: "#010204", position: "relative" }}
+      style={{ height: "270vh", backgroundColor: "var(--bg-page)", position: "relative" }}
     >
       <div
         className="sticky top-[68px]"
@@ -67,14 +67,14 @@ export default function StandardSection() {
 
         {/* Section marker — top */}
         <div className="absolute top-10 left-0 right-0 flex items-center justify-center gap-4 px-6">
-          <div className="w-10 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+          <div className="w-10 h-px" style={{ background: "var(--border)" }} />
           <span
             className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
-            style={{ color: "rgba(235,225,205,0.40)" }}
+            style={{ color: "var(--fg-faint)" }}
           >
             The Standard
           </span>
-          <div className="w-10 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+          <div className="w-10 h-px" style={{ background: "var(--border)" }} />
         </div>
 
         {/* Story cards — stacked, driven by scroll */}
@@ -101,7 +101,7 @@ export default function StandardSection() {
                   fontWeight: 300,
                   fontSize: "clamp(40px, 7.5vw, 102px)",
                   lineHeight: 1.06,
-                  color: "rgba(235,225,205,0.92)",
+                  color: "var(--fg)",
                   whiteSpace: "pre-line",
                   letterSpacing: "-0.01em",
                 }}
@@ -117,7 +117,7 @@ export default function StandardSection() {
               {/* Body */}
               <p
                 className="text-[14px] sm:text-[15px] font-light leading-[1.9] max-w-md mx-auto"
-                style={{ color: "rgba(235,225,205,0.62)" }}
+                style={{ color: "var(--fg-muted)" }}
               >
                 {story[i].body}
               </p>
@@ -131,7 +131,7 @@ export default function StandardSection() {
         >
           <span
             className="font-label-sm uppercase tracking-[0.45em] text-[8px]"
-            style={{ color: "rgba(235,225,205,0.32)" }}
+            style={{ color: "var(--border-strong)" }}
           >
             scroll
           </span>

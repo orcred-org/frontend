@@ -46,7 +46,7 @@ export default function PageLoader({ onDone }: PageLoaderProps) {
       {visible && (
         <motion.div
           className="fixed inset-0 z-[500] flex flex-col items-center justify-center"
-          style={{ backgroundColor: "#010204" }}
+          style={{ backgroundColor: "var(--bg-page)" }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
@@ -74,7 +74,7 @@ export default function PageLoader({ onDone }: PageLoaderProps) {
           {/* Brand name */}
           <motion.p
             className="font-label-sm uppercase tracking-[0.5em] text-[10px] mb-2"
-            style={{ color: "rgba(235,225,205,0.60)" }}
+            style={{ color: "var(--fg-muted)" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.45 }}
@@ -88,7 +88,7 @@ export default function PageLoader({ onDone }: PageLoaderProps) {
               fontStyle: "italic",
               fontWeight: 300,
               fontSize: "14px",
-              color: "rgba(235,225,205,0.40)",
+              color: "var(--fg-faint)",
               letterSpacing: "0.05em",
             }}
             initial={{ opacity: 0 }}

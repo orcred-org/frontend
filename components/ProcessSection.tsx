@@ -34,7 +34,7 @@ function SubmissionVisual({ inView }: { inView: boolean }) {
         >
           Project Submission
         </span>
-        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
         <div
           className="w-[6px] h-[6px] rounded-full"
           style={{ background: "#eb4511", boxShadow: "0 0 6px 2px rgba(235,69,17,0.4)" }}
@@ -43,7 +43,7 @@ function SubmissionVisual({ inView }: { inView: boolean }) {
 
       {/* Fields */}
       {fields.map((field, i) => (
-        <div key={field.label} className="py-4" style={{ borderBottom: "1px solid rgba(235,225,205,0.12)" }}>
+        <div key={field.label} className="py-4" style={{ borderBottom: "1px solid var(--border)" }}>
           <div className="flex items-baseline gap-5">
             {/* Label */}
             <span
@@ -57,7 +57,7 @@ function SubmissionVisual({ inView }: { inView: boolean }) {
             <div className="overflow-hidden flex-1">
               <motion.p
                 className="text-[13px] font-light"
-                style={{ color: "rgba(235,225,205,0.70)" }}
+                style={{ color: "var(--fg-muted)" }}
                 initial={{ clipPath: "inset(0 100% 0 0)" }}
                 animate={inView ? { clipPath: "inset(0 0% 0 0)" } : {}}
                 transition={{ duration: 0.75, delay: 0.25 + i * 0.22, ease: [0.22, 1, 0.36, 1] }}
@@ -69,7 +69,7 @@ function SubmissionVisual({ inView }: { inView: boolean }) {
 
           {/* Thin fill line */}
           <div className="mt-3 ml-[116px] h-[1px] overflow-hidden"
-            style={{ background: "rgba(235,225,205,0.11)" }}>
+            style={{ background: "var(--border)" }}>
             <motion.div
               className="h-full"
               style={{ background: "rgba(235,69,17,0.3)" }}
@@ -110,14 +110,14 @@ function ConversationVisual({ inView }: { inView: boolean }) {
         animate={inView ? { opacity: 1 } : {}}
         transition={{ duration: 0.8 }}
       >
-        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
         <span
           className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
           style={{ color: "rgba(235,69,17,0.6)" }}
         >
           Session Transcript
         </span>
-        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
       </motion.div>
 
       {/* Exchanges */}
@@ -132,13 +132,13 @@ function ConversationVisual({ inView }: { inView: boolean }) {
           >
             <span
               className="font-label-sm uppercase tracking-widest text-[9px] mt-0.5 w-4 flex-shrink-0"
-              style={{ color: "rgba(235,225,205,0.42)" }}
+              style={{ color: "var(--fg-faint)" }}
             >
               Q
             </span>
             <p
               className="text-[13px] font-light italic leading-relaxed"
-              style={{ color: "rgba(235,225,205,0.52)" }}
+              style={{ color: "var(--fg-muted)" }}
             >
               {ex.q}
             </p>
@@ -159,7 +159,7 @@ function ConversationVisual({ inView }: { inView: boolean }) {
             </span>
             <p
               className="text-[13px] font-light leading-relaxed"
-              style={{ color: "rgba(235,225,205,0.75)" }}
+              style={{ color: "var(--fg-muted)" }}
             >
               {ex.a}
             </p>
@@ -190,7 +190,7 @@ function VerdictVisual({ inView }: { inView: boolean }) {
           <circle
             cx="100" cy="100" r="90"
             fill="none"
-            stroke="rgba(235,225,205,0.10)"
+            stroke="var(--border)"
             strokeWidth="1"
           />
 
@@ -259,7 +259,7 @@ function VerdictVisual({ inView }: { inView: boolean }) {
 
           <motion.span
             className="font-label-sm uppercase tracking-[0.35em] text-[8px] mt-2"
-            style={{ color: "rgba(235,225,205,0.40)" }}
+            style={{ color: "var(--fg-faint)" }}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.9, delay: 1.5 }}
@@ -292,7 +292,7 @@ function VerdictVisual({ inView }: { inView: boolean }) {
         </div>
         <p
           className="font-label-sm uppercase tracking-[0.3em] text-[8px]"
-          style={{ color: "rgba(235,225,205,0.48)" }}
+          style={{ color: "var(--fg-faint)" }}
         >
           Senior ML Engineer · Verified
         </p>
@@ -344,7 +344,7 @@ const steps = [
 
 export default function ProcessSection() {
   return (
-    <section id="process" style={{ backgroundColor: "#010204" }}>
+    <section id="process" style={{ backgroundColor: "var(--bg-page)" }}>
 
       {/* Section title rule */}
       <motion.div
@@ -354,14 +354,14 @@ export default function ProcessSection() {
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 1, ease: "easeOut" }}
       >
-        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
         <span
           className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
-          style={{ color: "rgba(235,225,205,0.45)" }}
+          style={{ color: "var(--fg-faint)" }}
         >
           Examination Procedure
         </span>
-        <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
       </motion.div>
 
       {/* Steps */}
@@ -386,36 +386,32 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
       ref={ref}
       className="min-h-screen flex items-center border-b px-6 sm:px-10 lg:px-16 py-20 relative overflow-hidden"
       style={{
-        borderColor: "rgba(235,225,205,0.11)",
-        backgroundColor: "#010204",
+        borderColor: "var(--border)",
+        backgroundColor: "var(--bg-page)",
       }}
     >
-     {/* Roman numeral watermark — anchored to bottom border */}
-<div
-  className="absolute inset-0 hidden lg:flex pointer-events-none select-none overflow-hidden"
-  style={{
-    justifyContent: step.flip ? "flex-start" : "flex-end",
-    alignItems: "flex-end",
-    zIndex: 0,
-  }}
->
-  <span
-    style={{
-      fontFamily: "'Cormorant Garamond', Georgia, serif",
-      fontStyle: "italic",
-      fontWeight: 300,
-     fontSize: "clamp(120px, 18vw, 300px)",
-      lineHeight: 0.85,
-      color: "rgba(235,225,205,0.08)",
-      userSelect: "none",
-      letterSpacing: "-0.02em",
-      marginBottom: "-0.1em",
-      ...(step.flip ? { marginLeft: "1rem" } : { marginRight: "1rem" }),
-    }}
-  >
-    {step.numeral}
-  </span>
-</div>
+      {/* Roman numeral watermark — anchored to bottom border */}
+      <div
+        className="absolute inset-x-0 hidden lg:flex pointer-events-none select-none"
+        style={{
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+          fontStyle: "italic",
+          fontWeight: 300,
+          fontSize: "clamp(160px, 22vw, 360px)",
+          lineHeight: 1,
+          color: "var(--border)",
+          justifyContent: step.flip ? "flex-start" : "flex-end",
+          alignItems: "flex-end",
+          userSelect: "none",
+          zIndex: 0,
+          /* bottom: -0.22em slides the descender space (≈0.2em for
+             Cormorant Garamond) past the overflow:hidden clip point so
+             the glyph foot lands on the border. em = own font-size. */
+          bottom: "-0.22em",
+        }}
+      >
+        {step.numeral}
+      </div>
 
       {/* Grid — sits above numeral via z-index:1 stacking context */}
       <div className="relative z-[1] w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
@@ -444,7 +440,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
             >
               {step.index}
             </span>
-            <div className="flex-1 h-px" style={{ background: "rgba(235,225,205,0.13)" }} />
+            <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
             <span
               className="font-label-sm uppercase tracking-[0.38em] text-[9px]"
               style={{ color: "rgba(235,69,17,0.65)" }}
@@ -456,7 +452,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
           {/* Sub-label */}
           <motion.p
             className="font-label-sm uppercase tracking-[0.28em] text-[10px]"
-            style={{ color: "rgba(235,225,205,0.75)" }}
+            style={{ color: "var(--fg-muted)" }}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 0.9, delay: 0.08 }}
@@ -471,7 +467,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
               fontWeight: 400,
               fontSize: "clamp(34px, 4vw, 58px)",
               lineHeight: 1.05,
-              color: "rgba(235,225,205,0.92)",
+              color: "var(--fg)",
               whiteSpace: "pre-line",
             }}
             initial={{ opacity: 0, y: 22 }}
@@ -492,7 +488,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
           {/* Description */}
           <motion.p
             className="text-[15px] leading-[1.9] font-light"
-            style={{ color: "rgba(235,225,205,0.70)" }}
+            style={{ color: "var(--fg-muted)" }}
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ duration: 1, delay: 0.35, ease: "easeOut" }}
@@ -504,7 +500,7 @@ function ProcessStep({ step, i }: { step: (typeof steps)[0]; i: number }) {
           <motion.p
             className="text-[14px] leading-[1.85] font-light pl-4"
             style={{
-              color: "rgba(235,225,205,0.66)",
+              color: "var(--fg-muted)",
               borderLeft: "1px solid rgba(235,69,17,0.25)",
             }}
             initial={{ opacity: 0 }}
