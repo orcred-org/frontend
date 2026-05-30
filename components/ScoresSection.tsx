@@ -103,7 +103,7 @@ export default function ScoresSection() {
               marginBottom:  "12px",
             }}
           >
-            Why the score matters.
+            Orcred Score.
           </div>
           <div
             style={{
