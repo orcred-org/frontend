@@ -5,27 +5,68 @@ import { useRef } from "react";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
+/* ── Original inline SVG icons — no font dependency, no copyright ── */
+const icons = {
+  // Two angle-brackets < > = universally understood as "code / technical"
+  TechnicalDepth: () => (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+      stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="7,4 2,10 7,16"/>
+      <polyline points="13,4 18,10 13,16"/>
+    </svg>
+  ),
+  // Speech bubble with two text lines = communication
+  Communication: () => (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+      stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 3h16v10H11l-3 4-1-4H2z"/>
+      <line x1="6" y1="7" x2="14" y2="7"/>
+      <line x1="6" y1="10" x2="10" y2="10"/>
+    </svg>
+  ),
+  // Two-arrow cycle = reproducible / repeatable
+  Reproducibility: () => (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+      stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3.5 9A6.5 6.5 0 0115 4.5"/>
+      <polyline points="18,2 15,4.5 18,7"/>
+      <path d="M16.5 11A6.5 6.5 0 015 15.5"/>
+      <polyline points="2,18 5,15.5 2,13"/>
+    </svg>
+  ),
+  // Six-ray spark / asterisk = original idea / unique
+  Originality: () => (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+      stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+      <line x1="10" y1="2"   x2="10" y2="18"/>
+      <line x1="2"  y1="10"  x2="18" y2="10"/>
+      <line x1="4.3" y1="4.3" x2="15.7" y2="15.7"/>
+      <line x1="15.7" y1="4.3" x2="4.3" y2="15.7"/>
+    </svg>
+  ),
+};
+
 const criteria = [
   {
-    icon: "terminal",
+    Icon: icons.TechnicalDepth,
     title: "Technical Depth",
     weight: "35%",
     desc: "Did they build something that works — and do they know why it works? The highest-weighted dimension because it is the hardest to fake.",
   },
   {
-    icon: "chat",
+    Icon: icons.Communication,
     title: "Communication",
     weight: "25%",
     desc: "Can they walk a room through their decisions without notes? Clarity of thought under live questioning separates builders from memorisers.",
   },
   {
-    icon: "sync",
+    Icon: icons.Reproducibility,
     title: "Reproducibility",
     weight: "20%",
     desc: "Is the work clean enough that someone else could pick it up tomorrow? A project only you can run is a liability.",
   },
   {
-    icon: "lightbulb",
+    Icon: icons.Originality,
     title: "Originality",
     weight: "20%",
     desc: "Did they think, or did they follow? Genuine problem solving versus tutorial assembly — the difference always shows.",
@@ -44,7 +85,7 @@ export default function ScoresSection() {
     >
       <div className="max-w-[1400px] mx-auto">
 
-        {/* Main heading */}
+        {/* Main heading — same size as PlatformSection headlines */}
         <motion.div
           className="mb-12 sm:mb-16"
           initial={{ opacity: 0, y: 12 }}
@@ -54,23 +95,23 @@ export default function ScoresSection() {
         >
           <div
             style={{
-              fontSize: "clamp(28px, 3.5vw, 44px)",
-              fontWeight: 600,
+              fontSize:      "clamp(32px, 3.8vw, 52px)",
+              fontWeight:    600,
               letterSpacing: "-0.02em",
-              lineHeight: 1.15,
-              color: "#0f0d0c",
-              marginBottom: "12px",
+              lineHeight:    1.1,
+              color:         "#0f0d0c",
+              marginBottom:  "12px",
             }}
           >
             Why the score matters.
           </div>
           <div
             style={{
-              fontSize: "clamp(14px, 1.2vw, 16px)",
+              fontSize:   "clamp(14px, 1.2vw, 16px)",
               fontWeight: 400,
               lineHeight: 1.7,
-              color: "rgba(15,13,12,0.55)",
-              maxWidth: "480px",
+              color:      "rgba(15,13,12,0.55)",
+              maxWidth:   "480px",
             }}
           >
             Not a grade. A signal. Four dimensions that actually measure understanding.
@@ -90,7 +131,7 @@ export default function ScoresSection() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: i * 0.1, ease }}
             >
-              {/* Icon circle */}
+              {/* Icon in orange circle */}
               <div
                 className="flex-shrink-0 flex items-center justify-center"
                 style={{
@@ -102,12 +143,7 @@ export default function ScoresSection() {
                   marginTop:    "2px",
                 }}
               >
-                <span
-                  className="material-symbols-outlined"
-                  style={{ fontSize: "20px", fontVariationSettings: "'FILL' 0, 'wght' 300" }}
-                >
-                  {c.icon}
-                </span>
+                <c.Icon />
               </div>
 
               {/* Content */}
