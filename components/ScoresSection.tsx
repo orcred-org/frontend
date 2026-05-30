@@ -7,28 +7,28 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 const criteria = [
   {
-    roman: "I.",
+    icon: "terminal",
     title: "Technical Depth",
     weight: "35%",
-    desc: "Did they build something that works — and do they know why it works?",
+    desc: "Did they build something that works — and do they know why it works? The highest-weighted dimension because it is the hardest to fake.",
   },
   {
-    roman: "II.",
+    icon: "chat",
     title: "Communication",
     weight: "25%",
-    desc: "Can they walk a room through their decisions without notes?",
+    desc: "Can they walk a room through their decisions without notes? Clarity of thought under live questioning separates builders from memorisers.",
   },
   {
-    roman: "III.",
+    icon: "sync",
     title: "Reproducibility",
     weight: "20%",
-    desc: "Is the work clean enough that someone else could pick it up tomorrow?",
+    desc: "Is the work clean enough that someone else could pick it up tomorrow? A project only you can run is a liability.",
   },
   {
-    roman: "IV.",
+    icon: "lightbulb",
     title: "Originality",
     weight: "20%",
-    desc: "Did they think, or did they follow?",
+    desc: "Did they think, or did they follow? Genuine problem solving versus tutorial assembly — the difference always shows.",
   },
 ];
 
@@ -39,136 +39,129 @@ export default function ScoresSection() {
   return (
     <section
       id="scores"
-      className="py-24 sm:py-32 lg:py-40 px-6 sm:px-10 lg:px-16"
+      className="py-16 sm:py-20 px-6 sm:px-10 lg:px-16"
       style={{ backgroundColor: "var(--bg-page)" }}
     >
-      {/* Section label — full-width divider */}
-      <motion.div
-        className="flex items-center gap-5 mb-10 max-w-[1400px] mx-auto"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-      >
-        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-        <span
-          className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
-          style={{ color: "var(--fg-faint)" }}
-        >
-          Assessment Framework
-        </span>
-        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-      </motion.div>
-
       <div className="max-w-[1400px] mx-auto">
 
-        {/* Header */}
+        {/* Section label */}
         <motion.div
-          className="mb-16 sm:mb-20 lg:mb-24 grid grid-cols-1 md:grid-cols-2 gap-8 items-end"
+          className="flex items-center gap-5 mb-10"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 1, ease: "easeOut" }}
         >
-          <div>
-            <h2
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontWeight: 400,
-                fontSize: "clamp(36px, 5.5vw, 68px)",
-                lineHeight: 1.05,
-                color: "var(--fg)",
-              }}
-            >
-              The Orcred
-              <br />
-              <span style={{ fontStyle: "italic", fontWeight: 300 }}>
-                Score.
-              </span>
-            </h2>
+          <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+          <div
+            className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
+            style={{ color: "var(--fg-faint)" }}
+          >
+            Assessment Framework
           </div>
-          <div className="md:text-right md:max-w-xs md:ml-auto">
-            <p
-              className="text-[15px] font-light leading-relaxed pb-4 border-b"
-              style={{
-                color: "var(--fg-muted)",
-                borderColor: "var(--border)",
-              }}
-            >
-              Not a grade. A signal.
-              <br />
-              Four things that actually matter.
-            </p>
+          <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+        </motion.div>
+
+        {/* Main heading */}
+        <motion.div
+          className="mb-12 sm:mb-16"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9, ease }}
+        >
+          <div
+            style={{
+              fontSize: "clamp(28px, 3.5vw, 44px)",
+              fontWeight: 400,
+              letterSpacing: "-0.02em",
+              lineHeight: 1.15,
+              color: "#0f0d0c",
+              marginBottom: "12px",
+            }}
+          >
+            Why the score matters.
+          </div>
+          <div
+            style={{
+              fontSize: "clamp(14px, 1.2vw, 16px)",
+              fontWeight: 400,
+              lineHeight: 1.7,
+              color: "rgba(15,13,12,0.55)",
+              maxWidth: "480px",
+            }}
+          >
+            Not a grade. A signal. Four dimensions that actually measure understanding.
           </div>
         </motion.div>
 
-        {/* Top rule */}
+        {/* 2-column criteria grid */}
         <div
-          className="h-px mb-0"
-          style={{ background: "var(--border-strong)" }}
-        />
-
-        {/* Criteria table */}
-        <div ref={ref}>
+          ref={ref}
+          className="grid grid-cols-1 md:grid-cols-2 gap-x-12 lg:gap-x-20 gap-y-10 sm:gap-y-12"
+        >
           {criteria.map((c, i) => (
             <motion.div
-              key={c.roman}
-              className="group grid grid-cols-12 items-center border-b cursor-default"
-              style={{ borderColor: "var(--border)" }}
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.7, delay: i * 0.12, ease: "easeOut" }}
-              whileHover={{ backgroundColor: "var(--border)" }}
+              key={c.title}
+              className="flex gap-5"
+              initial={{ opacity: 0, y: 14 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: i * 0.1, ease }}
             >
-              {/* Roman numeral */}
-              <div className="col-span-2 sm:col-span-1 py-8 sm:py-10 lg:py-12 pr-4">
+              {/* Icon circle */}
+              <div
+                className="flex-shrink-0 flex items-center justify-center"
+                style={{
+                  width:        "48px",
+                  height:       "48px",
+                  borderRadius: "50%",
+                  border:       "1.5px solid #eb4511",
+                  color:        "#eb4511",
+                  marginTop:    "2px",
+                }}
+              >
                 <span
-                  style={{
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
-                    fontStyle: "italic",
-                    fontWeight: 300,
-                    fontSize: "clamp(16px, 2vw, 22px)",
-                    color: "var(--fg-faint)",
-                  }}
+                  className="material-symbols-outlined"
+                  style={{ fontSize: "20px", fontVariationSettings: "'FILL' 0, 'wght' 300" }}
                 >
-                  {c.roman}
+                  {c.icon}
                 </span>
               </div>
 
-              {/* Name + desc */}
-              <div className="col-span-7 sm:col-span-9 py-8 sm:py-10 lg:py-12 pr-6">
-                <h3
-                  className="font-label-sm uppercase tracking-[0.25em] text-[10px] sm:text-[11px] mb-2 transition-colors duration-300 group-hover:text-accent-orange"
-                  style={{ color: "var(--fg)" }}
-                >
-                  {c.title}
-                </h3>
-                <p
-                  className="text-[13px] sm:text-[14px] leading-relaxed font-light"
-                  style={{ color: "var(--fg-muted)" }}
+              {/* Content */}
+              <div className="flex-1">
+                {/* Title + weight */}
+                <div className="flex items-baseline gap-3 mb-2">
+                  <div
+                    style={{
+                      fontSize:      "clamp(15px, 1.3vw, 17px)",
+                      fontWeight:    400,
+                      letterSpacing: "-0.01em",
+                      lineHeight:    1.3,
+                      color:         "#0f0d0c",
+                    }}
+                  >
+                    {c.title}
+                  </div>
+                  <div
+                    className="font-label-sm uppercase tracking-[0.2em] text-[9px]"
+                    style={{ color: "#eb4511", opacity: 0.8, flexShrink: 0 }}
+                  >
+                    {c.weight}
+                  </div>
+                </div>
+
+                {/* Body */}
+                <div
+                  style={{
+                    fontSize:   "clamp(13px, 1.1vw, 14px)",
+                    fontWeight: 400,
+                    lineHeight: 1.85,
+                    color:      "rgba(15,13,12,0.6)",
+                  }}
                 >
                   {c.desc}
-                </p>
-              </div>
-
-              {/* Weight */}
-              <div className="col-span-3 sm:col-span-2 py-8 sm:py-10 lg:py-12 text-right flex-shrink-0">
-                <motion.span
-                  style={{
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
-                    fontStyle: "italic",
-                    fontWeight: 300,
-                    fontSize: "clamp(28px, 4vw, 48px)",
-                    lineHeight: 1,
-                    color: "var(--fg-faint)",
-                  }}
-                  whileHover={{
-                    color: "#eb4511",
-                    transition: { duration: 0.25 },
-                  }}
-                >
-                  {c.weight}
-                </motion.span>
+                </div>
               </div>
             </motion.div>
           ))}
@@ -176,24 +169,24 @@ export default function ScoresSection() {
 
         {/* Tagline */}
         <motion.div
-          className="mt-14 sm:mt-16 flex items-center gap-5"
+          className="mt-14 sm:mt-16 flex items-center gap-4"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          <div className="w-8 h-px bg-accent-orange opacity-70" />
-          <p
+          <div className="w-8 h-px" style={{ backgroundColor: "#eb4511", opacity: 0.7 }} />
+          <div
             style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontStyle: "italic",
-              fontWeight: 400,
-              fontSize: "clamp(14px, 1.4vw, 18px)",
-              color: "var(--orange-muted)",
+              fontSize:      "clamp(13px, 1.2vw, 15px)",
+              fontWeight:    400,
+              fontStyle:     "italic",
+              color:         "rgba(180,45,5,0.75)",
+              letterSpacing: "0.01em",
             }}
           >
             Not everyone passes. That&apos;s the point.
-          </p>
+          </div>
         </motion.div>
 
       </div>
