@@ -6,137 +6,84 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-/* ─── field types ─── */
-interface FieldDef {
-  id: string;
-  label: string;
-  placeholder: string;
-  type: "text" | "email" | "url" | "textarea";
-  required?: boolean;
-}
-
-const verifyFields: FieldDef[] = [
-  { id: "name",        label: "Full Name",                        placeholder: "Your name",                                    type: "text",     required: true  },
-  { id: "email",       label: "Email",                            placeholder: "you@example.com",                              type: "email",    required: true  },
-  { id: "github",      label: "GitHub / LinkedIn",                placeholder: "github.com/you",                               type: "url"                      },
-  { id: "project",     label: "Project Title",                    placeholder: "What did you build?",                          type: "text",     required: true  },
-  { id: "stack",       label: "Tech Stack",                       placeholder: "PyTorch, FastAPI, Pinecone…",                  type: "text"                     },
-  { id: "description", label: "What does it do?",                 placeholder: "One or two sentences on the problem it solves.", type: "textarea", required: true },
-  { id: "decision",    label: "Hardest technical decision made",  placeholder: "Walk us through one real tradeoff.",            type: "textarea", required: true },
+const fields = [
+  { id: "name",    label: "Full Name",    placeholder: "Your name",          type: "text"     as const, required: true  },
+  { id: "email",   label: "Email",        placeholder: "you@example.com",    type: "email"    as const, required: true  },
+  { id: "message", label: "Message",      placeholder: "How can we help?",   type: "textarea" as const, required: true  },
 ];
 
-const reviewerFields: FieldDef[] = [
-  { id: "name",        label: "Full Name",                        placeholder: "Your name",                                    type: "text",     required: true  },
-  { id: "email",       label: "Email",                            placeholder: "you@example.com",                              type: "email",    required: true  },
-  { id: "linkedin",    label: "LinkedIn / GitHub",                placeholder: "linkedin.com/in/you",                          type: "url"                      },
-  { id: "role",        label: "Current Role & Company",           placeholder: "e.g. Senior ML Engineer @ Stripe",             type: "text",     required: true  },
-  { id: "years",       label: "Years in ML",                      placeholder: "e.g. 6 years",                                 type: "text",     required: true  },
-  { id: "scope",       label: "What kind of work do you review?", placeholder: "Describe the domain / stack you know best.",   type: "textarea", required: true  },
-];
-
-/* ─── single field ─── */
-function Field({
-  def, value, onChange, index,
-}: {
-  def: FieldDef; value: string; onChange: (v: string) => void; index: number;
+function Field({ def, value, onChange, index }: {
+  def: typeof fields[0]; value: string; onChange: (v: string) => void; index: number;
 }) {
   const [focused, setFocused] = useState(false);
-
   const base: React.CSSProperties = {
-    background: "transparent",
-    color: "var(--fg)",
-    outline: "none",
-    width: "100%",
-    fontFamily: "'Source Serif 4', Georgia, serif",
-    fontWeight: 300,
-    fontSize: "14px",
-    lineHeight: 1.75,
-    paddingBottom: "10px",
-    resize: "none",
+    background: "transparent", color: "var(--fg)", outline: "none", width: "100%",
+    fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 300,
+    fontSize: "14px", lineHeight: 1.75, paddingBottom: "10px", resize: "none",
   };
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.65, delay: index * 0.07, ease }}
-    >
-      <label
-        htmlFor={def.id}
-        className="font-label-sm uppercase tracking-[0.38em] text-[9px] block mb-2"
-        style={{
-          color: focused ? "var(--orange)" : "var(--fg-muted)",
-          transition: "color 0.25s ease",
-        }}
-      >
-        {def.label}
-        {def.required && (
-          <span style={{ color: "#eb4511", marginLeft: "4px" }}>*</span>
-        )}
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: index * 0.07, ease }}>
+      <label htmlFor={def.id} className="font-label-sm uppercase tracking-[0.38em] text-[9px] block mb-2"
+        style={{ color: focused ? "var(--orange)" : "var(--fg-muted)", transition: "color 0.25s ease" }}>
+        {def.label}{def.required && <span style={{ color: "#eb4511", marginLeft: "4px" }}>*</span>}
       </label>
-
       {def.type === "textarea" ? (
-        <textarea
-          id={def.id}
-          rows={3}
-          value={value}
-          placeholder={def.placeholder}
-          onChange={e => onChange(e.target.value)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          style={base}
-          className="block placeholder:text-[var(--fg-faint)]"
-        />
+        <textarea id={def.id} rows={4} value={value} placeholder={def.placeholder}
+          onChange={e => onChange(e.target.value)} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+          style={base} className="block placeholder:text-[var(--fg-faint)]" />
       ) : (
-        <input
-          id={def.id}
-          type={def.type}
-          value={value}
-          placeholder={def.placeholder}
-          onChange={e => onChange(e.target.value)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          style={{ ...base, display: "block" }}
-          className="placeholder:text-[var(--fg-faint)]"
-        />
+        <input id={def.id} type={def.type} value={value} placeholder={def.placeholder}
+          onChange={e => onChange(e.target.value)} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+          style={{ ...base, display: "block" }} className="placeholder:text-[var(--fg-faint)]" />
       )}
-
-      <div
-        className="w-full h-px mt-1 transition-colors duration-300"
-        style={{ background: focused ? "#eb4511" : "var(--border-strong)" }}
-      />
+      <div className="w-full h-px mt-1 transition-colors duration-300"
+        style={{ background: focused ? "#eb4511" : "var(--border-strong)" }} />
     </motion.div>
   );
 }
 
-/* ─── form block ─── */
-function FormBlock({
-  fields,
-  type,
-  onSubmit,
-}: {
-  fields: FieldDef[];
-  type: "verify" | "reviewer";
-  onSubmit: () => void;
-}) {
-  const [values,      setValues]      = useState<Record<string, string>>(
-    Object.fromEntries(fields.map(f => [f.id, ""]))
+function Success() {
+  return (
+    <motion.div key="success" className="flex flex-col items-start gap-8 py-4"
+      initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease }}>
+      <div className="relative w-[56px] h-[56px]">
+        <div className="absolute inset-0 rounded-full border" style={{ borderColor: "var(--orange-dim)" }} />
+        <div className="absolute inset-[7px] rounded-full border" style={{ borderColor: "var(--orange-tint)" }} />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-[11px] h-[11px] rounded-full" style={{ background: "#eb4511", boxShadow: "0 0 14px 4px var(--orange-dim)" }} />
+        </div>
+      </div>
+      <div>
+        <div className="font-label-sm uppercase tracking-[0.42em] text-[9px] mb-5" style={{ color: "var(--orange-faint)" }}>Received</div>
+        <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, fontSize: "clamp(34px, 4vw, 56px)", lineHeight: 1.05, color: "var(--fg)" }}>
+          We&apos;ll be in touch<br />
+          <span style={{ fontStyle: "italic", fontWeight: 300, color: "var(--fg-muted)" }}>shortly.</span>
+        </h2>
+      </div>
+      <div className="w-8 h-px" style={{ background: "#eb4511", opacity: 0.7 }} />
+      <div className="text-[13px] font-light leading-[1.9] max-w-xs" style={{ color: "var(--fg-muted)" }}>
+        We read every message personally and will get back to you soon.
+      </div>
+    </motion.div>
   );
-  const [submitting,  setSubmitting]  = useState(false);
-  const [error,       setError]       = useState<string | null>(null);
+}
+
+export default function ContactPage() {
+  const [values, setValues]     = useState({ name: "", email: "", message: "" });
+  const [submitting, setSubmitting] = useState(false);
+  const [sent, setSent]         = useState(false);
+  const [error, setError]       = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
-    setError(null);
+    setSubmitting(true); setError(null);
     try {
       const res = await fetch("/api/contact", {
-        method:  "POST",
-        headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ type, ...values }),
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "contact", ...values }),
       });
-      if (!res.ok) throw new Error("send failed");
-      onSubmit();
+      if (!res.ok) throw new Error();
+      setSent(true);
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -145,157 +92,14 @@ function FormBlock({
   };
 
   return (
-    <motion.form
-      key="form"
-      onSubmit={handleSubmit}
-      className="space-y-9 w-full"
-      initial={{ opacity: 0, y: 18 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -12 }}
-      transition={{ duration: 0.7, ease }}
-    >
-      {fields.map((f, i) => (
-        <Field
-          key={f.id}
-          def={f}
-          value={values[f.id]}
-          onChange={v => setValues(prev => ({ ...prev, [f.id]: v }))}
-          index={i}
-        />
-      ))}
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: "var(--bg-page)" }}>
+      <div className="fixed inset-0 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse 70% 55% at 50% 30%, var(--orange-tint) 0%, transparent 70%)" }} />
 
-      <div className="pt-4">
-        <motion.button
-          type="submit"
-          disabled={submitting}
-          className="relative font-label-sm uppercase tracking-[0.3em] text-[11px] py-2"
-          style={{ color: submitting ? "var(--fg-faint)" : "var(--fg)", background: "transparent" }}
-          initial="rest"
-          whileHover={submitting ? "rest" : "hover"}
-          animate="rest"
-          whileTap={{ scale: 0.98 }}
-        >
-          {submitting ? "Sending…" : "Submit"}
-          <motion.span
-            className="absolute bottom-0 left-0 h-[1px]"
-            style={{ background: "#eb4511" }}
-            variants={{
-              rest:  { width: "0%",   transition: { duration: 0.3, ease: "easeOut" } },
-              hover: { width: "100%", transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
-            }}
-          />
-        </motion.button>
-        {error && (
-          <p className="mt-3 font-label-sm text-[9px] tracking-[0.2em]" style={{ color: "#eb4511" }}>
-            {error}
-          </p>
-        )}
-        <p
-          className="mt-4 font-label-sm uppercase tracking-[0.32em] text-[8px]"
-          style={{ color: "var(--fg-faint)" }}
-        >
-          Fields marked * are required
-        </p>
-      </div>
-    </motion.form>
-  );
-}
+      <div className="relative z-10 flex-1 flex flex-col max-w-[760px] mx-auto w-full px-8 sm:px-12 lg:px-16 py-16 sm:py-20 lg:py-24">
 
-/* ─── success state ─── */
-function Success() {
-  return (
-    <motion.div
-      key="success"
-      className="flex flex-col items-start gap-8 py-4"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.9, ease }}
-    >
-      <div className="relative w-[56px] h-[56px]">
-        <div className="absolute inset-0 rounded-full border" style={{ borderColor: "var(--orange-dim)" }} />
-        <div className="absolute inset-[7px] rounded-full border" style={{ borderColor: "var(--orange-tint)" }} />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div
-            className="w-[11px] h-[11px] rounded-full"
-            style={{ background: "#eb4511", boxShadow: "0 0 14px 4px var(--orange-dim)" }}
-          />
-        </div>
-      </div>
-
-      <div>
-        <p
-          className="font-label-sm uppercase tracking-[0.42em] text-[9px] mb-5"
-          style={{ color: "var(--orange-faint)" }}
-        >
-          Received
-        </p>
-        <h2
-          style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontWeight: 400,
-            fontSize: "clamp(34px, 4vw, 56px)",
-            lineHeight: 1.05,
-            color: "var(--fg)",
-          }}
-        >
-          We&apos;ll be in touch
-          <br />
-          <span style={{ fontStyle: "italic", fontWeight: 300, color: "var(--fg-muted)" }}>
-            shortly.
-          </span>
-        </h2>
-      </div>
-
-      <div className="w-8 h-px" style={{ background: "#eb4511", opacity: 0.7 }} />
-
-      <p
-        className="text-[13px] font-light leading-[1.9] max-w-xs"
-        style={{ color: "var(--fg-muted)" }}
-      >
-        We review every submission personally and will reach out to schedule next steps.
-      </p>
-    </motion.div>
-  );
-}
-
-/* ─── page ─── */
-type Path = "verify" | "reviewer" | null;
-
-export default function ContactPage() {
-  const [path,  setPath]  = useState<Path>(null);
-  const [sent,  setSent]  = useState(false);
-
-  const choosePath = (p: Path) => {
-    setSent(false);
-    setPath(p);
-  };
-
-  return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ backgroundColor: "var(--bg-page)" }}
-    >
-      {/* Ambient glow */}
-      <div
-        className="fixed inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 55% at 50% 30%, var(--orange-tint) 0%, transparent 70%)",
-        }}
-      />
-
-      {/* ── Main ── */}
-      <div className="relative z-10 flex-1 flex flex-col max-w-[1100px] mx-auto w-full px-8 sm:px-12 lg:px-16 py-16 sm:py-20 lg:py-24">
-
-        {/* Back button */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          className="mb-10"
-        >
-          <Link
-            href="/"
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="mb-10">
+          <Link href="/"
             className="inline-flex items-center gap-2 font-label-sm uppercase tracking-[0.32em] text-[10px] transition-colors duration-200"
             style={{ color: "var(--fg-faint)" }}
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg-muted)")}
@@ -305,179 +109,51 @@ export default function ContactPage() {
           </Link>
         </motion.div>
 
-        {/* Section marker */}
-        <motion.div
-          className="flex items-center gap-4 mb-14"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.9 }}
-        >
+        <motion.div className="flex items-center gap-4 mb-14" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.9 }}>
           <div className="w-8 h-px" style={{ background: "var(--border)" }} />
-          <span
-            className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
-            style={{ color: "var(--orange-faint)" }}
-          >
-            Get in touch
-          </span>
+          <div className="font-label-sm uppercase tracking-[0.42em] text-[9px]" style={{ color: "var(--orange-faint)" }}>Contact</div>
           <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
         </motion.div>
 
-        {/* Path selector */}
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 gap-0 mb-0"
-          style={{ borderBottom: path ? "1px solid var(--border)" : "none" }}
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.1, ease }}
+        <motion.h1
+          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400, fontSize: "clamp(36px, 5vw, 64px)", lineHeight: 1.05, color: "var(--fg)", marginBottom: "8px" }}
+          initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.1, ease }}
         >
-          {([
-            {
-              key:      "verify"   as Path,
-              eyebrow:  "Student / Engineer",
-              headline: "Get Verified",
-              body:     "You built something real. Let a senior engineer verify it in 45 minutes.",
-            },
-            {
-              key:      "reviewer" as Path,
-              eyebrow:  "Senior ML Engineer",
-              headline: "Become a Reviewer",
-              body:     "You can tell in 60 seconds. Join us as a reviewer and shape the standard.",
-            },
-          ] as const).map((opt, i) => {
-            const active = path === opt.key;
-            const faded  = path !== null && !active;
-
-            return (
-              <motion.button
-                key={opt.key}
-                onClick={() => choosePath(active ? null : opt.key)}
-                className={`relative text-left px-0 py-10 sm:py-12 flex flex-col gap-4 overflow-hidden ${
-                  i === 0
-                    ? "border-b sm:border-b-0 sm:border-r sm:pr-12"
-                    : "sm:pl-12"
-                }`}
-                style={{
-                  borderColor: "var(--border)",
-                  opacity: faded ? 0.25 : 1,
-                  transition: "opacity 0.4s ease",
-                }}
-                initial="rest"
-                whileHover={active ? "active" : faded ? "rest" : "hover"}
-                animate={active ? "active" : "rest"}
-                whileTap={{ scale: 0.98 }}
-              >
-                {/* Hover glow */}
-                <motion.div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background: i === 0
-                      ? "radial-gradient(ellipse 80% 100% at 20% 50%, var(--orange-tint) 0%, transparent 70%)"
-                      : "radial-gradient(ellipse 80% 100% at 80% 50%, var(--orange-tint) 0%, transparent 70%)",
-                  }}
-                  variants={{ rest: { opacity: 0 }, hover: { opacity: 1 }, active: { opacity: 0 } }}
-                  transition={{ duration: 0.4 }}
-                />
-
-                {/* Eyebrow */}
-                <motion.span
-                  className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
-                  variants={{
-                    rest:   { color: "var(--fg-faint)", x: 0   },
-                    hover:  { color: "var(--orange-muted)",   x: i === 0 ? 4 : -4 },
-                    active: { color: "var(--orange-muted)",   x: 0   },
-                  }}
-                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  {opt.eyebrow}
-                </motion.span>
-
-                {/* Headline */}
-                <motion.span
-                  style={{
-                    fontFamily: "'Cormorant Garamond', Georgia, serif",
-                    fontWeight: 400,
-                    fontStyle: active ? "italic" : "normal",
-                    fontSize: "clamp(32px, 4vw, 58px)",
-                    lineHeight: 1.0,
-                    display: "block",
-                    transition: "font-style 0.2s ease",
-                  }}
-                  variants={{
-                    rest:   { color: "var(--fg)",       scale: 1,    x: 0   },
-                    hover:  { color: "var(--fg)",        scale: 1.03, x: i === 0 ? 6 : -6 },
-                    active: { color: "var(--orange)",    scale: 1,    x: 0   },
-                  }}
-                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  {opt.headline}
-                </motion.span>
-
-                {/* Body */}
-                <motion.span
-                  className="text-[13px] font-light leading-relaxed max-w-xs block"
-                  variants={{
-                    rest:   { color: "var(--fg-faint)", x: 0   },
-                    hover:  { color: "var(--fg-muted)", x: i === 0 ? 4 : -4 },
-                    active: { color: "var(--fg-muted)", x: 0   },
-                  }}
-                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  {opt.body}
-                </motion.span>
-
-                {/* Underline — partial on hover, full when active */}
-                <motion.div
-                  className="absolute bottom-0 left-0 h-[1px]"
-                  style={{ background: "#eb4511" }}
-                  variants={{
-                    rest:   { width: "0%",   opacity: 0.6 },
-                    hover:  { width: "35%",  opacity: 0.5 },
-                    active: { width: "100%", opacity: 1   },
-                  }}
-                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                />
-              </motion.button>
-            );
-          })}
+          Contact Us
+        </motion.h1>
+        <motion.div
+          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: "italic", fontWeight: 300, fontSize: "clamp(16px, 2vw, 22px)", color: "var(--fg-faint)", marginBottom: "48px" }}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.2 }}
+        >
+          Every message is read by a founder.
         </motion.div>
 
-        {/* Form area */}
-        <AnimatePresence mode="wait">
-          {path && (
-            <motion.div
-              key={path}
-              className="mt-16 sm:mt-20 max-w-xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.65, ease }}
-            >
-              {/* Form label */}
-              <div className="mb-10">
-                <span
-                  className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
-                  style={{ color: "var(--fg-faint)" }}
-                >
-                  {path === "verify" ? "Verification Application" : "Reviewer Application"}
-                </span>
-              </div>
+        <motion.div className="w-full h-px mb-12" style={{ background: "var(--border)" }}
+          initial={{ scaleX: 0, originX: "left" }} animate={{ scaleX: 1 }} transition={{ duration: 0.9, delay: 0.25, ease }} />
 
-              <AnimatePresence mode="wait">
-                {sent ? (
-                  <Success key="success" />
-                ) : (
-                  <FormBlock
-                    key={path + "-form"}
-                    fields={path === "verify" ? verifyFields : reviewerFields}
-                    type={path!}
-                    onSubmit={() => setSent(true)}
-                  />
-                )}
-              </AnimatePresence>
-            </motion.div>
+        <AnimatePresence mode="wait">
+          {sent ? <Success key="success" /> : (
+            <motion.form key="form" onSubmit={handleSubmit} className="space-y-9 max-w-xl"
+              initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.7, ease }}>
+              {fields.map((f, i) => (
+                <Field key={f.id} def={f} value={values[f.id as keyof typeof values]}
+                  onChange={v => setValues(prev => ({ ...prev, [f.id]: v }))} index={i} />
+              ))}
+              <div className="pt-4">
+                <motion.button type="submit" disabled={submitting}
+                  className="relative font-label-sm uppercase tracking-[0.3em] text-[11px] py-2"
+                  style={{ color: submitting ? "var(--fg-faint)" : "var(--fg)", background: "transparent" }}
+                  initial="rest" whileHover={submitting ? "rest" : "hover"} animate="rest" whileTap={{ scale: 0.98 }}>
+                  {submitting ? "Sending…" : "Send Message"}
+                  <motion.span className="absolute bottom-0 left-0 h-[1px]" style={{ background: "#eb4511" }}
+                    variants={{ rest: { width: "0%", transition: { duration: 0.3, ease: "easeOut" } }, hover: { width: "100%", transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } } }} />
+                </motion.button>
+                {error && <div className="mt-3 font-label-sm text-[9px] tracking-[0.2em]" style={{ color: "#eb4511" }}>{error}</div>}
+                <div className="mt-4 font-label-sm uppercase tracking-[0.32em] text-[8px]" style={{ color: "var(--fg-faint)" }}>Fields marked * are required</div>
+              </div>
+            </motion.form>
           )}
         </AnimatePresence>
-
       </div>
     </div>
   );

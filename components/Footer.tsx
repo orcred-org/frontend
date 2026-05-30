@@ -4,8 +4,8 @@ import Link from "next/link";
 
 const primaryLinks = [
   { label: "About Us",          href: "/who-we-are" },
-  { label: "Contact Us",        href: "/contact"    },
-  { label: "Become a Reviewer", href: "/contact"    },
+  { label: "Contact Us",        href: "/contact"           },
+  { label: "Become a Reviewer", href: "/become-a-reviewer" },
 ];
 
 const legalLinks = [
