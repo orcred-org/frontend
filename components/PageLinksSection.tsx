@@ -8,31 +8,30 @@ const ease = [0.22, 1, 0.36, 1] as const;
 const cards = [
   {
     href:  "/who-we-are",
-    label: "About Us",
     title: "About Us",
     desc:  "Two founders, a clear problem, and a standard that doesn't bend. Learn what Orcred is and why we built it.",
     cta:   "Learn more",
-    // placeholder bg — swap inner div for an <img> when you have a photo
-    bg:    "#0f0d0c",
-    watermark: "ABOUT",
+    // Two engineers collaborating at a laptop — Unsplash (free to use)
+    img:   "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=420&fit=crop&auto=format&q=80",
+    alt:   "Two people collaborating at a laptop",
   },
   {
     href:  "/contact",
-    label: "Contact Us",
     title: "Contact Us",
     desc:  "Questions about verification, the process, or pricing. Reach us directly — every message is read by a founder.",
     cta:   "Get in touch",
-    bg:    "#1a1512",
-    watermark: "CONTACT",
+    // Clean minimal desk/workspace — Unsplash
+    img:   "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=420&fit=crop&auto=format&q=80",
+    alt:   "Minimal office workspace",
   },
   {
     href:  "/contact",
-    label: "Become a Reviewer",
     title: "Become a Reviewer",
-    desc:  "Senior engineer with 5+ years in AI/ML? Five founding reviewer spots remain. Join us and help set the standard from day one.",
+    desc:  "Senior engineer with 5+ years in AI/ML? Five founding reviewer spots remain. Join us and help set the standard.",
     cta:   "Apply",
-    bg:    "#0f0d0c",
-    watermark: "REVIEW",
+    // Code review / engineer at screen — Unsplash
+    img:   "https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=800&h=420&fit=crop&auto=format&q=80",
+    alt:   "Engineer reviewing code on screen",
   },
 ];
 
@@ -51,7 +50,7 @@ export default function PageLinksSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {cards.map((card, i) => (
             <motion.div
-              key={card.href + card.label}
+              key={card.title}
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
@@ -62,52 +61,32 @@ export default function PageLinksSection() {
                 className="group flex flex-col h-full"
                 style={{ textDecoration: "none" }}
               >
-                {/* Image block — replace with <img> / next/image when ready */}
+                {/* Image */}
                 <div
                   className="relative overflow-hidden"
-                  style={{
-                    backgroundColor: card.bg,
-                    height: "200px",
-                  }}
+                  style={{ height: "220px" }}
                 >
-                  {/* Watermark */}
-                  <div
-                    className="absolute inset-0 flex items-center justify-center select-none pointer-events-none"
-                    style={{
-                      fontWeight:    700,
-                      fontSize:      "clamp(48px, 8vw, 80px)",
-                      letterSpacing: "-0.04em",
-                      color:         "rgba(255,255,255,0.06)",
-                      userSelect:    "none",
-                    }}
-                  >
-                    {card.watermark}
-                  </div>
-                  {/* Orange circle mark */}
-                  <div
-                    className="absolute bottom-4 right-4"
-                    style={{
-                      width:           "28px",
-                      height:          "28px",
-                      borderRadius:    "50%",
-                      backgroundColor: "#eb4511",
-                      opacity:         0.7,
-                    }}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={card.img}
+                    alt={card.alt}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
                   />
-                  {/* Hover overlay */}
+                  {/* Dark overlay — lightens on hover */}
                   <div
-                    className="absolute inset-0 transition-opacity duration-300"
-                    style={{
-                      backgroundColor: "#eb4511",
-                      opacity:         0,
-                    }}
+                    className="absolute inset-0 transition-opacity duration-300 group-hover:opacity-0"
+                    style={{ backgroundColor: "rgba(0,0,0,0.18)" }}
                   />
                 </div>
 
                 {/* Card body */}
                 <div
                   className="flex-1 flex flex-col pt-5 pb-2"
-                  style={{ borderLeft: "1px solid var(--border)", paddingLeft: "20px", marginTop: "0px" }}
+                  style={{
+                    borderLeft:  "1px solid var(--border)",
+                    paddingLeft: "20px",
+                  }}
                 >
                   {/* Title */}
                   <div
@@ -126,20 +105,20 @@ export default function PageLinksSection() {
                   {/* Description */}
                   <div
                     style={{
-                      fontSize:   "clamp(13px, 1.1vw, 14px)",
-                      fontWeight: 400,
-                      lineHeight: 1.8,
-                      color:      "rgba(15,13,12,0.6)",
+                      fontSize:     "clamp(13px, 1.1vw, 14px)",
+                      fontWeight:   400,
+                      lineHeight:   1.8,
+                      color:        "rgba(15,13,12,0.6)",
                       marginBottom: "16px",
-                      flex: 1,
+                      flex:         1,
                     }}
                   >
                     {card.desc}
                   </div>
 
-                  {/* CTA link */}
+                  {/* CTA */}
                   <div
-                    className="flex items-center gap-2 font-label-sm uppercase tracking-[0.18em] text-[11px] transition-colors duration-200"
+                    className="flex items-center gap-2 font-label-sm uppercase tracking-[0.18em] text-[11px]"
                     style={{ color: "#eb4511", fontWeight: 600 }}
                   >
                     {card.cta}
