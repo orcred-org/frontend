@@ -6,8 +6,8 @@ import Link from "next/link";
 
 const navLinks = [
   { label: "Standard", href: "#story"      },
-  { label: "Process",  href: "#process"    },
   { label: "Scoring",  href: "#scores"     },
+  { label: "Process",  href: "#process"    },
   { label: "Compare",  href: "#comparison" },
 ];
 
