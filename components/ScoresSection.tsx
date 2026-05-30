@@ -44,24 +44,6 @@ export default function ScoresSection() {
     >
       <div className="max-w-[1400px] mx-auto">
 
-        {/* Section label */}
-        <motion.div
-          className="flex items-center gap-5 mb-10"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-        >
-          <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-          <div
-            className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
-            style={{ color: "var(--fg-faint)" }}
-          >
-            Assessment Framework
-          </div>
-          <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-        </motion.div>
-
         {/* Main heading */}
         <motion.div
           className="mb-12 sm:mb-16"
@@ -135,7 +117,7 @@ export default function ScoresSection() {
                   <div
                     style={{
                       fontSize:      "clamp(15px, 1.3vw, 17px)",
-                      fontWeight:    400,
+                      fontWeight:    600,
                       letterSpacing: "-0.01em",
                       lineHeight:    1.3,
                       color:         "#0f0d0c",
