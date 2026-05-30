@@ -161,8 +161,8 @@ export default function ProcessSection() {
             {/* Heading */}
             <motion.div
               style={{
-                fontSize:      "clamp(32px, 3.8vw, 52px)",
-                fontWeight:    600,
+                fontSize:      "clamp(22px, 2.8vw, 38px)",
+                fontWeight:    400,
                 letterSpacing: "-0.02em",
                 lineHeight:    1.15,
                 color:         "#0f0d0c",
