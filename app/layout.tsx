@@ -7,7 +7,27 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Orcred | The Standard for AI/ML Intelligence",
-  description: "Get your AI/ML project reviewed by a senior engineer. Walk away with a credential that actually means something.",
+  description: "Get your AI/ML project reviewed by a senior engineer in a live 45-minute session. Walk away with a verified credential scored out of 100. 40–60% pass rate by design.",
+  metadataBase: new URL("https://orcred.com"),
+  openGraph: {
+    title: "Orcred | The Standard for AI/ML Intelligence",
+    description: "Get your AI/ML project reviewed by a senior engineer in a live 45-minute session. Walk away with a verified credential scored out of 100.",
+    url: "https://orcred.com",
+    siteName: "Orcred",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary",
+    title: "Orcred | The Standard for AI/ML Intelligence",
+    description: "Live technical verification for AI/ML engineers. One session. One score. A credential that holds.",
+  },
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
+  themeColor: "#eb4511",
 };
 
 export default function RootLayout({
