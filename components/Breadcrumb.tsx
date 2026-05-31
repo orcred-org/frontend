@@ -45,8 +45,7 @@ export default function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
               {item.href && !isLast ? (
                 <Link
                   href={item.href}
-                  className="font-label-sm uppercase tracking-[0.22em] text-[9px] transition-colors duration-200"
-                  style={{ color: "var(--fg-faint)" }}
+                  style={{ fontSize: "12px", fontWeight: 400, letterSpacing: "0.01em", color: "var(--fg-faint)", transition: "color 0.2s ease" }}
                   onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg-muted)")}
                   onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg-faint)")}
                 >
@@ -54,10 +53,11 @@ export default function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
                 </Link>
               ) : (
                 <span
-                  className="font-label-sm uppercase tracking-[0.22em] text-[9px]"
                   style={{
-                    color:      isLast ? "var(--fg-muted)" : "var(--fg-faint)",
-                    fontWeight: isLast ? 600 : 400,
+                    fontSize:      "12px",
+                    fontWeight:    isLast ? 500 : 400,
+                    letterSpacing: "0.01em",
+                    color:         isLast ? "var(--fg-muted)" : "var(--fg-faint)",
                   }}
                 >
                   {item.label}
