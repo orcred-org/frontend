@@ -145,12 +145,13 @@ function Stepper({ current }: { current: number }) {
                 borderRadius:    "50%",
                 flexShrink:      0,
                 backgroundColor: done || active ? "#eb4511" : "transparent",
-                border:          done || active ? "none" : "1.5px solid rgba(15,13,12,0.2)",
+                border:          active ? "2px solid #eb4511" : done ? "none" : "1.5px solid rgba(15,13,12,0.2)",
+                outline:         active ? "3px solid rgba(235,69,17,0.15)" : "none",
+                outlineOffset:   "2px",
                 display:         "flex",
                 alignItems:      "center",
                 justifyContent:  "center",
                 transition:      "all 0.3s ease",
-                boxShadow:       active ? "0 0 0 4px rgba(235,69,17,0.12)" : "none",
               }}>
                 {done ? (
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
