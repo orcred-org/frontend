@@ -27,7 +27,6 @@ export const metadata: Metadata = {
     shortcut: "/icon.svg",
     apple: "/icon.svg",
   },
-  themeColor: "#eb4511",
 };
 
 export default function RootLayout({
