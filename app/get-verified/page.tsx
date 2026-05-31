@@ -129,15 +129,16 @@ function Stepper({ current }: { current: number }) {
         const active = i === current;
         return (
           <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
-            {/* Row: connector · circle · connector */}
+            {/* Row: connector · circle · connector
+                Always render both sides — transparent on the outer edges so
+                the circle stays centred in every step slot. */}
             <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
-              {i > 0 && (
-                <div style={{
-                  flex: 1, height: "1.5px",
-                  backgroundColor: i <= current ? "#eb4511" : "rgba(15,13,12,0.14)",
-                  transition: "background-color 0.4s ease",
-                }} />
-              )}
+              {/* Left connector (transparent for first step) */}
+              <div style={{
+                flex: 1, height: "1.5px",
+                backgroundColor: i === 0 ? "transparent" : i <= current ? "#eb4511" : "rgba(15,13,12,0.14)",
+                transition: "background-color 0.4s ease",
+              }} />
 
               <div style={{
                 width:           "36px",
@@ -164,13 +165,12 @@ function Stepper({ current }: { current: number }) {
                 )}
               </div>
 
-              {i < STEPS.length - 1 && (
-                <div style={{
-                  flex: 1, height: "1.5px",
-                  backgroundColor: i < current ? "#eb4511" : "rgba(15,13,12,0.14)",
-                  transition: "background-color 0.4s ease",
-                }} />
-              )}
+              {/* Right connector (transparent for last step) */}
+              <div style={{
+                flex: 1, height: "1.5px",
+                backgroundColor: i === STEPS.length - 1 ? "transparent" : i < current ? "#eb4511" : "rgba(15,13,12,0.14)",
+                transition: "background-color 0.4s ease",
+              }} />
             </div>
 
             {/* Label */}
