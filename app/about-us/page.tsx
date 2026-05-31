@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -16,19 +17,9 @@ export default function AboutUsPage() {
         }}
       />
 
-      <main className="relative z-10 flex-1 max-w-[760px] mx-auto w-full px-8 sm:px-12 lg:px-16 py-16 sm:py-20 lg:py-24">
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "About Us" }]} />
 
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="mb-10">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 font-label-sm uppercase tracking-[0.32em] text-[10px] transition-colors duration-200"
-            style={{ color: "var(--fg-faint)" }}
-            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg-muted)")}
-            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "var(--fg-faint)")}
-          >
-            ← Home
-          </Link>
-        </motion.div>
+      <main className="relative z-10 flex-1 max-w-[760px] mx-auto w-full px-8 sm:px-12 lg:px-16 py-12 sm:py-16 lg:py-20">
 
         <motion.div className="flex items-center gap-4 mb-12" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.9 }}>
           <div className="w-8 h-px" style={{ background: "var(--border)" }} />
