@@ -27,7 +27,7 @@ export default function CtaSection() {
           <div className="w-6 h-px" style={{ backgroundColor: "#eb4511" }} />
         </motion.div>
 
-        <motion.h2
+        <motion.div
           className="mb-6"
           style={{ fontSize: "clamp(22px, 2.8vw, 38px)", fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.15, color: "#0f0d0c" }}
           initial={{ opacity: 0, y: 20 }}
@@ -36,7 +36,7 @@ export default function CtaSection() {
           transition={{ duration: 1, delay: 0.1, ease }}
         >
           If you built something real<br />and you understand it — come in.
-        </motion.h2>
+        </motion.div>
 
         <motion.p
           style={{ fontSize: "clamp(14px, 1.2vw, 16px)", lineHeight: 1.8, color: "#4a4440", maxWidth: "480px", margin: "0 auto 40px" }}
