@@ -30,8 +30,8 @@ export default function Footer() {
             <Link
               key={item.label}
               href={item.href}
-              className="font-label-sm uppercase tracking-widest text-[9px] transition-colors duration-200"
-              style={{ color: "var(--fg-muted)" }}
+              className="transition-colors duration-200"
+              style={{ fontSize: "12px", fontWeight: 400, letterSpacing: "0.01em", color: "var(--fg-muted)" }}
               onMouseEnter={e => (e.currentTarget.style.color = "var(--fg)")}
               onMouseLeave={e => (e.currentTarget.style.color = "var(--fg-muted)")}
             >
@@ -46,18 +46,15 @@ export default function Footer() {
             <Link
               key={item.label}
               href={item.href}
-              className="font-label-sm uppercase tracking-widest text-[9px] transition-colors duration-200"
-              style={{ color: "var(--fg-muted)" }}
+              className="transition-colors duration-200"
+              style={{ fontSize: "12px", fontWeight: 400, letterSpacing: "0.01em", color: "var(--fg-muted)" }}
               onMouseEnter={e => (e.currentTarget.style.color = "var(--fg)")}
               onMouseLeave={e => (e.currentTarget.style.color = "var(--fg-muted)")}
             >
               {item.label}
             </Link>
           ))}
-          <span
-            className="font-label-sm tracking-widest text-[9px] uppercase"
-            style={{ color: "var(--fg-faint)" }}
-          >
+          <span style={{ fontSize: "12px", fontWeight: 400, letterSpacing: "0.01em", color: "var(--fg-faint)" }}>
             © 2026 Orcred
           </span>
         </div>

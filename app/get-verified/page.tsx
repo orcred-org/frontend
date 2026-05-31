@@ -556,7 +556,7 @@ export default function GetVerifiedPage() {
         </motion.div>
 
         {/* Footer note */}
-        <div className="mt-5 font-label-sm uppercase tracking-[0.3em] text-[8px]" style={{ color: "var(--fg-faint)" }}>
+        <div className="mt-5" style={{ fontSize: "11px", fontWeight: 400, color: "var(--fg-faint)" }}>
           Your information is handled in accordance with our{" "}
           <Link href="/privacy" style={{ color: "rgba(15,13,12,0.45)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
             Privacy Policy
