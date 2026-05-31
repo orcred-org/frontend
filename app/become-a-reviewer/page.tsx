@@ -24,6 +24,9 @@ const fields: FieldDef[] = [
     hint: "We match candidates to reviewers by domain — be specific.",                                                         type: "textarea", required: true               },
   { id: "why",     label: "Why do you want to be an Orcred reviewer?",
     placeholder: "What draws you to this? You can be direct.",                                                                 type: "textarea", required: true               },
+  { id: "timezone", label: "Timezone & Availability",
+    placeholder: "e.g. IST — available weekday evenings and weekend mornings",
+    hint: "We'll use this to propose a calibration call time in our first reply.",                                              type: "text",     required: true               },
 ];
 
 /* ── Perks list ── */
@@ -336,6 +339,10 @@ export default function BecomeAReviewerPage() {
                         {/* Full-width: Why */}
                         <Field def={fields[7]} value={values[fields[7].id]}
                           onChange={v => setValues(prev => ({ ...prev, [fields[7].id]: v }))} />
+
+                        {/* Full-width: Timezone & availability */}
+                        <Field def={fields[8]} value={values[fields[8].id]}
+                          onChange={v => setValues(prev => ({ ...prev, [fields[8].id]: v }))} />
 
                       </div>
 
