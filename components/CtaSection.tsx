@@ -57,7 +57,7 @@ export default function CtaSection() {
           <Link
             href="/get-verified"
             className="inline-flex items-center px-10 py-4 font-label-sm uppercase tracking-[0.2em] text-[11px] transition-all duration-200"
-            style={{ backgroundColor: "#eb4511", color: "#ffffff", border: "1px solid #eb4511" }}
+            style={{ backgroundColor: "#eb4511", color: "#ffffff", border: "1px solid #eb4511", borderRadius: "100px" }}
             onMouseEnter={e => {
               (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
               (e.currentTarget as HTMLElement).style.color = "#eb4511";

@@ -20,19 +20,17 @@ function scrollTo(href: string) {
 export default function Navbar() {
   const { scrollY } = useScroll();
 
-  /* Wordmark dissolves into the orange mark as you scroll down.
-     Container width collapses (clips cleanly), text fades + slides left. */
-  const wordmarkOpacity       = useTransform(scrollY, [0, 60], [1, 0]);
-  const wordmarkX             = useTransform(scrollY, [0, 60], [0, -22]);
-  const wordmarkContainerWidth = useTransform(scrollY, [0, 60], [100, 0]);
+  /* Wordmark dissolves into the orange mark as you scroll */
+  const wordmarkOpacity        = useTransform(scrollY, [0, 60], [1, 0]);
+  const wordmarkX              = useTransform(scrollY, [0, 60], [0, -20]);
+  const wordmarkContainerWidth = useTransform(scrollY, [0, 60], [72, 0]);
 
   return (
     <motion.header
       className="sticky top-0 z-50"
       style={{
         backgroundColor: "var(--bg-page)",
-        borderBottom: "1px solid #e2dbd4",
-        boxShadow: "0 1px 12px rgba(0,0,0,0.05)",
+        borderBottom: "1px solid rgba(15,13,12,0.08)",
       }}
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
@@ -46,27 +44,23 @@ export default function Navbar() {
           className="flex items-center overflow-hidden"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
-          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" style={{ flexShrink: 0 }}>
+          <svg width="28" height="28" viewBox="0 0 42 42" fill="none" style={{ flexShrink: 0 }}>
             <circle cx="21" cy="21" r="20" fill="#eb4511"/>
           </svg>
 
-          {/* Collapsing container clips the wordmark cleanly — no artifact */}
-          <motion.div style={{
-            width:    wordmarkContainerWidth,
-            overflow: "hidden",
-            flexShrink: 0,
-          }}>
+          {/* Wordmark — collapses into mark on scroll */}
+          <motion.div style={{ width: wordmarkContainerWidth, overflow: "hidden", flexShrink: 0 }}>
             <motion.span
               style={{
                 opacity:       wordmarkOpacity,
                 x:             wordmarkX,
                 display:       "block",
                 whiteSpace:    "nowrap",
-                paddingLeft:   "8px",
+                paddingLeft:   "7px",
                 fontFamily:    "Inter, system-ui, sans-serif",
                 fontWeight:    700,
-                fontSize:      "26px",
-                letterSpacing: "-0.01em",
+                fontSize:      "18px",
+                letterSpacing: "-0.02em",
                 color:         "#0f0d0c",
               }}
             >
@@ -84,7 +78,7 @@ export default function Navbar() {
                 href={link.href}
                 className="transition-colors duration-200"
                 style={{ fontFamily: "Inter, system-ui, sans-serif", fontWeight: 500, fontSize: "14px", letterSpacing: "-0.01em", color: "#4a4440" }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#1a1714")}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#0f0d0c")}
                 onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "#4a4440")}
               >
                 {link.label}
@@ -95,7 +89,7 @@ export default function Navbar() {
                 onClick={() => scrollTo(link.href)}
                 className="transition-colors duration-200"
                 style={{ fontFamily: "Inter, system-ui, sans-serif", fontWeight: 500, fontSize: "14px", letterSpacing: "-0.01em", color: "#4a4440", background: "none", border: "none", cursor: "pointer" }}
-                onMouseEnter={e => (e.currentTarget.style.color = "#1a1714")}
+                onMouseEnter={e => (e.currentTarget.style.color = "#0f0d0c")}
                 onMouseLeave={e => (e.currentTarget.style.color = "#4a4440")}
               >
                 {link.label}
@@ -104,11 +98,16 @@ export default function Navbar() {
           )}
         </nav>
 
-        {/* Apply Now */}
+        {/* Apply Now — squircle */}
         <Link
           href="/get-verified"
-          className="font-label-sm uppercase tracking-[0.2em] text-[11px] px-5 py-2.5 transition-all duration-200"
-          style={{ backgroundColor: "#eb4511", color: "#ffffff", border: "1px solid #eb4511" }}
+          className="font-label-sm uppercase tracking-[0.15em] text-[11px] px-5 py-2.5 transition-all duration-200"
+          style={{
+            backgroundColor: "#eb4511",
+            color:            "#ffffff",
+            border:           "1px solid #eb4511",
+            borderRadius:     "100px",
+          }}
           onMouseEnter={e => {
             (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
             (e.currentTarget as HTMLElement).style.color = "#eb4511";

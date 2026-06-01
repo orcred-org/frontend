@@ -528,6 +528,7 @@ export default function GetVerifiedPage() {
                     backgroundColor: canProceed() ? "#eb4511" : "rgba(15,13,12,0.07)",
                     color:           canProceed() ? "#ffffff" : "rgba(15,13,12,0.25)",
                     border:          "none",
+                    borderRadius:    "100px",
                     cursor:          canProceed() ? "pointer" : "default",
                   }}
                   whileTap={canProceed() ? { scale: 0.98 } : {}}
@@ -544,6 +545,7 @@ export default function GetVerifiedPage() {
                     backgroundColor: canProceed() && !submitting ? "#eb4511" : "rgba(15,13,12,0.07)",
                     color:           canProceed() && !submitting ? "#ffffff" : "rgba(15,13,12,0.25)",
                     border:          "none",
+                    borderRadius:    "100px",
                     cursor:          canProceed() && !submitting ? "pointer" : "default",
                   }}
                   whileTap={canProceed() ? { scale: 0.98 } : {}}
