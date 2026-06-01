@@ -63,12 +63,13 @@ function Dot({
 
 /* ── Sticky timeline ── */
 function Timeline({ progress }: { progress: ReturnType<typeof useSpring> }) {
-  const SPACING = 110;
+  // 80% of viewport height spread across dots
+  const SPACING = Math.round((typeof window !== "undefined" ? window.innerHeight : 800) * 0.38);
   const TOTAL   = SPACING * 2;
 
   const fillH = useTransform(progress, [0, 1], [0, TOTAL]);
 
-  const thresholds = [0.05, 0.45, 0.82];
+  const thresholds = [0.02, 0.45, 0.88];
   const tops       = [0, SPACING, TOTAL];
 
   return (
@@ -88,10 +89,10 @@ function Timeline({ progress }: { progress: ReturnType<typeof useSpring> }) {
           left:            "50%",
           top:             0,
           bottom:          0,
-          width:           2,
+          width:           3,
           backgroundColor: "rgba(15,13,12,0.1)",
           transform:       "translateX(-50%)",
-          borderRadius:    2,
+          borderRadius:    3,
         }} />
 
         {/* Orange fill with glow */}
@@ -99,12 +100,12 @@ function Timeline({ progress }: { progress: ReturnType<typeof useSpring> }) {
           position:        "absolute",
           left:            "50%",
           top:             0,
-          width:           2,
+          width:           3,
           height:          fillH,
           backgroundColor: "#eb4511",
           transform:       "translateX(-50%)",
-          borderRadius:    2,
-          boxShadow:       "0 0 8px 3px rgba(235,69,17,0.45), 0 0 2px 1px rgba(235,69,17,0.8)",
+          borderRadius:    3,
+          boxShadow:       "0 0 12px 4px rgba(235,69,17,0.5), 0 0 3px 1px rgba(235,69,17,0.9)",
         }} />
 
         {/* Dots */}
@@ -121,7 +122,7 @@ function Timeline({ progress }: { progress: ReturnType<typeof useSpring> }) {
 function TextPanel({ panel }: { panel: (typeof panels)[number] }) {
   return (
     <div
-      className="py-20 sm:py-24"
+      className="py-28 sm:py-36"
       style={{ borderBottom: "1px solid rgba(15,13,12,0.1)" }}
     >
       <motion.div
@@ -163,10 +164,10 @@ export default function PlatformSection() {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start center", "end center"],
+    offset: ["start end", "end start"],
   });
 
-  const progress = useSpring(scrollYProgress, { stiffness: 60, damping: 20 });
+  const progress = useSpring(scrollYProgress, { stiffness: 40, damping: 25 });
 
   return (
     <section ref={sectionRef} id="story" style={{ backgroundColor: "var(--bg-page)" }}>
