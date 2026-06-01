@@ -3,101 +3,90 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 
-const ease = [0.22, 1, 0.36, 1] as const;
-
 const panels = [
-  {
-    num: "01",
-    headline: "Everyone has a project.",
-    body: "Someone spent six months building something real. Someone else spent a weekend prompting ChatGPT. Right now their portfolios look identical — and that gap is costing real builders their careers.",
-  },
-  {
-    num: "02",
-    headline: "45 minutes. One engineer. Your work.",
-    body: "Not a quiz. Not a take-home test. A real conversation about the project you built, every decision you made, every tradeoff you chose. The ones who built it for real talk about it differently.",
-  },
-  {
-    num: "03",
-    headline: "Now there's proof.",
-    body: "An Orcred Score. A verified credential backed by a senior engineer's sign-off. Something you carry into any room — a real engineer reviewed this work. It passed.",
-  },
+  { num: "01", eyebrow: "The Problem",  headline: "Everyone has\na project."       },
+  { num: "02", eyebrow: "The Session",  headline: "45 minutes.\nOne engineer."     },
+  { num: "03", eyebrow: "The Proof",    headline: "Now there's\nproof."            },
 ];
 
-/* ── Visual 1: signal grid ── */
+/* ── Large signal grid ── */
 function SignalGrid() {
   const total = 24; const signal = 13;
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 24 }}>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 12 }}>
-        {Array.from({ length: total }).map((_, i) => (
-          <div key={i} style={{
-            width: i === signal ? 10 : 7,
-            height: i === signal ? 10 : 7,
-            borderRadius: "50%",
-            backgroundColor: i === signal ? "#eb4511" : "rgba(15,13,12,0.15)",
-            boxShadow: i === signal ? "0 0 10px 3px rgba(235,69,17,0.3)" : "none",
-            alignSelf: "center", justifySelf: "center",
-          }} />
-        ))}
-      </div>
-      <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(15,13,12,0.35)" }}>
-        1 signal in 24
-      </div>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 22 }}>
+      {Array.from({ length: total }).map((_, i) => (
+        <div key={i} style={{
+          width:        i === signal ? 18 : 11,
+          height:       i === signal ? 18 : 11,
+          borderRadius: "50%",
+          backgroundColor: i === signal ? "#eb4511" : "rgba(15,13,12,0.11)",
+          boxShadow:    i === signal ? "0 0 22px 8px rgba(235,69,17,0.22)" : "none",
+          alignSelf: "center", justifySelf: "center",
+        }} />
+      ))}
     </div>
   );
 }
 
-/* ── Visual 2: clock arc ── */
+/* ── Large clock ── */
 function ClockVisual() {
-  const r = 72; const circ = 2 * Math.PI * r;
+  const r = 128;
+  const ticks = [0, 90, 180, 270].map(deg => {
+    const rad = ((deg - 90) * Math.PI) / 180;
+    return {
+      x1: 160 + (r - 10) * Math.cos(rad), y1: 160 + (r - 10) * Math.sin(rad),
+      x2: 160 + (r + 5)  * Math.cos(rad), y2: 160 + (r + 5)  * Math.sin(rad),
+    };
+  });
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
-      <div style={{ position: "relative", width: 180, height: 180 }}>
-        <svg viewBox="0 0 180 180" style={{ width: "100%", height: "100%", overflow: "visible" }}>
-          <circle cx="90" cy="90" r={r} fill="none" stroke="rgba(15,13,12,0.08)" strokeWidth="1.5" />
-          {[0, 90, 180, 270].map((deg, i) => {
-            const rad = ((deg - 90) * Math.PI) / 180;
-            return <line key={i}
-              x1={90 + (r - 6) * Math.cos(rad)} y1={90 + (r - 6) * Math.sin(rad)}
-              x2={90 + (r + 3) * Math.cos(rad)} y2={90 + (r + 3) * Math.sin(rad)}
-              stroke="rgba(15,13,12,0.2)" strokeWidth="1" />;
-          })}
-        </svg>
-        <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ fontSize: 40, fontWeight: 600, letterSpacing: "-0.04em", lineHeight: 1, color: "#0f0d0c" }}>45</div>
-          <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(15,13,12,0.35)", marginTop: 4 }}>min</div>
-        </div>
-      </div>
-      <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(15,13,12,0.35)" }}>
-        One session
+    <div style={{ position: "relative", width: 320, height: 320 }}>
+      <svg viewBox="0 0 320 320" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+        <circle cx="160" cy="160" r={r} fill="none" stroke="rgba(15,13,12,0.07)" strokeWidth="1.5" />
+        {ticks.map((t, i) => (
+          <line key={i} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="rgba(15,13,12,0.18)" strokeWidth="1.5" />
+        ))}
+        {["0", "15", "30", "45"].map((label, i) => {
+          const rad = (i * 90 - 90) * Math.PI / 180;
+          return (
+            <text key={i}
+              x={160 + (r + 22) * Math.cos(rad)} y={160 + (r + 22) * Math.sin(rad)}
+              textAnchor="middle" dominantBaseline="central"
+              style={{ fill: "rgba(15,13,12,0.28)", fontSize: "11px", letterSpacing: "0.05em" }}
+            >{label}</text>
+          );
+        })}
+      </svg>
+      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ fontSize: 88, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "#0f0d0c" }}>45</div>
+        <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(15,13,12,0.32)", marginTop: 8 }}>minutes</div>
       </div>
     </div>
   );
 }
 
-/* ── Visual 3: score bars ── */
+/* ── Large score ── */
 function ScoreVisual() {
   const bars = [
-    { label: "Tech Depth",   w: "91%" },
-    { label: "Communication",w: "84%" },
-    { label: "Reproducibility", w: "88%" },
-    { label: "Originality",  w: "79%" },
+    { label: "Technical Depth",   w: "91%" },
+    { label: "Communication",     w: "84%" },
+    { label: "Reproducibility",   w: "88%" },
+    { label: "Originality",       w: "79%" },
   ];
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 20, width: 220 }}>
-      <div style={{ display: "flex", alignItems: "flex-end", gap: 4 }}>
-        <div style={{ fontSize: 52, fontWeight: 700, letterSpacing: "-0.04em", lineHeight: 1, color: "#0f0d0c" }}>87</div>
-        <div style={{ fontSize: 18, color: "#eb4511", fontWeight: 400, marginBottom: 6 }}>/100</div>
+    <div style={{ display: "flex", flexDirection: "column", gap: 28, width: 340 }}>
+      <div style={{ display: "flex", alignItems: "flex-end", gap: 6 }}>
+        <div style={{ fontSize: 108, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "#0f0d0c" }}>87</div>
+        <div style={{ fontSize: 30, color: "#eb4511", fontWeight: 400, marginBottom: 14 }}>/100</div>
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {bars.map((b) => (
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        {bars.map(b => (
           <div key={b.label}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-              <div style={{ fontSize: 8, fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(15,13,12,0.4)" }}>{b.label}</div>
-              <div style={{ fontSize: 8, color: "rgba(15,13,12,0.3)" }}>{b.w}</div>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+              <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(15,13,12,0.42)" }}>{b.label}</div>
+              <div style={{ fontSize: 9, color: "rgba(15,13,12,0.32)" }}>{b.w}</div>
             </div>
-            <div style={{ height: 2, background: "rgba(15,13,12,0.08)", overflow: "hidden" }}>
-              <div style={{ height: "100%", width: b.w, backgroundColor: "#eb4511", opacity: 0.65 }} />
+            <div style={{ height: 2.5, background: "rgba(15,13,12,0.08)", overflow: "hidden" }}>
+              <div style={{ height: "100%", width: b.w, backgroundColor: "#eb4511", opacity: 0.6 }} />
             </div>
           </div>
         ))}
@@ -106,33 +95,40 @@ function ScoreVisual() {
   );
 }
 
-/* ── Panel with visual ── */
-function Panel({ panel, visual }: { panel: (typeof panels)[number]; visual: React.ReactNode }) {
+/* ── Full-viewport panel ── */
+function FullPanel({ panel, visual }: { panel: (typeof panels)[number]; visual: React.ReactNode }) {
   return (
     <div style={{
       width: "100%", height: "100%",
       backgroundColor: "var(--bg-page)",
-      borderTop: "1px solid rgba(15,13,12,0.1)",
-      display: "flex", alignItems: "center",
-      padding: "0 clamp(24px, 5vw, 64px)",
-      gap: "clamp(32px, 6vw, 80px)",
+      display: "flex", flexDirection: "column",
+      padding: "clamp(60px, 8vh, 88px) clamp(24px, 5vw, 80px)",
     }}>
-      {/* Text */}
-      <div style={{ flex: "0 0 auto", maxWidth: 480, display: "flex", alignItems: "baseline", gap: 28 }}>
-        <div style={{ fontSize: 11, fontWeight: 700, color: "#eb4511", flexShrink: 0 }}>{panel.num}</div>
-        <div>
-          <div style={{ fontSize: "clamp(16px, 1.8vw, 24px)", fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.2, color: "#0f0d0c", marginBottom: 10 }}>
-            {panel.headline}
-          </div>
-          <div style={{ fontSize: "clamp(12px, 1vw, 14px)", fontWeight: 400, lineHeight: 1.8, color: "rgba(15,13,12,0.52)" }}>
-            {panel.body}
-          </div>
+      {/* Eyebrow — top */}
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{ fontSize: 9, fontWeight: 700, color: "#eb4511" }}>{panel.num}</div>
+        <div style={{ width: 18, height: 1, background: "rgba(15,13,12,0.15)" }} />
+        <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.35em", textTransform: "uppercase", color: "rgba(15,13,12,0.4)" }}>
+          {panel.eyebrow}
         </div>
       </div>
 
-      {/* Visual */}
-      <div className="hidden lg:flex" style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      {/* Visual — centered, takes all available space */}
+      <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
         {visual}
+      </div>
+
+      {/* Headline — bottom */}
+      <div style={{
+        fontSize: "clamp(34px, 4.2vw, 58px)",
+        fontWeight: 400,
+        letterSpacing: "-0.025em",
+        lineHeight: 1.1,
+        color: "#0f0d0c",
+      }}>
+        {panel.headline.split("\n").map((line, i) => (
+          <span key={i}>{line}{i === 0 && <br />}</span>
+        ))}
       </div>
     </div>
   );
@@ -153,35 +149,35 @@ function TimelineSidebar({ progress }: { progress: MotionValue<number> }) {
   );
 }
 
+/* ── Main ── */
 export default function PlatformSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end end"] });
   const progress = scrollYProgress;
 
-  const panel2Y = useTransform(progress, [0.15, 0.48], ["66.67vh", "0vh"]);
-  const panel3Y = useTransform(progress, [0.52, 0.85], ["33.33vh", "0vh"]);
-
+  // Panel 1 exits upward
+  const panel1Y = useTransform(progress, [0.28, 0.46], ["0vh", "-100vh"]);
+  // Panel 2 enters from below, exits upward
+  const panel2Y = useTransform(progress, [0.28, 0.46, 0.6, 0.78], ["100vh", "0vh", "0vh", "-100vh"]);
+  // Panel 3 enters from below
+  const panel3Y = useTransform(progress, [0.6, 0.78], ["100vh", "0vh"]);
 
   return (
     <section ref={sectionRef} id="story" style={{ height: "300vh", position: "relative" }}>
       <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
 
-        {/* Panel 1 — text + visual together */}
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "33.33vh" }}>
-          <Panel panel={panels[0]} visual={<SignalGrid />} />
-        </div>
-
-        {/* Panel 2 */}
-        <motion.div style={{ position: "absolute", top: "33.33vh", left: 0, right: 0, height: "33.33vh", y: panel2Y }}>
-          <Panel panel={panels[1]} visual={<ClockVisual />} />
+        <motion.div style={{ position: "absolute", inset: 0, y: panel1Y }}>
+          <FullPanel panel={panels[0]} visual={<SignalGrid />} />
         </motion.div>
 
-        {/* Panel 3 */}
-        <motion.div style={{ position: "absolute", top: "66.67vh", left: 0, right: 0, height: "33.33vh", y: panel3Y }}>
-          <Panel panel={panels[2]} visual={<ScoreVisual />} />
+        <motion.div style={{ position: "absolute", inset: 0, y: panel2Y }}>
+          <FullPanel panel={panels[1]} visual={<ClockVisual />} />
         </motion.div>
 
-        {/* Timeline */}
+        <motion.div style={{ position: "absolute", inset: 0, y: panel3Y }}>
+          <FullPanel panel={panels[2]} visual={<ScoreVisual />} />
+        </motion.div>
+
         <TimelineSidebar progress={progress} />
 
       </div>
