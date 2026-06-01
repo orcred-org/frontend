@@ -23,7 +23,7 @@ const panels = [
   },
 ];
 
-/* ── Signal grid — white on orange ── */
+/* ── Signal grid — dark on tinted card ── */
 function SignalGrid() {
   const total = 24; const signal = 13;
   return (
@@ -33,8 +33,8 @@ function SignalGrid() {
           width:           i === signal ? 16 : 10,
           height:          i === signal ? 16 : 10,
           borderRadius:    "50%",
-          backgroundColor: i === signal ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.22)",
-          boxShadow:       i === signal ? "0 0 18px 6px rgba(255,255,255,0.16)" : "none",
+          backgroundColor: i === signal ? "#eb4511" : "rgba(15,13,12,0.12)",
+          boxShadow:       i === signal ? "0 0 18px 6px rgba(235,69,17,0.20)" : "none",
           alignSelf: "center", justifySelf: "center",
         }} />
       ))}
@@ -42,7 +42,7 @@ function SignalGrid() {
   );
 }
 
-/* ── Clock — white on orange ── */
+/* ── Clock — dark on tinted card ── */
 function ClockVisual() {
   const r = 88;
   const ticks = [0, 90, 180, 270].map(deg => {
@@ -55,9 +55,9 @@ function ClockVisual() {
   return (
     <div style={{ position: "relative", width: 220, height: 220 }}>
       <svg viewBox="0 0 220 220" style={{ width: "100%", height: "100%", overflow: "visible" }}>
-        <circle cx="110" cy="110" r={r} fill="none" stroke="rgba(255,255,255,0.14)" strokeWidth="1.5" />
+        <circle cx="110" cy="110" r={r} fill="none" stroke="rgba(15,13,12,0.08)" strokeWidth="1.5" />
         {ticks.map((t, i) => (
-          <line key={i} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" />
+          <line key={i} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="rgba(15,13,12,0.2)" strokeWidth="1.5" />
         ))}
         {["0", "15", "30", "45"].map((label, i) => {
           const rad = (i * 90 - 90) * Math.PI / 180;
@@ -65,20 +65,20 @@ function ClockVisual() {
             <text key={i}
               x={110 + (r + 16) * Math.cos(rad)} y={110 + (r + 16) * Math.sin(rad)}
               textAnchor="middle" dominantBaseline="central"
-              style={{ fill: "rgba(255,255,255,0.35)", fontSize: "10px", letterSpacing: "0.05em" }}
+              style={{ fill: "rgba(15,13,12,0.28)", fontSize: "10px", letterSpacing: "0.05em" }}
             >{label}</text>
           );
         })}
       </svg>
       <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ fontSize: 64, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "rgba(255,255,255,0.96)" }}>45</div>
-        <div style={{ fontSize: 10, fontWeight: 500, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.45)", marginTop: 6 }}>minutes</div>
+        <div style={{ fontSize: 64, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "#0f0d0c" }}>45</div>
+        <div style={{ fontSize: 10, fontWeight: 500, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(15,13,12,0.38)", marginTop: 6 }}>minutes</div>
       </div>
     </div>
   );
 }
 
-/* ── Score bars — white on orange ── */
+/* ── Score bars — dark on tinted card ── */
 function ScoreVisual() {
   const bars = [
     { label: "Technical Depth", w: "91%" },
@@ -89,18 +89,18 @@ function ScoreVisual() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16, width: 260 }}>
       <div style={{ display: "flex", alignItems: "flex-end", gap: 5 }}>
-        <div style={{ fontSize: 72, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "rgba(255,255,255,0.96)" }}>87</div>
-        <div style={{ fontSize: 22, color: "rgba(255,255,255,0.55)", fontWeight: 400, marginBottom: 9 }}>/100</div>
+        <div style={{ fontSize: 72, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "#0f0d0c" }}>87</div>
+        <div style={{ fontSize: 22, color: "#eb4511", fontWeight: 400, marginBottom: 9 }}>/100</div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {bars.map(b => (
           <div key={b.label}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
-              <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.45)" }}>{b.label}</div>
-              <div style={{ fontSize: 9, color: "rgba(255,255,255,0.35)" }}>{b.w}</div>
+              <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(15,13,12,0.42)" }}>{b.label}</div>
+              <div style={{ fontSize: 9, color: "rgba(15,13,12,0.32)" }}>{b.w}</div>
             </div>
-            <div style={{ height: 2, background: "rgba(255,255,255,0.15)", overflow: "hidden" }}>
-              <div style={{ height: "100%", width: b.w, backgroundColor: "rgba(255,255,255,0.7)" }} />
+            <div style={{ height: 2, background: "rgba(15,13,12,0.08)", overflow: "hidden" }}>
+              <div style={{ height: "100%", width: b.w, backgroundColor: "#eb4511", opacity: 0.6 }} />
             </div>
           </div>
         ))}
@@ -123,7 +123,6 @@ function PanelCard({
 
   return (
     <div>
-      {/* Card — solid orange, visual inside, title at bottom */}
       <motion.div
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -132,19 +131,20 @@ function PanelCard({
         viewport={{ once: true, amount: 0.15 }}
         transition={{ duration: 0.7, delay: index * 0.1, ease }}
         style={{
-          backgroundColor: "#eb4511",
+          backgroundColor: "rgba(235,69,17,0.06)",
+          border:           "1px solid rgba(235,69,17,0.16)",
           borderRadius:     "20px",
           overflow:         "hidden",
           position:         "relative",
           height:           "360px",
           transform:        hovered ? "translateY(-6px)" : "translateY(0px)",
           boxShadow:        hovered
-            ? "0 28px 56px rgba(235,69,17,0.28), 0 6px 16px rgba(235,69,17,0.16)"
-            : "0 4px 18px rgba(235,69,17,0.16)",
+            ? "0 28px 56px rgba(235,69,17,0.12), 0 6px 16px rgba(235,69,17,0.08)"
+            : "0 2px 8px rgba(235,69,17,0.06)",
           transition: "transform 0.38s cubic-bezier(0.22,1,0.36,1), box-shadow 0.38s cubic-bezier(0.22,1,0.36,1)",
         }}
       >
-        {/* Visual — centred, sits above the title */}
+        {/* Visual */}
         <div style={{
           position: "absolute",
           inset: 0,
@@ -157,16 +157,16 @@ function PanelCard({
           {visual}
         </div>
 
-        {/* Title pinned to card bottom */}
+        {/* Title at card bottom */}
         <div style={{
           position: "absolute",
           bottom: 0, left: 0, right: 0,
           padding: "0 24px 26px",
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 8 }}>
-            <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.65)" }}>{panel.num}</div>
-            <div style={{ width: 12, height: 1, background: "rgba(255,255,255,0.28)" }} />
-            <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)" }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: "#eb4511" }}>{panel.num}</div>
+            <div style={{ width: 12, height: 1, background: "rgba(15,13,12,0.15)" }} />
+            <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(15,13,12,0.4)" }}>
               {panel.eyebrow}
             </div>
           </div>
@@ -175,14 +175,14 @@ function PanelCard({
             fontWeight:    500,
             letterSpacing: "-0.02em",
             lineHeight:    1.15,
-            color:         "#ffffff",
+            color:         "#0f0d0c",
           }}>
             {panel.headline}
           </div>
         </div>
       </motion.div>
 
-      {/* Body text — outside the card, below */}
+      {/* Body text — outside the card */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
