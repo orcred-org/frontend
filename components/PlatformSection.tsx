@@ -26,51 +26,12 @@ const panels = [
   },
 ];
 
-/* ── Individual dot — each has its own useTransform (no hook-in-loop) ── */
-function Dot({
-  progress,
-  threshold,
-  top,
-}: {
-  progress: ReturnType<typeof useSpring>;
-  threshold: number;
-  top: number;
-}) {
-  const lo = Math.max(0, threshold - 0.05);
-  const hi = threshold + 0.12;
-  const size   = useTransform(progress, [lo, hi], [7, 11]);
-  const bg     = useTransform(progress, [lo, hi], ["rgba(15,13,12,0.15)", "#eb4511"]);
-  const shadow = useTransform(
-    progress, [lo, hi],
-    ["0 0 0px 0px rgba(235,69,17,0)", "0 0 10px 4px rgba(235,69,17,0.5)"]
-  );
-
-  return (
-    <motion.div style={{
-      position:        "absolute",
-      left:            "50%",
-      top,
-      width:           size,
-      height:          size,
-      borderRadius:    "50%",
-      backgroundColor: bg,
-      x:               "-50%",
-      y:               "-50%",
-      boxShadow:       shadow,
-    }} />
-  );
-}
-
 /* ── Sticky timeline ── */
 function Timeline({ progress }: { progress: ReturnType<typeof useSpring> }) {
-  // 80% of viewport height spread across dots
-  const SPACING = Math.round((typeof window !== "undefined" ? window.innerHeight : 800) * 0.38);
-  const TOTAL   = SPACING * 2;
+  const TOTAL = Math.round((typeof window !== "undefined" ? window.innerHeight : 800) * 0.76);
 
-  const fillH = useTransform(progress, [0, 1], [0, TOTAL]);
-
-  const thresholds = [0.02, 0.45, 0.88];
-  const tops       = [0, SPACING, TOTAL];
+  const fillH   = useTransform(progress, [0, 1], [0, TOTAL]);
+  const tipY    = useTransform(progress, [0, 1], [0, TOTAL]);
 
   return (
     <div style={{
@@ -90,12 +51,12 @@ function Timeline({ progress }: { progress: ReturnType<typeof useSpring> }) {
           top:             0,
           bottom:          0,
           width:           3,
-          backgroundColor: "rgba(15,13,12,0.1)",
+          backgroundColor: "rgba(15,13,12,0.08)",
           transform:       "translateX(-50%)",
           borderRadius:    3,
         }} />
 
-        {/* Orange fill with glow */}
+        {/* Orange fill */}
         <motion.div style={{
           position:        "absolute",
           left:            "50%",
@@ -105,13 +66,21 @@ function Timeline({ progress }: { progress: ReturnType<typeof useSpring> }) {
           backgroundColor: "#eb4511",
           transform:       "translateX(-50%)",
           borderRadius:    3,
-          boxShadow:       "0 0 12px 4px rgba(235,69,17,0.5), 0 0 3px 1px rgba(235,69,17,0.9)",
         }} />
 
-        {/* Dots */}
-        <Dot progress={progress} threshold={thresholds[0]} top={tops[0]} />
-        <Dot progress={progress} threshold={thresholds[1]} top={tops[1]} />
-        <Dot progress={progress} threshold={thresholds[2]} top={tops[2]} />
+        {/* Glowing tip — rides the end of the fill */}
+        <motion.div style={{
+          position:     "absolute",
+          left:         "50%",
+          top:          tipY,
+          width:        10,
+          height:       10,
+          borderRadius: "50%",
+          backgroundColor: "#eb4511",
+          x:            "-50%",
+          y:            "-50%",
+          boxShadow:    "0 0 14px 5px rgba(235,69,17,0.55), 0 0 4px 2px rgba(235,69,17,0.9)",
+        }} />
 
       </div>
     </div>
