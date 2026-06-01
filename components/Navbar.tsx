@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 
 const navLinks = [
@@ -19,13 +18,14 @@ function scrollTo(href: string) {
 }
 
 export default function Navbar() {
-  const [, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  /* Wordmark dissolves into the orange mark as you scroll down.
+     Slides left (into the circle) and fades out over the first 80px. */
+  const wordmarkOpacity  = useTransform(scrollY, [0, 80], [1, 0]);
+  const wordmarkX        = useTransform(scrollY, [0, 80], [0, -18]);
+  const wordmarkMaxWidth = useTransform(scrollY, [0, 80], [120, 0]);
+  const wordmarkPadding  = useTransform(scrollY, [0, 80], [8, 0]);
 
   return (
     <motion.header
@@ -42,21 +42,34 @@ export default function Navbar() {
       <div className="max-w-[1400px] mx-auto flex items-center justify-between h-[60px] px-6 sm:px-10 lg:px-16">
 
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-          <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+        <Link
+          href="/"
+          className="flex items-center overflow-hidden"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" style={{ flexShrink: 0 }}>
             <circle cx="21" cy="21" r="20" fill="#eb4511"/>
           </svg>
-          <span
+
+          {/* Wordmark slides into the circle and fades as you scroll */}
+          <motion.span
             style={{
+              opacity:    wordmarkOpacity,
+              x:          wordmarkX,
+              maxWidth:   wordmarkMaxWidth,
+              paddingLeft: wordmarkPadding,
+              overflow:   "hidden",
+              whiteSpace: "nowrap",
+              display:    "block",
               fontFamily: "Inter, system-ui, sans-serif",
               fontWeight: 700,
-              fontSize: "26px",
+              fontSize:   "26px",
               letterSpacing: "-0.01em",
-              color: "#0f0d0c",
+              color:      "#0f0d0c",
             }}
           >
             Orcred
-          </span>
+          </motion.span>
         </Link>
 
         {/* Nav links */}
@@ -67,13 +80,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className="transition-colors duration-200"
-                style={{
-                  fontFamily: "Inter, system-ui, sans-serif",
-                  fontWeight: 500,
-                  fontSize: "14px",
-                  letterSpacing: "-0.01em",
-                  color: "#4a4440",
-                }}
+                style={{ fontFamily: "Inter, system-ui, sans-serif", fontWeight: 500, fontSize: "14px", letterSpacing: "-0.01em", color: "#4a4440" }}
                 onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#1a1714")}
                 onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "#4a4440")}
               >
@@ -84,16 +91,7 @@ export default function Navbar() {
                 key={link.href}
                 onClick={() => scrollTo(link.href)}
                 className="transition-colors duration-200"
-                style={{
-                  fontFamily: "Inter, system-ui, sans-serif",
-                  fontWeight: 500,
-                  fontSize: "14px",
-                  letterSpacing: "-0.01em",
-                  color: "#4a4440",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                }}
+                style={{ fontFamily: "Inter, system-ui, sans-serif", fontWeight: 500, fontSize: "14px", letterSpacing: "-0.01em", color: "#4a4440", background: "none", border: "none", cursor: "pointer" }}
                 onMouseEnter={e => (e.currentTarget.style.color = "#1a1714")}
                 onMouseLeave={e => (e.currentTarget.style.color = "#4a4440")}
               >
@@ -107,11 +105,7 @@ export default function Navbar() {
         <Link
           href="/get-verified"
           className="font-label-sm uppercase tracking-[0.2em] text-[11px] px-5 py-2.5 transition-all duration-200"
-          style={{
-            backgroundColor: "#eb4511",
-            color: "#ffffff",
-            border: "1px solid #eb4511",
-          }}
+          style={{ backgroundColor: "#eb4511", color: "#ffffff", border: "1px solid #eb4511" }}
           onMouseEnter={e => {
             (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
             (e.currentTarget as HTMLElement).style.color = "#eb4511";
