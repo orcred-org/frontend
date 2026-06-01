@@ -1,563 +1,206 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-/* ─────────────────────────────────────────
-   Visuals — pure typography & geometry,
-   no card containers, no "screenshot" feel
-───────────────────────────────────────── */
+const panels = [
+  {
+    num: "01",
+    chapter: "The Problem",
+    headline: "Everyone has a project.",
+    body: "Someone spent six months building something real. Someone else spent a weekend prompting ChatGPT. Right now their portfolios look identical — and that gap is costing real builders their careers.",
+  },
+  {
+    num: "02",
+    chapter: "The Session",
+    headline: "45 minutes. One engineer. Your work.",
+    body: "Not a quiz. Not a take-home test. A real conversation about the project you built, every decision you made, every tradeoff you chose. The ones who built it for real talk about it differently.",
+  },
+  {
+    num: "03",
+    chapter: "The Proof",
+    headline: "Now there's proof.",
+    body: "An Orcred Score. A verified credential backed by a senior engineer's sign-off. Something you carry into any room and say — a real engineer reviewed this work. It passed.",
+  },
+];
 
-/** Visual 1 — 24 circles, 1 is real */
-function SignalGrid() {
-  const total  = 24;
-  const signal = 13; // which one glows
+/* ── Individual dot — each has its own useTransform (no hook-in-loop) ── */
+function Dot({
+  progress,
+  threshold,
+  top,
+}: {
+  progress: ReturnType<typeof useSpring>;
+  threshold: number;
+  top: number;
+}) {
+  const lo = Math.max(0, threshold - 0.05);
+  const hi = threshold + 0.12;
+  const size   = useTransform(progress, [lo, hi], [7, 11]);
+  const bg     = useTransform(progress, [lo, hi], ["rgba(15,13,12,0.15)", "#eb4511"]);
+  const shadow = useTransform(
+    progress, [lo, hi],
+    ["0 0 0px 0px rgba(235,69,17,0)", "0 0 10px 4px rgba(235,69,17,0.5)"]
+  );
 
   return (
-    <div className="w-full flex flex-col items-center justify-center gap-10 py-16 px-8">
-      {/* Grid of candidates */}
-      <motion.div
-        className="grid gap-4"
-        style={{ gridTemplateColumns: "repeat(6, 1fr)" }}
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.2 }}
-      >
-        {Array.from({ length: total }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="rounded-full"
-            style={{
-              width:      i === signal ? 12 : 8,
-              height:     i === signal ? 12 : 8,
-              background: i === signal ? "#eb4511" : "var(--border-strong)",
-              boxShadow:  i === signal ? "0 0 14px 5px var(--orange-dim)" : "none",
-              alignSelf:  "center",
-              justifySelf: "center",
-            }}
-            initial={{ opacity: 0, scale: 0.4 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{
-              duration: 0.5,
-              delay: i * 0.025,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-          />
-        ))}
-      </motion.div>
+    <motion.div style={{
+      position:        "absolute",
+      left:            "50%",
+      top,
+      width:           size,
+      height:          size,
+      borderRadius:    "50%",
+      backgroundColor: bg,
+      x:               "-50%",
+      y:               "-50%",
+      boxShadow:       shadow,
+    }} />
+  );
+}
 
-      {/* Statement */}
-      <div className="text-center">
-        <motion.p
-          style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontStyle: "italic",
-            fontWeight: 300,
-            fontSize: "clamp(28px, 4vw, 46px)",
-            lineHeight: 1.1,
-            color: "var(--fg-muted)",
-          }}
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.6, ease }}
-        >
-          1 signal in 24.
-        </motion.p>
-        <motion.p
-          className="font-label-sm uppercase tracking-[0.42em] text-[9px] mt-3"
-          style={{ color: "var(--fg-faint)" }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.85 }}
-        >
-          That&apos;s the problem.
-        </motion.p>
+/* ── Sticky timeline ── */
+function Timeline({ progress }: { progress: ReturnType<typeof useSpring> }) {
+  const SPACING = 110;
+  const TOTAL   = SPACING * 2;
+
+  const fillH = useTransform(progress, [0, 1], [0, TOTAL]);
+
+  const thresholds = [0.05, 0.45, 0.82];
+  const tops       = [0, SPACING, TOTAL];
+
+  return (
+    <div style={{
+      position:       "sticky",
+      top:            0,
+      height:         "100vh",
+      display:        "flex",
+      alignItems:     "center",
+      justifyContent: "center",
+    }}>
+      <div style={{ position: "relative", height: TOTAL, width: 20 }}>
+
+        {/* Grey track */}
+        <div style={{
+          position:        "absolute",
+          left:            "50%",
+          top:             0,
+          bottom:          0,
+          width:           2,
+          backgroundColor: "rgba(15,13,12,0.1)",
+          transform:       "translateX(-50%)",
+          borderRadius:    2,
+        }} />
+
+        {/* Orange fill with glow */}
+        <motion.div style={{
+          position:        "absolute",
+          left:            "50%",
+          top:             0,
+          width:           2,
+          height:          fillH,
+          backgroundColor: "#eb4511",
+          transform:       "translateX(-50%)",
+          borderRadius:    2,
+          boxShadow:       "0 0 8px 3px rgba(235,69,17,0.45), 0 0 2px 1px rgba(235,69,17,0.8)",
+        }} />
+
+        {/* Dots */}
+        <Dot progress={progress} threshold={thresholds[0]} top={tops[0]} />
+        <Dot progress={progress} threshold={thresholds[1]} top={tops[1]} />
+        <Dot progress={progress} threshold={thresholds[2]} top={tops[2]} />
+
       </div>
     </div>
   );
 }
 
-/** Visual 2 — SVG clock arc + centered time */
-function SessionVisual() {
-  const r   = 88;
-  const circ = 2 * Math.PI * r; // ≈ 552.9
-  const fill = circ * 0.38;     // 38% of session elapsed
-
-  // Tick positions at 0, 15, 30, 45 min (top, right, bottom, left)
-  const ticks = [0, 90, 180, 270].map((deg) => {
-    const rad = ((deg - 90) * Math.PI) / 180;
-    return {
-      x1: 100 + (r - 10) * Math.cos(rad),
-      y1: 100 + (r - 10) * Math.sin(rad),
-      x2: 100 + (r + 2)  * Math.cos(rad),
-      y2: 100 + (r + 2)  * Math.sin(rad),
-    };
-  });
-
-  return (
-    <div className="w-full flex flex-col items-center justify-center gap-8 py-14 px-8">
-      {/* Clock arc */}
-      <div className="relative w-[220px] h-[220px] sm:w-[260px] sm:h-[260px]">
-        <svg viewBox="0 0 200 200" className="w-full h-full" style={{ overflow: "visible" }}>
-          {/* Outer faint orbit */}
-          <circle cx="100" cy="100" r="96"
-            fill="none" stroke="var(--border)" strokeWidth="1" />
-
-          {/* Track ring */}
-          <circle cx="100" cy="100" r={r}
-            fill="none" stroke="var(--border)" strokeWidth="1" />
-
-          {/* Animated progress arc */}
-          <motion.circle
-            cx="100" cy="100" r={r}
-            fill="none"
-            stroke="var(--orange-faint)"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeDasharray={circ}
-            transform="rotate(-90 100 100)"
-            initial={{ strokeDashoffset: circ }}
-            whileInView={{ strokeDashoffset: circ - fill }}
-            viewport={{ once: true }}
-            transition={{ duration: 2.6, delay: 0.4, ease: "easeOut" }}
-          />
-
-          {/* Tick marks */}
-          {ticks.map((t, i) => (
-            <line key={i}
-              x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2}
-              stroke="var(--fg-faint)" strokeWidth="1"
-            />
-          ))}
-
-          {/* Minute labels */}
-          {["0", "15", "30", "45"].map((label, i) => {
-            const deg = i * 90 - 90;
-            const rad = (deg * Math.PI) / 180;
-            const lx  = 100 + (r + 14) * Math.cos(rad);
-            const ly  = 100 + (r + 14) * Math.sin(rad);
-            return (
-              <text key={i} x={lx} y={ly}
-                textAnchor="middle" dominantBaseline="central"
-                style={{
-                  fill: "var(--fg-faint)",
-                  fontSize: "8px",
-                  fontFamily: "Inter, sans-serif",
-                  letterSpacing: "0.05em",
-                }}
-              >
-                {label}
-              </text>
-            );
-          })}
-        </svg>
-
-        {/* Center — time display */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <motion.span
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontWeight: 400,
-              fontSize: "clamp(38px, 6vw, 54px)",
-              lineHeight: 1,
-              color: "var(--fg)",
-              letterSpacing: "-0.02em",
-            }}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.2 }}
-          >
-            45<span style={{ color: "#eb4511", opacity: 0.75 }}>:</span>00
-          </motion.span>
-          <span
-            className="font-label-sm uppercase tracking-[0.35em] text-[7px] mt-1.5"
-            style={{ color: "var(--fg-faint)" }}
-          >
-            minutes
-          </span>
-        </div>
-      </div>
-
-      {/* Label below arc */}
-      <motion.p
-        style={{
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-          fontStyle: "italic",
-          fontWeight: 300,
-          fontSize: "clamp(17px, 2.2vw, 24px)",
-          color: "var(--fg-muted)",
-          textAlign: "center",
-        }}
-        initial={{ opacity: 0, y: 8 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.55, ease }}
-      >
-        One session · One verdict
-      </motion.p>
-    </div>
-  );
-}
-
-/** Visual 3 — score + dimension bars, no card container */
-function ScoreVisual() {
-  const bars = [
-    { label: "Technical Depth",  pct: "91%", w: "91%" },
-    { label: "Communication",    pct: "84%", w: "84%" },
-    { label: "Reproducibility",  pct: "88%", w: "88%" },
-    { label: "Originality",      pct: "79%", w: "79%" },
-  ];
-
-  return (
-    <div className="w-full flex flex-col py-12 px-6 sm:px-10 gap-7">
-
-      {/* Header row — score + label */}
-      <div className="flex items-end justify-between">
-        <motion.div
-          className="flex items-start gap-1.5"
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.1, ease }}
-        >
-          <span
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontStyle: "normal",
-              fontWeight: 400,
-              fontSize: "clamp(36px, 5vw, 56px)",
-              lineHeight: 1,
-              color: "var(--fg)",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            87
-          </span>
-          <span
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontStyle: "normal",
-              fontWeight: 400,
-              fontSize: "clamp(18px, 3vw, 26px)",
-              color: "#eb4511",
-              marginTop: "8px",
-            }}
-          >
-            /100
-          </span>
-        </motion.div>
-
-        <motion.div
-          className="text-right pb-1"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.3 }}
-        >
-          <p
-            className="font-label-sm uppercase tracking-[0.3em] text-[8px]"
-            style={{ color: "var(--fg-faint)" }}
-          >
-            Orcred Score
-          </p>
-          <p
-            className="font-label-sm uppercase tracking-[0.3em] text-[8px] mt-0.5"
-            style={{ color: "var(--fg-faint)" }}
-          >
-            Founding Cohort · 2026
-          </p>
-        </motion.div>
-      </div>
-
-      {/* Thin divider */}
-      <motion.div
-        className="w-full h-px"
-        style={{ background: "var(--border)" }}
-        initial={{ scaleX: 0, originX: "left" }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.9, delay: 0.25, ease }}
-      />
-
-      {/* Dimension bars */}
-      <div className="space-y-4">
-        {bars.map((b, i) => (
-          <motion.div
-            key={b.label}
-            initial={{ opacity: 0, x: -10 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.3 + i * 0.1, ease }}
-          >
-            <div className="flex justify-between mb-1.5">
-              <span
-                className="font-label-sm uppercase tracking-widest text-[8px]"
-                style={{ color: "var(--fg-muted)" }}
-              >
-                {b.label}
-              </span>
-              <span
-                className="font-label-sm text-[9px]"
-                style={{ color: "var(--fg-muted)" }}
-              >
-                {b.pct}
-              </span>
-            </div>
-            <div
-              className="w-full h-[1.5px] overflow-hidden"
-              style={{ background: "var(--border)" }}
-            >
-              <motion.div
-                className="h-full"
-                style={{ background: "var(--orange-faint)" }}
-                initial={{ width: 0 }}
-                whileInView={{ width: b.w }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.1, delay: 0.35 + i * 0.1, ease: "easeOut" }}
-              />
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Thin divider */}
-      <div className="w-full h-px" style={{ background: "var(--border)" }} />
-
-      {/* Footer */}
-      <motion.div
-        className="flex items-center justify-between"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, delay: 0.7 }}
-      >
-        <p
-          className="font-label-sm uppercase tracking-[0.3em] text-[8px]"
-          style={{ color: "var(--fg-faint)" }}
-        >
-          Senior ML Engineer · Verified
-        </p>
-        <div
-          className="border px-3 py-1"
-          style={{ borderColor: "var(--orange-dim)" }}
-        >
-          <span
-            className="font-label-sm uppercase tracking-[0.35em] text-[8px]"
-            style={{ color: "#eb4511" }}
-          >
-            Passed
-          </span>
-        </div>
-      </motion.div>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────
-   Editorial panel — full-height scroll reveal
-───────────────────────────────────────── */
-
-interface PanelProps {
-  index: number;
-  chapter: string;
-  headline: string;
-  italic: string;
-  body: string;
-  visual: React.ReactNode;
-  flip?: boolean;
-  compact?: boolean;
-}
-
-function EditorialPanel({
-  index,
-  chapter,
-  headline,
-  italic,
-  body,
-  visual,
-  flip,
-  compact,
-}: PanelProps) {
-  const ref   = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.2 });
-  const num   = String(index).padStart(2, "0");
-
+/* ── Text panel ── */
+function TextPanel({ panel }: { panel: (typeof panels)[number] }) {
   return (
     <div
-      ref={ref}
-      className={`relative overflow-hidden flex items-center px-6 sm:px-10 lg:px-16 ${compact ? "py-16 sm:py-20" : "min-h-screen py-16 border-b"}`}
-      style={{ borderColor: "var(--border)" }}
+      className="py-20 sm:py-24"
+      style={{ borderBottom: "1px solid rgba(15,13,12,0.1)" }}
     >
-      <div className="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
-
-        {/* ── Text block ── */}
-        <div
-          className={`lg:col-span-4 flex flex-col gap-7
-            ${flip ? "lg:col-start-9 lg:order-2" : "lg:col-start-1 lg:order-1"}`}
-        >
-          {/* Chapter marker */}
-          <motion.div
-            className="flex items-center gap-4"
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.9, ease: "easeOut" }}
-          >
-            <span
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontStyle: "italic",
-                fontWeight: 300,
-                fontSize: "13px",
-                letterSpacing: "0.1em",
-                color: "var(--orange-faint)",
-              }}
-            >
-              {num}
-            </span>
-            <div
-              className="flex-1 h-px"
-              style={{ background: "var(--border)" }}
-            />
-            <span
-              className="font-label-sm uppercase tracking-[0.38em] text-[9px]"
-              style={{ color: "var(--orange-faint)" }}
-            >
-              {chapter}
-            </span>
-          </motion.div>
-
-          {/* Headline */}
-          <motion.div
-            initial={{ opacity: 0, y: 22 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1.05, delay: 0.15, ease }}
-          >
-            <h2
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontWeight: 400,
-                fontSize: "clamp(32px, 3.8vw, 52px)",
-                lineHeight: 1.0,
-                color: "var(--fg)",
-              }}
-            >
-              {headline}
-            </h2>
-            <p
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontStyle: "italic",
-                fontWeight: 300,
-                fontSize: "clamp(22px, 2.8vw, 38px)",
-                lineHeight: 1.1,
-                color: "var(--fg-muted)",
-                marginTop: "4px",
-              }}
-            >
-              {italic}
-            </p>
-          </motion.div>
-
-          {/* Thin orange rule */}
-          <motion.div
-            className="h-px bg-accent-orange w-8 opacity-70"
-            initial={{ scaleX: 0, originX: "left" }}
-            animate={inView ? { scaleX: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.3, ease }}
-          />
-
-          {/* Body */}
-          <motion.p
-            className="text-[14px] sm:text-[15px] leading-[1.9] font-light"
-            style={{ color: "var(--fg-muted)" }}
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ duration: 1, delay: 0.42, ease: "easeOut" }}
-          >
-            {body}
-          </motion.p>
+      <motion.div
+        className="flex flex-col gap-6"
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease }}
+      >
+        <div className="flex items-center gap-4">
+          <span style={{ fontSize: 11, fontWeight: 700, color: "#eb4511" }}>{panel.num}</span>
+          <div style={{ width: 28, height: 1, background: "rgba(15,13,12,0.15)" }} />
+          <span className="font-label-sm uppercase tracking-[0.35em] text-[9px]" style={{ color: "rgba(15,13,12,0.45)" }}>
+            {panel.chapter}
+          </span>
         </div>
 
-        {/* ── Visual — curtain reveal, no frame ── */}
-        <motion.div
-          className={`lg:col-span-7 overflow-hidden
-            ${flip ? "lg:col-start-1 lg:order-1" : "lg:col-start-6 lg:order-2"}`}
-          initial={{ clipPath: "inset(0 0 100% 0)" }}
-          animate={inView ? { clipPath: "inset(0 0 0% 0)" } : {}}
-          transition={{ duration: 1.35, delay: 0.08, ease }}
-        >
-          {visual}
-        </motion.div>
+        <div style={{
+          fontSize: "clamp(22px, 2.8vw, 38px)", fontWeight: 400,
+          letterSpacing: "-0.02em", lineHeight: 1.15, color: "#0f0d0c",
+        }}>
+          {panel.headline}
+        </div>
 
-      </div>
+        <div style={{
+          fontSize: "clamp(13px, 1.1vw, 15px)", fontWeight: 400,
+          lineHeight: 1.85, color: "rgba(15,13,12,0.55)", maxWidth: 480,
+        }}>
+          {panel.body}
+        </div>
+      </motion.div>
     </div>
   );
 }
 
-/* ─────────────────────────────────────────
-   Export
-───────────────────────────────────────── */
-
+/* ── Main export ── */
 export default function PlatformSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start center", "end center"],
+  });
+
+  const progress = useSpring(scrollYProgress, { stiffness: 60, damping: 20 });
+
   return (
-    <section id="story" className="relative" style={{ backgroundColor: "var(--bg-page)" }}>
+    <section ref={sectionRef} id="story" style={{ backgroundColor: "var(--bg-page)" }}>
 
       {/* Section label */}
       <motion.div
-        className="px-6 sm:px-10 lg:px-16 pt-10 pb-0 max-w-[1400px] mx-auto flex items-center gap-5"
+        className="px-6 sm:px-10 lg:px-16 pt-16 pb-0 max-w-[1400px] mx-auto flex items-center gap-5"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        viewport={{ once: true }}
+        transition={{ duration: 1 }}
       >
-        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-        <span
-          className="font-label-sm uppercase tracking-[0.45em] text-[9px]"
-          style={{ color: "var(--fg-faint)" }}
-        >
+        <div className="flex-1 h-px" style={{ background: "rgba(15,13,12,0.1)" }} />
+        <span className="font-label-sm uppercase tracking-[0.45em] text-[9px]" style={{ color: "rgba(15,13,12,0.4)" }}>
           The Standard
         </span>
-        <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+        <div className="flex-1 h-px" style={{ background: "rgba(15,13,12,0.1)" }} />
       </motion.div>
 
-      <EditorialPanel
-        index={1}
-        chapter="The Problem"
-        headline="Everyone has a project."
-        italic="Yours is different."
-        body="Someone spent six months building something real. Someone else spent a weekend prompting ChatGPT. Right now their portfolios look identical — and that gap is costing real builders their careers."
-        visual={<SignalGrid />}
-        compact
-      />
+      <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12">
 
-      <EditorialPanel
-        index={2}
-        chapter="The Session"
-        headline="45 minutes."
-        italic="One engineer. Your work."
-        body="Not a quiz. Not a take-home test. A real conversation — about the project you built, every decision you made, every tradeoff you chose. The ones who built it for real talk about it differently."
-        visual={<SessionVisual />}
-        flip
-        compact
-      />
+          {/* Left: text */}
+          <div className="lg:col-span-9">
+            {panels.map((p, i) => <TextPanel key={i} panel={p} />)}
+          </div>
 
-      <EditorialPanel
-        index={3}
-        chapter="The Proof"
-        headline="Now there's"
-        italic="proof."
-        body="An Orcred Score. A verified credential backed by a senior engineer's sign-off. Something you carry into any room and say — a real engineer reviewed this work. It passed."
-        visual={<ScoreVisual />}
-        compact
-      />
+          {/* Right: timeline */}
+          <div className="hidden lg:block lg:col-span-3">
+            <Timeline progress={progress} />
+          </div>
 
+        </div>
+      </div>
     </section>
   );
 }
