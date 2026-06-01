@@ -39,10 +39,10 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
           {/* Left: headline */}
           <motion.div
             style={{
-              fontSize:      "clamp(22px, 2.8vw, 38px)",
+              fontSize:      "clamp(32px, 4.2vw, 58px)",
               fontWeight:    400,
               letterSpacing: "-0.02em",
-              lineHeight:    1.15,
+              lineHeight:    1.12,
               color:         "#0f0d0c",
             }}
             initial={{ opacity: 0, y: 14 }}
@@ -66,6 +66,9 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
             transition={{ duration: 0.9, delay: 0.25, ease }}
           >
             A live 45-minute technical review with a senior engineer who has read your code and watched your walkthrough. One score. One credential. Delivered in 24 hours.
+            <div style={{ marginTop: 20, fontStyle: "italic", color: "rgba(15,13,12,0.38)", fontSize: "clamp(12px, 1vw, 14px)" }}>
+              The standard does not move.
+            </div>
           </motion.div>
 
         </div>
