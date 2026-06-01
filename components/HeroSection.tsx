@@ -124,7 +124,7 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
             <Link
               href="/get-verified"
               className="inline-flex items-center gap-2 px-7 py-3.5 font-label-sm uppercase tracking-[0.18em] text-[11px] transition-all duration-200"
-              style={{ backgroundColor: "#eb4511", color: "#ffffff", border: "1px solid #eb4511" }}
+              style={{ backgroundColor: "#eb4511", color: "#ffffff", border: "1px solid #eb4511", borderRadius: "100px" }}
               onMouseEnter={e => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.backgroundColor = "transparent";
@@ -143,7 +143,7 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
             <Link
               href="/how-it-works"
               className="inline-flex items-center gap-2 px-7 py-3.5 font-label-sm uppercase tracking-[0.18em] text-[11px] transition-all duration-200"
-              style={{ backgroundColor: "transparent", border: "1px solid #0f0d0c", color: "#0f0d0c" }}
+              style={{ backgroundColor: "transparent", border: "1px solid #0f0d0c", color: "#0f0d0c", borderRadius: "100px" }}
               onMouseEnter={e => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.backgroundColor = "#0f0d0c";

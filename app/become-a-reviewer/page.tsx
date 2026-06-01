@@ -368,6 +368,7 @@ export default function BecomeAReviewerPage() {
                               backgroundColor: canSubmit && !submitting ? "#eb4511" : "rgba(15,13,12,0.07)",
                               color: canSubmit && !submitting ? "#ffffff" : "rgba(15,13,12,0.25)",
                               border: "none",
+                              borderRadius: "100px",
                               cursor: canSubmit && !submitting ? "pointer" : "default",
                             }}
                             whileTap={canSubmit ? { scale: 0.98 } : {}}
