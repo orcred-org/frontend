@@ -21,11 +21,10 @@ export default function Navbar() {
   const { scrollY } = useScroll();
 
   /* Wordmark dissolves into the orange mark as you scroll down.
-     Slides left (into the circle) and fades out over the first 80px. */
-  const wordmarkOpacity  = useTransform(scrollY, [0, 80], [1, 0]);
-  const wordmarkX        = useTransform(scrollY, [0, 80], [0, -18]);
-  const wordmarkMaxWidth = useTransform(scrollY, [0, 80], [120, 0]);
-  const wordmarkPadding  = useTransform(scrollY, [0, 80], [8, 0]);
+     Container width collapses (clips cleanly), text fades + slides left. */
+  const wordmarkOpacity       = useTransform(scrollY, [0, 60], [1, 0]);
+  const wordmarkX             = useTransform(scrollY, [0, 60], [0, -22]);
+  const wordmarkContainerWidth = useTransform(scrollY, [0, 60], [100, 0]);
 
   return (
     <motion.header
@@ -51,25 +50,29 @@ export default function Navbar() {
             <circle cx="21" cy="21" r="20" fill="#eb4511"/>
           </svg>
 
-          {/* Wordmark slides into the circle and fades as you scroll */}
-          <motion.span
-            style={{
-              opacity:    wordmarkOpacity,
-              x:          wordmarkX,
-              maxWidth:   wordmarkMaxWidth,
-              paddingLeft: wordmarkPadding,
-              overflow:   "hidden",
-              whiteSpace: "nowrap",
-              display:    "block",
-              fontFamily: "Inter, system-ui, sans-serif",
-              fontWeight: 700,
-              fontSize:   "26px",
-              letterSpacing: "-0.01em",
-              color:      "#0f0d0c",
-            }}
-          >
-            Orcred
-          </motion.span>
+          {/* Collapsing container clips the wordmark cleanly — no artifact */}
+          <motion.div style={{
+            width:    wordmarkContainerWidth,
+            overflow: "hidden",
+            flexShrink: 0,
+          }}>
+            <motion.span
+              style={{
+                opacity:       wordmarkOpacity,
+                x:             wordmarkX,
+                display:       "block",
+                whiteSpace:    "nowrap",
+                paddingLeft:   "8px",
+                fontFamily:    "Inter, system-ui, sans-serif",
+                fontWeight:    700,
+                fontSize:      "26px",
+                letterSpacing: "-0.01em",
+                color:         "#0f0d0c",
+              }}
+            >
+              Orcred
+            </motion.span>
+          </motion.div>
         </Link>
 
         {/* Nav links */}
