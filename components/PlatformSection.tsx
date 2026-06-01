@@ -93,10 +93,10 @@ function TimelineSidebar({ progress }: { progress: ReturnType<typeof useSpring> 
         }} />
         <motion.div style={{
           position: "absolute", left: "50%", top: tipY,
-          width: 10, height: 10, borderRadius: "50%",
+          width: 4, height: 4, borderRadius: "50%",
           backgroundColor: "#eb4511",
           x: "-50%", y: "-50%",
-          boxShadow: "0 0 14px 5px rgba(235,69,17,0.55), 0 0 4px 2px rgba(235,69,17,0.9)",
+          boxShadow: "0 0 6px 3px rgba(235,69,17,0.35)",
         }} />
       </div>
     </div>
