@@ -116,10 +116,10 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
           ].map((s, i, arr) => (
             <div key={i} style={{ display: "flex", alignItems: "center" }}>
               <div style={{ paddingRight: 20 }}>
-                <div style={{ fontSize: "clamp(18px, 1.8vw, 22px)", fontWeight: 600, letterSpacing: "-0.02em", color: "#0f0d0c", lineHeight: 1, marginBottom: 4 }}>
+                <div style={{ fontSize: "clamp(22px, 2.4vw, 30px)", fontWeight: 600, letterSpacing: "-0.02em", color: "#0f0d0c", lineHeight: 1, marginBottom: 5 }}>
                   {s.value}
                 </div>
-                <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(15,13,12,0.38)" }}>
+                <div style={{ fontSize: 10, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(15,13,12,0.38)" }}>
                   {s.label}
                 </div>
               </div>
