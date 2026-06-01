@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const panels = [
   {
@@ -63,7 +63,7 @@ function Panel({ panel }: { panel: (typeof panels)[number] }) {
 }
 
 /* Timeline sidebar — spans full 100vh */
-function TimelineSidebar({ progress }: { progress: ReturnType<typeof useSpring> }) {
+function TimelineSidebar({ progress }: { progress: ReturnType<typeof useTransform> }) {
   const totalPx = typeof window !== "undefined" ? window.innerHeight * 0.76 : 608;
   const fillH   = useTransform(progress, [0, 1], [0, totalPx]);
   const tipY    = useTransform(progress, [0, 1], [0, totalPx]);
@@ -111,14 +111,10 @@ export default function PlatformSection() {
     offset: ["start start", "end end"],
   });
 
-  const progress = useSpring(scrollYProgress, { stiffness: 50, damping: 25 });
+  // Use raw scroll progress — no spring lag, bar always in sync
+  const progress = scrollYProgress;
 
-  // Panel 2 slides up from below into the middle third
-  // starts at y=66.67vh (below viewport), ends at y=0
   const panel2Y = useTransform(progress, [0.15, 0.48], ["66.67vh", "0vh"]);
-
-  // Panel 3 slides up from below into the bottom third
-  // starts at y=33.33vh (below viewport), ends at y=0
   const panel3Y = useTransform(progress, [0.52, 0.85], ["33.33vh", "0vh"]);
 
   return (
