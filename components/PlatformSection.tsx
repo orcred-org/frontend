@@ -177,12 +177,27 @@ export default function PlatformSection() {
           <Panel panel={panels[2]} />
         </motion.div>
 
-        {/* Cross-fading visuals — right half, centered */}
-        <div className="hidden lg:flex" style={{ position: "absolute", right: "clamp(100px, 14vw, 240px)", top: 0, height: "100%", alignItems: "center", pointerEvents: "none" }}>
-          <motion.div style={{ opacity: vis1Opacity, position: "absolute" }}><SignalGrid /></motion.div>
-          <motion.div style={{ opacity: vis2Opacity, position: "absolute" }}><ClockVisual /></motion.div>
-          <motion.div style={{ opacity: vis3Opacity, position: "absolute" }}><ScoreVisual /></motion.div>
-        </div>
+        {/* Visuals — each aligned to its panel's vertical third */}
+        <motion.div className="hidden lg:flex" style={{
+          position: "absolute", left: "52%", top: 0, height: "33.33vh",
+          alignItems: "center", pointerEvents: "none", opacity: vis1Opacity,
+        }}>
+          <SignalGrid />
+        </motion.div>
+
+        <motion.div className="hidden lg:flex" style={{
+          position: "absolute", left: "52%", top: "33.33vh", height: "33.33vh",
+          alignItems: "center", pointerEvents: "none", opacity: vis2Opacity,
+        }}>
+          <ClockVisual />
+        </motion.div>
+
+        <motion.div className="hidden lg:flex" style={{
+          position: "absolute", left: "52%", top: "66.67vh", height: "33.33vh",
+          alignItems: "center", pointerEvents: "none", opacity: vis3Opacity,
+        }}>
+          <ScoreVisual />
+        </motion.div>
 
         {/* Timeline */}
         <TimelineSidebar progress={progress} />
