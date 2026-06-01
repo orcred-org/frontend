@@ -31,13 +31,7 @@ function ShapeProblem() {
   const total = 24; const signal = 13;
   return (
     <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      {/* Circle ring */}
-      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-        viewBox="0 0 400 380" preserveAspectRatio="xMidYMid meet">
-        <circle cx="200" cy="180" r="128" fill="none" stroke="rgba(255,255,255,0.16)" strokeWidth="58" />
-      </svg>
-      {/* Signal dots */}
-      <div style={{ position: "relative", zIndex: 1, display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 16 }}>
         {Array.from({ length: total }).map((_, i) => (
           <div key={i} style={{
             width:           i === signal ? 12 : 7,
@@ -56,14 +50,7 @@ function ShapeProblem() {
 function ShapeSession() {
   return (
     <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      {/* Bold X */}
-      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-        viewBox="0 0 400 380" preserveAspectRatio="xMidYMid slice">
-        <line x1="50"  y1="10"  x2="350" y2="370" stroke="rgba(255,255,255,0.16)" strokeWidth="82" strokeLinecap="round" />
-        <line x1="350" y1="10"  x2="50"  y2="370" stroke="rgba(255,255,255,0.16)" strokeWidth="82" strokeLinecap="round" />
-      </svg>
-      {/* 45 */}
-      <div style={{ position: "relative", zIndex: 1, textAlign: "center" }}>
+      <div style={{ textAlign: "center" }}>
         <div style={{ fontSize: 100, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "rgba(255,255,255,0.96)" }}>45</div>
         <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginTop: 10 }}>minutes</div>
       </div>
@@ -74,13 +61,7 @@ function ShapeSession() {
 function ShapeProof() {
   return (
     <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      {/* Diagonal bar */}
-      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
-        viewBox="0 0 400 380" preserveAspectRatio="xMidYMid slice">
-        <line x1="-40" y1="420" x2="440" y2="-40" stroke="rgba(255,255,255,0.16)" strokeWidth="148" />
-      </svg>
-      {/* 87/100 */}
-      <div style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "flex-end", gap: 4 }}>
+      <div style={{ display: "flex", alignItems: "flex-end", gap: 4 }}>
         <div style={{ fontSize: 104, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "rgba(255,255,255,0.96)" }}>87</div>
         <div style={{ fontSize: 28, fontWeight: 400, color: "rgba(255,255,255,0.55)", marginBottom: 15, lineHeight: 1 }}>/100</div>
       </div>
