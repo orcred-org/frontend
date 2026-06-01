@@ -109,6 +109,36 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
           </Link>
         </motion.div>
 
+        {/* Stats strip */}
+        <motion.div
+          className="flex flex-wrap items-center gap-0 mt-12 pt-6"
+          style={{ borderTop: "1px solid rgba(15,13,12,0.1)" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.52 }}
+        >
+          {[
+            { value: "40–60%", label: "Pass rate" },
+            { value: "45 min",  label: "Live review" },
+            { value: "24 hrs",  label: "Turnaround" },
+            { value: "₹2,000",  label: "Per attempt" },
+          ].map((s, i, arr) => (
+            <div key={i} style={{ display: "flex", alignItems: "center" }}>
+              <div style={{ paddingRight: 20 }}>
+                <div style={{ fontSize: "clamp(15px, 1.5vw, 18px)", fontWeight: 600, letterSpacing: "-0.02em", color: "#0f0d0c", lineHeight: 1, marginBottom: 3 }}>
+                  {s.value}
+                </div>
+                <div style={{ fontSize: 8, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(15,13,12,0.38)" }}>
+                  {s.label}
+                </div>
+              </div>
+              {i < arr.length - 1 && (
+                <div style={{ width: 1, height: 28, backgroundColor: "rgba(15,13,12,0.12)", marginRight: 20 }} />
+              )}
+            </div>
+          ))}
+        </motion.div>
+
       </div>
     </section>
   );
