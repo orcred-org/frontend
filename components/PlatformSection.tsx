@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -106,8 +106,8 @@ function ScoreVisual() {
   );
 }
 
-/* ── Text panel (left side) ── */
-function Panel({ panel }: { panel: (typeof panels)[number] }) {
+/* ── Panel with visual ── */
+function Panel({ panel, visual }: { panel: (typeof panels)[number]; visual: React.ReactNode }) {
   return (
     <div style={{
       width: "100%", height: "100%",
@@ -115,8 +115,10 @@ function Panel({ panel }: { panel: (typeof panels)[number] }) {
       borderTop: "1px solid rgba(15,13,12,0.1)",
       display: "flex", alignItems: "center",
       padding: "0 clamp(24px, 5vw, 64px)",
+      gap: "clamp(32px, 6vw, 80px)",
     }}>
-      <div style={{ maxWidth: 520, display: "flex", alignItems: "baseline", gap: 28 }}>
+      {/* Text */}
+      <div style={{ flex: "0 0 auto", maxWidth: 480, display: "flex", alignItems: "baseline", gap: 28 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: "#eb4511", flexShrink: 0 }}>{panel.num}</div>
         <div>
           <div style={{ fontSize: "clamp(16px, 1.8vw, 24px)", fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.2, color: "#0f0d0c", marginBottom: 10 }}>
@@ -127,12 +129,17 @@ function Panel({ panel }: { panel: (typeof panels)[number] }) {
           </div>
         </div>
       </div>
+
+      {/* Visual */}
+      <div className="hidden lg:flex" style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        {visual}
+      </div>
     </div>
   );
 }
 
 /* ── Timeline ── */
-function TimelineSidebar({ progress }: { progress: ReturnType<typeof useTransform> }) {
+function TimelineSidebar({ progress }: { progress: MotionValue<number> }) {
   const fillH = useTransform(progress, [0, 1], ["0vh", "76vh"]);
   const tipY  = useTransform(progress, [0, 1], ["0vh", "76vh"]);
   return (
@@ -154,46 +161,24 @@ export default function PlatformSection() {
   const panel2Y = useTransform(progress, [0.15, 0.48], ["66.67vh", "0vh"]);
   const panel3Y = useTransform(progress, [0.52, 0.85], ["33.33vh", "0vh"]);
 
-  // Visuals cross-fade
-  const vis1Opacity = useTransform(progress, [0, 0.15, 0.45], [1, 1, 0]);
-  const vis2Opacity = useTransform(progress, [0.15, 0.45, 0.52, 0.82], [0, 1, 1, 0]);
-  const vis3Opacity = useTransform(progress, [0.52, 0.82], [0, 1]);
 
   return (
     <section ref={sectionRef} id="story" style={{ height: "300vh", position: "relative" }}>
       <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
 
-        {/* Panels */}
+        {/* Panel 1 — text + visual together */}
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "33.33vh" }}>
-          <Panel panel={panels[0]} />
+          <Panel panel={panels[0]} visual={<SignalGrid />} />
         </div>
+
+        {/* Panel 2 */}
         <motion.div style={{ position: "absolute", top: "33.33vh", left: 0, right: 0, height: "33.33vh", y: panel2Y }}>
-          <Panel panel={panels[1]} />
+          <Panel panel={panels[1]} visual={<ClockVisual />} />
         </motion.div>
+
+        {/* Panel 3 */}
         <motion.div style={{ position: "absolute", top: "66.67vh", left: 0, right: 0, height: "33.33vh", y: panel3Y }}>
-          <Panel panel={panels[2]} />
-        </motion.div>
-
-        {/* Visuals — each aligned to its panel's vertical third */}
-        <motion.div className="hidden lg:flex" style={{
-          position: "absolute", left: "52%", top: 0, height: "33.33vh",
-          alignItems: "center", pointerEvents: "none", opacity: vis1Opacity,
-        }}>
-          <SignalGrid />
-        </motion.div>
-
-        <motion.div className="hidden lg:flex" style={{
-          position: "absolute", left: "52%", top: "33.33vh", height: "33.33vh",
-          alignItems: "center", pointerEvents: "none", opacity: vis2Opacity,
-        }}>
-          <ClockVisual />
-        </motion.div>
-
-        <motion.div className="hidden lg:flex" style={{
-          position: "absolute", left: "52%", top: "66.67vh", height: "33.33vh",
-          alignItems: "center", pointerEvents: "none", opacity: vis3Opacity,
-        }}>
-          <ScoreVisual />
+          <Panel panel={panels[2]} visual={<ScoreVisual />} />
         </motion.div>
 
         {/* Timeline */}
