@@ -64,9 +64,8 @@ function Panel({ panel }: { panel: (typeof panels)[number] }) {
 
 /* Timeline sidebar — spans full 100vh */
 function TimelineSidebar({ progress }: { progress: ReturnType<typeof useTransform> }) {
-  const totalPx = typeof window !== "undefined" ? window.innerHeight * 0.76 : 608;
-  const fillH   = useTransform(progress, [0, 1], [0, totalPx]);
-  const tipY    = useTransform(progress, [0, 1], [0, totalPx]);
+  const fillH = useTransform(progress, [0, 1], ["0vh", "76vh"]);
+  const tipY  = useTransform(progress, [0, 1], ["0vh", "76vh"]);
 
   return (
     <div
@@ -79,7 +78,7 @@ function TimelineSidebar({ progress }: { progress: ReturnType<typeof useTransfor
         alignItems: "center",
       }}
     >
-      <div style={{ position: "relative", height: totalPx, width: 20 }}>
+      <div style={{ position: "relative", height: "76vh", width: 20 }}>
         <div style={{
           position: "absolute", left: "50%", top: 0, bottom: 0,
           width: 3, backgroundColor: "rgba(15,13,12,0.08)",
