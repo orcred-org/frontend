@@ -30,7 +30,7 @@ export default function Navbar() {
       className="sticky top-0 z-50"
       style={{
         backgroundColor: "var(--bg-page)",
-        borderBottom: "1px solid rgba(15,13,12,0.08)",
+        borderBottom: "none",
       }}
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
