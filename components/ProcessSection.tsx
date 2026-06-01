@@ -231,19 +231,9 @@ export default function ProcessSection() {
               <Link
                 href="/how-it-works"
                 className="inline-flex items-center gap-2.5 px-7 py-3.5 font-label-sm uppercase tracking-[0.2em] text-[11px] transition-all duration-200"
-                style={{ border: "1px solid #0f0d0c", backgroundColor: "transparent", color: "#0f0d0c", borderRadius: "100px" }}
-                onMouseEnter={e => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.backgroundColor = "#eb4511";
-                  el.style.borderColor = "#eb4511";
-                  el.style.setProperty("color", "#ffffff", "important");
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.backgroundColor = "transparent";
-                  el.style.borderColor = "#0f0d0c";
-                  el.style.setProperty("color", "#0f0d0c", "important");
-                }}
+                style={{ border: "1px solid #0f0d0c", backgroundColor: "transparent", color: "#0f0d0c", borderRadius: "100px", transition: "opacity 0.15s ease" }}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = "0.6")}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
               >
                 See the Full Process
                 <span style={{ letterSpacing: 0, color: "inherit" }}>→</span>

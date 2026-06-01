@@ -124,36 +124,18 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
             <Link
               href="/get-verified"
               className="inline-flex items-center gap-2 px-7 py-3.5 font-label-sm uppercase tracking-[0.18em] text-[11px] transition-all duration-200"
-              style={{ backgroundColor: "#eb4511", color: "#ffffff", border: "1px solid #eb4511", borderRadius: "100px" }}
-              onMouseEnter={e => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.backgroundColor = "transparent";
-                el.style.setProperty("color", "#eb4511", "important");
-                el.style.borderColor = "#eb4511";
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.backgroundColor = "#eb4511";
-                el.style.setProperty("color", "#ffffff", "important");
-                el.style.borderColor = "#eb4511";
-              }}
+              style={{ backgroundColor: "#eb4511", color: "#ffffff", border: "1px solid #eb4511", borderRadius: "100px", transition: "opacity 0.15s ease" }}
+              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = "0.8")}
+              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
             >
               Apply for Verification
             </Link>
             <Link
               href="/how-it-works"
-              className="inline-flex items-center gap-2 px-7 py-3.5 font-label-sm uppercase tracking-[0.18em] text-[11px] transition-all duration-200"
-              style={{ backgroundColor: "transparent", border: "1px solid #0f0d0c", color: "#0f0d0c", borderRadius: "100px" }}
-              onMouseEnter={e => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.backgroundColor = "#0f0d0c";
-                el.style.setProperty("color", "#ffffff", "important");
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.backgroundColor = "transparent";
-                el.style.setProperty("color", "#0f0d0c", "important");
-              }}
+              className="inline-flex items-center gap-2 px-7 py-3.5 font-label-sm uppercase tracking-[0.18em] text-[11px]"
+              style={{ backgroundColor: "transparent", border: "1px solid #0f0d0c", color: "#0f0d0c", borderRadius: "100px", transition: "opacity 0.15s ease" }}
+              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = "0.6")}
+              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
             >
               How it works
             </Link>

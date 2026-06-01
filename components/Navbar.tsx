@@ -107,15 +107,10 @@ export default function Navbar() {
             color:            "#ffffff",
             border:           "1px solid #eb4511",
             borderRadius:     "100px",
+            transition:       "opacity 0.15s ease",
           }}
-          onMouseEnter={e => {
-            (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
-            (e.currentTarget as HTMLElement).style.color = "#eb4511";
-          }}
-          onMouseLeave={e => {
-            (e.currentTarget as HTMLElement).style.backgroundColor = "#eb4511";
-            (e.currentTarget as HTMLElement).style.color = "#ffffff";
-          }}
+          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = "0.8")}
+          onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
         >
           Apply Now
         </Link>

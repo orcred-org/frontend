@@ -370,7 +370,10 @@ export default function BecomeAReviewerPage() {
                               border: "none",
                               borderRadius: "100px",
                               cursor: canSubmit && !submitting ? "pointer" : "default",
+                              transition: "opacity 0.15s ease",
                             }}
+                            onMouseEnter={e => (canSubmit && !submitting) && ((e.currentTarget as HTMLElement).style.opacity = "0.8")}
+                            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
                             whileTap={canSubmit ? { scale: 0.98 } : {}}
                           >
                             {submitting ? "Submitting…" : "Submit Application"}
