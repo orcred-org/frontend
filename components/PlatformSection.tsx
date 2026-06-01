@@ -23,87 +23,74 @@ const panels = [
   },
 ];
 
-/* ── Signal grid ── */
-function SignalGrid() {
+/* ── Card 1: large circle ring + signal dots ── */
+function ImageProblem() {
   const total = 24; const signal = 13;
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 20 }}>
-      {Array.from({ length: total }).map((_, i) => (
-        <div key={i} style={{
-          width:           i === signal ? 16 : 10,
-          height:          i === signal ? 16 : 10,
-          borderRadius:    "50%",
-          backgroundColor: i === signal ? "#eb4511" : "rgba(15,13,12,0.10)",
-          boxShadow:       i === signal ? "0 0 18px 7px rgba(235,69,17,0.20)" : "none",
-          alignSelf: "center", justifySelf: "center",
-        }} />
-      ))}
-    </div>
-  );
-}
-
-/* ── Clock ── */
-function ClockVisual() {
-  const r = 96;
-  const ticks = [0, 90, 180, 270].map(deg => {
-    const rad = ((deg - 90) * Math.PI) / 180;
-    return {
-      x1: 120 + (r - 8)  * Math.cos(rad), y1: 120 + (r - 8)  * Math.sin(rad),
-      x2: 120 + (r + 4)  * Math.cos(rad), y2: 120 + (r + 4)  * Math.sin(rad),
-    };
-  });
-  return (
-    <div style={{ position: "relative", width: 240, height: 240 }}>
-      <svg viewBox="0 0 240 240" style={{ width: "100%", height: "100%", overflow: "visible" }}>
-        <circle cx="120" cy="120" r={r} fill="none" stroke="rgba(15,13,12,0.07)" strokeWidth="1.5" />
-        {ticks.map((t, i) => (
-          <line key={i} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="rgba(15,13,12,0.18)" strokeWidth="1.5" />
-        ))}
-        {["0", "15", "30", "45"].map((label, i) => {
-          const rad = (i * 90 - 90) * Math.PI / 180;
-          return (
-            <text key={i}
-              x={120 + (r + 18) * Math.cos(rad)} y={120 + (r + 18) * Math.sin(rad)}
-              textAnchor="middle" dominantBaseline="central"
-              style={{ fill: "rgba(15,13,12,0.26)", fontSize: "10px", letterSpacing: "0.05em" }}
-            >{label}</text>
-          );
-        })}
+    <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+      {/* Bold circle ring */}
+      <svg
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+        viewBox="0 0 400 300"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <circle cx="200" cy="150" r="115" fill="none" stroke="#eb4511" strokeWidth="54" />
       </svg>
-      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ fontSize: 64, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "#0f0d0c" }}>45</div>
-        <div style={{ fontSize: 10, fontWeight: 500, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(15,13,12,0.32)", marginTop: 6 }}>minutes</div>
+      {/* Signal dots overlay */}
+      <div style={{ position: "relative", zIndex: 1, display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 18 }}>
+        {Array.from({ length: total }).map((_, i) => (
+          <div key={i} style={{
+            width:           i === signal ? 13 : 8,
+            height:          i === signal ? 13 : 8,
+            borderRadius:    "50%",
+            backgroundColor: i === signal ? "#0f0d0c" : "rgba(15,13,12,0.18)",
+            alignSelf:  "center",
+            justifySelf: "center",
+          }} />
+        ))}
       </div>
     </div>
   );
 }
 
-/* ── Score ── */
-function ScoreVisual() {
-  const bars = [
-    { label: "Technical Depth", w: "91%" },
-    { label: "Communication",   w: "84%" },
-    { label: "Reproducibility", w: "88%" },
-    { label: "Originality",     w: "79%" },
-  ];
+/* ── Card 2: X shape + 45 ── */
+function ImageSession() {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 20, width: "100%", maxWidth: 300 }}>
-      <div style={{ display: "flex", alignItems: "flex-end", gap: 5 }}>
-        <div style={{ fontSize: 80, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "#0f0d0c" }}>87</div>
-        <div style={{ fontSize: 22, color: "#eb4511", fontWeight: 400, marginBottom: 10 }}>/100</div>
+    <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+      {/* Bold X */}
+      <svg
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+        viewBox="0 0 400 300"
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <line x1="55"  y1="15"  x2="345" y2="285" stroke="#eb4511" strokeWidth="80" strokeLinecap="round" />
+        <line x1="345" y1="15"  x2="55"  y2="285" stroke="#eb4511" strokeWidth="80" strokeLinecap="round" />
+      </svg>
+      {/* 45 overlaid */}
+      <div style={{ position: "relative", zIndex: 1, textAlign: "center" }}>
+        <div style={{ fontSize: 84, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "#ffffff" }}>45</div>
+        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.72)", marginTop: 8 }}>minutes</div>
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 11 }}>
-        {bars.map(b => (
-          <div key={b.label}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
-              <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(15,13,12,0.42)" }}>{b.label}</div>
-              <div style={{ fontSize: 9, color: "rgba(15,13,12,0.32)" }}>{b.w}</div>
-            </div>
-            <div style={{ height: 2, background: "rgba(15,13,12,0.08)", overflow: "hidden" }}>
-              <div style={{ height: "100%", width: b.w, backgroundColor: "#eb4511", opacity: 0.6 }} />
-            </div>
-          </div>
-        ))}
+    </div>
+  );
+}
+
+/* ── Card 3: diagonal slash + 87 ── */
+function ImageProof() {
+  return (
+    <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+      {/* Bold diagonal bar */}
+      <svg
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+        viewBox="0 0 400 300"
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <line x1="-40" y1="350" x2="440" y2="-50" stroke="#eb4511" strokeWidth="140" />
+      </svg>
+      {/* 87/100 overlaid */}
+      <div style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "flex-end", gap: 4 }}>
+        <div style={{ fontSize: 88, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "#ffffff" }}>87</div>
+        <div style={{ fontSize: 24, fontWeight: 400, color: "rgba(255,255,255,0.78)", marginBottom: 12, lineHeight: 1 }}>/100</div>
       </div>
     </div>
   );
@@ -111,7 +98,9 @@ function ScoreVisual() {
 
 /* ── Single card ── */
 function PanelCard({
-  panel, visual, index,
+  panel,
+  visual,
+  index,
 }: {
   panel: (typeof panels)[number];
   visual: React.ReactNode;
@@ -128,35 +117,29 @@ function PanelCard({
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: 0.7, delay: index * 0.1, ease }}
       style={{
-        backgroundColor:  "#ffffff",
-        border:           "1px solid rgba(15,13,12,0.10)",
-        overflow:         "hidden",
-        cursor:           "default",
-        transform:        hovered ? "translateY(-6px)" : "translateY(0px)",
-        boxShadow:        hovered
+        backgroundColor: "#ffffff",
+        border:          "1px solid rgba(15,13,12,0.10)",
+        overflow:        "hidden",
+        cursor:          "default",
+        transform:       hovered ? "translateY(-6px)" : "translateY(0px)",
+        boxShadow:       hovered
           ? "0 24px 48px rgba(15,13,12,0.10), 0 4px 12px rgba(15,13,12,0.06)"
           : "0 2px 6px rgba(15,13,12,0.04)",
         transition: "transform 0.38s cubic-bezier(0.22,1,0.36,1), box-shadow 0.38s cubic-bezier(0.22,1,0.36,1)",
       }}
     >
-      {/* Visual area */}
+      {/* Shape / image area */}
       <div style={{
-        height:          "260px",
-        backgroundColor: "rgba(235,69,17,0.025)",
+        height:          "272px",
+        position:        "relative",
+        backgroundColor: "var(--bg-page)",
         borderBottom:    "1px solid rgba(15,13,12,0.07)",
-        display:         "flex",
-        alignItems:      "center",
-        justifyContent:  "center",
-        padding:         "24px",
-        overflow:        "hidden",
       }}>
         {visual}
       </div>
 
-      {/* Content area */}
+      {/* Content */}
       <div style={{ padding: "22px 24px 26px" }}>
-
-        {/* Eyebrow */}
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
           <div style={{ fontSize: 9, fontWeight: 700, color: "#eb4511" }}>{panel.num}</div>
           <div style={{ width: 14, height: 1, background: "rgba(15,13,12,0.15)" }} />
@@ -164,11 +147,9 @@ function PanelCard({
             {panel.eyebrow}
           </div>
         </div>
-
-        {/* Headline */}
         <div style={{
           fontSize:      "clamp(17px, 1.6vw, 22px)",
-          fontWeight:    400,
+          fontWeight:    500,
           letterSpacing: "-0.02em",
           lineHeight:    1.2,
           color:         "#0f0d0c",
@@ -176,8 +157,6 @@ function PanelCard({
         }}>
           {panel.headline}
         </div>
-
-        {/* Body */}
         <div style={{
           fontSize:   "clamp(13px, 1vw, 14px)",
           fontWeight: 400,
@@ -186,7 +165,6 @@ function PanelCard({
         }}>
           {panel.body}
         </div>
-
       </div>
     </motion.div>
   );
@@ -194,7 +172,11 @@ function PanelCard({
 
 /* ── Section ── */
 export default function PlatformSection() {
-  const visuals = [<SignalGrid key={0} />, <ClockVisual key={1} />, <ScoreVisual key={2} />];
+  const visuals = [
+    <ImageProblem key={0} />,
+    <ImageSession key={1} />,
+    <ImageProof   key={2} />,
+  ];
 
   return (
     <section
