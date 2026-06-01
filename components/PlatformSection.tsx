@@ -133,6 +133,7 @@ function PanelCard({
         transition={{ duration: 0.7, delay: index * 0.1, ease }}
         style={{
           backgroundColor: "#eb4511",
+          borderRadius:     "20px",
           overflow:         "hidden",
           position:         "relative",
           height:           "360px",
