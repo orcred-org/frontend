@@ -218,6 +218,36 @@ export default function PlatformSection() {
       style={{ backgroundColor: "var(--bg-page)" }}
     >
       <div className="max-w-[1400px] mx-auto">
+
+        {/* Section heading */}
+        <motion.div
+          className="mb-10 sm:mb-12"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9, ease }}
+        >
+          <div style={{
+            fontSize:      "clamp(22px, 2.8vw, 38px)",
+            fontWeight:    400,
+            letterSpacing: "-0.02em",
+            lineHeight:    1.1,
+            color:         "#0f0d0c",
+            marginBottom:  "12px",
+          }}>
+            The verification gap.
+          </div>
+          <div style={{
+            fontSize:   "clamp(14px, 1.2vw, 16px)",
+            fontWeight: 400,
+            lineHeight: 1.7,
+            color:      "rgba(15,13,12,0.55)",
+            maxWidth:   "480px",
+          }}>
+            The problem, the session, the proof — how Orcred closes the gap between doing the work and being believed.
+          </div>
+        </motion.div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {panels.map((panel, i) => (
             <PanelCard key={i} panel={panel} visual={visuals[i]} index={i} />
