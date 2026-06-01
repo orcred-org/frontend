@@ -73,14 +73,6 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
 
         </div>
 
-        {/* Divider */}
-        <motion.div
-          style={{ height: "1px", backgroundColor: "rgba(15,13,12,0.1)", marginBottom: 32 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.35 }}
-        />
-
         {/* CTAs */}
         <motion.div
           className="flex flex-wrap items-center gap-4"
