@@ -55,9 +55,6 @@ function ClockVisual() {
       <div style={{ position: "relative", width: 180, height: 180 }}>
         <svg viewBox="0 0 180 180" style={{ width: "100%", height: "100%", overflow: "visible" }}>
           <circle cx="90" cy="90" r={r} fill="none" stroke="rgba(15,13,12,0.08)" strokeWidth="1.5" />
-          <circle cx="90" cy="90" r={r} fill="none" stroke="#eb4511" strokeWidth="1.5"
-            strokeDasharray={circ} strokeDashoffset={circ * 0.62}
-            strokeLinecap="round" transform="rotate(-90 90 90)" style={{ opacity: 0.7 }} />
           {[0, 90, 180, 270].map((deg, i) => {
             const rad = ((deg - 90) * Math.PI) / 180;
             return <line key={i}
