@@ -23,70 +23,107 @@ const panels = [
   },
 ];
 
-/* ─────────────────────────────────────────
-   Shapes — white on solid orange card
-───────────────────────────────────────── */
-
-function ShapeProblem() {
+/* ── Signal grid — white on orange ── */
+function SignalGrid() {
   const total = 24; const signal = 13;
   return (
-    <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 16 }}>
-        {Array.from({ length: total }).map((_, i) => (
-          <div key={i} style={{
-            width:           i === signal ? 12 : 7,
-            height:          i === signal ? 12 : 7,
-            borderRadius:    "50%",
-            backgroundColor: i === signal ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.22)",
-            alignSelf:  "center",
-            justifySelf: "center",
-          }} />
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 22 }}>
+      {Array.from({ length: total }).map((_, i) => (
+        <div key={i} style={{
+          width:           i === signal ? 18 : 11,
+          height:          i === signal ? 18 : 11,
+          borderRadius:    "50%",
+          backgroundColor: i === signal ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.22)",
+          boxShadow:       i === signal ? "0 0 22px 8px rgba(255,255,255,0.18)" : "none",
+          alignSelf: "center", justifySelf: "center",
+        }} />
+      ))}
+    </div>
+  );
+}
+
+/* ── Clock — white on orange ── */
+function ClockVisual() {
+  const r = 128;
+  const ticks = [0, 90, 180, 270].map(deg => {
+    const rad = ((deg - 90) * Math.PI) / 180;
+    return {
+      x1: 160 + (r - 10) * Math.cos(rad), y1: 160 + (r - 10) * Math.sin(rad),
+      x2: 160 + (r + 5)  * Math.cos(rad), y2: 160 + (r + 5)  * Math.sin(rad),
+    };
+  });
+  return (
+    <div style={{ position: "relative", width: 320, height: 320 }}>
+      <svg viewBox="0 0 320 320" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+        <circle cx="160" cy="160" r={r} fill="none" stroke="rgba(255,255,255,0.14)" strokeWidth="1.5" />
+        {ticks.map((t, i) => (
+          <line key={i} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" />
+        ))}
+        {["0", "15", "30", "45"].map((label, i) => {
+          const rad = (i * 90 - 90) * Math.PI / 180;
+          return (
+            <text key={i}
+              x={160 + (r + 22) * Math.cos(rad)} y={160 + (r + 22) * Math.sin(rad)}
+              textAnchor="middle" dominantBaseline="central"
+              style={{ fill: "rgba(255,255,255,0.35)", fontSize: "11px", letterSpacing: "0.05em" }}
+            >{label}</text>
+          );
+        })}
+      </svg>
+      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ fontSize: 88, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "rgba(255,255,255,0.96)" }}>45</div>
+        <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.45)", marginTop: 8 }}>minutes</div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Score bars — white on orange ── */
+function ScoreVisual() {
+  const bars = [
+    { label: "Technical Depth", w: "91%" },
+    { label: "Communication",   w: "84%" },
+    { label: "Reproducibility", w: "88%" },
+    { label: "Originality",     w: "79%" },
+  ];
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 28, width: 340 }}>
+      <div style={{ display: "flex", alignItems: "flex-end", gap: 6 }}>
+        <div style={{ fontSize: 108, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "rgba(255,255,255,0.96)" }}>87</div>
+        <div style={{ fontSize: 30, color: "rgba(255,255,255,0.55)", fontWeight: 400, marginBottom: 14 }}>/100</div>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        {bars.map(b => (
+          <div key={b.label}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+              <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.45)" }}>{b.label}</div>
+              <div style={{ fontSize: 9, color: "rgba(255,255,255,0.35)" }}>{b.w}</div>
+            </div>
+            <div style={{ height: 2.5, background: "rgba(255,255,255,0.15)", overflow: "hidden" }}>
+              <div style={{ height: "100%", width: b.w, backgroundColor: "rgba(255,255,255,0.7)" }} />
+            </div>
+          </div>
         ))}
       </div>
     </div>
   );
 }
 
-function ShapeSession() {
-  return (
-    <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ textAlign: "center" }}>
-        <div style={{ fontSize: 100, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "rgba(255,255,255,0.96)" }}>45</div>
-        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginTop: 10 }}>minutes</div>
-      </div>
-    </div>
-  );
-}
-
-function ShapeProof() {
-  return (
-    <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ display: "flex", alignItems: "flex-end", gap: 4 }}>
-        <div style={{ fontSize: 104, fontWeight: 700, letterSpacing: "-0.05em", lineHeight: 1, color: "rgba(255,255,255,0.96)" }}>87</div>
-        <div style={{ fontSize: 28, fontWeight: 400, color: "rgba(255,255,255,0.55)", marginBottom: 15, lineHeight: 1 }}>/100</div>
-      </div>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────
-   Card + body below
-───────────────────────────────────────── */
-
+/* ── Single card ── */
 function PanelCard({
   panel,
-  shape,
+  visual,
   index,
 }: {
   panel: (typeof panels)[number];
-  shape: React.ReactNode;
+  visual: React.ReactNode;
   index: number;
 }) {
   const [hovered, setHovered] = useState(false);
 
   return (
     <div>
-      {/* Card — solid colour, shape inside, title at bottom */}
+      {/* Card — solid orange, visual inside, title at bottom */}
       <motion.div
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -106,8 +143,18 @@ function PanelCard({
           transition: "transform 0.38s cubic-bezier(0.22,1,0.36,1), box-shadow 0.38s cubic-bezier(0.22,1,0.36,1)",
         }}
       >
-        {/* Shape / visual fills card */}
-        {shape}
+        {/* Visual — centred, sits above the title */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          bottom: "110px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "24px",
+        }}>
+          {visual}
+        </div>
 
         {/* Title pinned to card bottom */}
         <div style={{
@@ -155,15 +202,12 @@ function PanelCard({
   );
 }
 
-/* ─────────────────────────────────────────
-   Section
-───────────────────────────────────────── */
-
+/* ── Section ── */
 export default function PlatformSection() {
-  const shapes = [
-    <ShapeProblem key={0} />,
-    <ShapeSession key={1} />,
-    <ShapeProof   key={2} />,
+  const visuals = [
+    <SignalGrid  key={0} />,
+    <ClockVisual key={1} />,
+    <ScoreVisual key={2} />,
   ];
 
   return (
@@ -175,7 +219,7 @@ export default function PlatformSection() {
       <div className="max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {panels.map((panel, i) => (
-            <PanelCard key={i} panel={panel} shape={shapes[i]} index={i} />
+            <PanelCard key={i} panel={panel} visual={visuals[i]} index={i} />
           ))}
         </div>
       </div>
