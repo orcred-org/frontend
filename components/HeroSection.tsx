@@ -90,7 +90,7 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
         >
           <Link
             href="/get-verified"
-            className="inline-flex items-center px-10 py-4 font-label-sm uppercase tracking-[0.2em] text-[11px] transition-all duration-200"
+            className="inline-flex items-center px-6 py-2.5 font-label-sm uppercase tracking-[0.2em] text-[11px] transition-all duration-200"
             style={{ backgroundColor: "#eb4511", color: "#ffffff", border: "1px solid #eb4511", borderRadius: "50px", transition: "opacity 0.15s ease" }}
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = "0.8")}
             onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
@@ -99,7 +99,7 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
           </Link>
           <Link
             href="/how-it-works"
-            className="inline-flex items-center gap-2.5 px-7 py-3.5 font-label-sm uppercase tracking-[0.2em] text-[11px] transition-all duration-200"
+            className="inline-flex items-center gap-2.5 px-5 py-2.5 font-label-sm uppercase tracking-[0.2em] text-[11px] transition-all duration-200"
             style={{ border: "1px solid #0f0d0c", backgroundColor: "transparent", color: "#0f0d0c", borderRadius: "50px", transition: "opacity 0.15s ease" }}
             onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = "0.6")}
             onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
