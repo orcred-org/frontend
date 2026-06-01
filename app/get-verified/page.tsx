@@ -530,7 +530,10 @@ export default function GetVerifiedPage() {
                     border:          "none",
                     borderRadius:    "100px",
                     cursor:          canProceed() ? "pointer" : "default",
+                    transition:      "opacity 0.15s ease",
                   }}
+                  onMouseEnter={e => canProceed() && ((e.currentTarget as HTMLElement).style.opacity = "0.8")}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
                   whileTap={canProceed() ? { scale: 0.98 } : {}}
                 >
                   Continue →
@@ -539,7 +542,7 @@ export default function GetVerifiedPage() {
                 <motion.button
                   onClick={handleSubmit}
                   disabled={submitting || !canProceed()}
-                  className="font-label-sm uppercase tracking-[0.2em] text-[11px] transition-all duration-200"
+                  className="font-label-sm uppercase tracking-[0.2em] text-[11px]"
                   style={{
                     padding:         "10px 28px",
                     backgroundColor: canProceed() && !submitting ? "#eb4511" : "rgba(15,13,12,0.07)",
@@ -547,7 +550,10 @@ export default function GetVerifiedPage() {
                     border:          "none",
                     borderRadius:    "100px",
                     cursor:          canProceed() && !submitting ? "pointer" : "default",
+                    transition:      "opacity 0.15s ease",
                   }}
+                  onMouseEnter={e => (canProceed() && !submitting) && ((e.currentTarget as HTMLElement).style.opacity = "0.8")}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
                   whileTap={canProceed() ? { scale: 0.98 } : {}}
                 >
                   {submitting ? "Submitting…" : "Submit Application"}
