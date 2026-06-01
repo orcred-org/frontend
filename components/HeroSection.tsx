@@ -105,39 +105,6 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
             </Link>
           </motion.div>
 
-          {/* Stats strip */}
-          <motion.div
-            className="flex flex-wrap gap-0 pt-6"
-            style={{ borderTop: "1px solid rgba(15,13,12,0.1)" }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            {stats.map((s, i) => (
-              <div
-                key={i}
-                style={{
-                  paddingRight: i < stats.length - 1 ? 24 : 0,
-                  marginRight:  i < stats.length - 1 ? 24 : 0,
-                  borderRight:  i < stats.length - 1 ? "1px solid rgba(15,13,12,0.1)" : "none",
-                }}
-              >
-                <div style={{
-                  fontSize:      "clamp(18px, 2vw, 26px)",
-                  fontWeight:    600,
-                  letterSpacing: "-0.02em",
-                  color:         "#0f0d0c",
-                  lineHeight:    1,
-                  marginBottom:  5,
-                }}>
-                  {s.value}
-                </div>
-                <div className="font-label-sm uppercase tracking-[0.2em] text-[8px]" style={{ color: "rgba(15,13,12,0.4)" }}>
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </motion.div>
 
         </div>
       </div>
