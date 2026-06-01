@@ -39,10 +39,10 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
           {/* Left: headline */}
           <motion.div
             style={{
-              fontSize:      "clamp(32px, 4.2vw, 58px)",
+              fontSize:      "clamp(26px, 3vw, 40px)",
               fontWeight:    400,
               letterSpacing: "-0.02em",
-              lineHeight:    1.12,
+              lineHeight:    1.15,
               color:         "#0f0d0c",
             }}
             initial={{ opacity: 0, y: 14 }}
