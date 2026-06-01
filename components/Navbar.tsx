@@ -36,7 +36,7 @@ export default function Navbar() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="max-w-[1400px] mx-auto flex items-center justify-between h-[60px] px-6 sm:px-10 lg:px-16">
+      <div className="max-w-[1400px] mx-auto flex items-center h-[60px] px-6 sm:px-10 lg:px-16">
 
         {/* Brand */}
         <Link
@@ -69,8 +69,8 @@ export default function Navbar() {
           </motion.div>
         </Link>
 
-        {/* Nav links */}
-        <nav className="hidden md:flex items-center gap-8">
+        {/* Nav links + CTA — all on the right */}
+        <nav className="hidden md:flex items-center gap-8 ml-auto">
           {navLinks.map((link) =>
             link.href.startsWith("/") ? (
               <Link
@@ -96,24 +96,23 @@ export default function Navbar() {
               </button>
             )
           )}
-        </nav>
 
-        {/* Apply Now — squircle */}
-        <Link
-          href="/get-verified"
-          className="font-label-sm uppercase tracking-[0.15em] text-[11px] px-5 py-2.5 transition-all duration-200"
-          style={{
-            backgroundColor: "#eb4511",
-            color:            "#ffffff",
-            border:           "1px solid #eb4511",
-            borderRadius:     "100px",
-            transition:       "opacity 0.15s ease",
-          }}
-          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = "0.8")}
-          onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
-        >
-          Apply Now
-        </Link>
+          {/* Apply Now — inside nav group */}
+          <Link
+            href="/get-verified"
+            className="font-label-sm uppercase tracking-[0.15em] text-[11px] px-5 py-2.5"
+            style={{
+              backgroundColor: "#eb4511",
+              color:            "#ffffff",
+              borderRadius:     "100px",
+              transition:       "opacity 0.15s ease",
+            }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = "0.8")}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
+          >
+            Apply Now
+          </Link>
+        </nav>
 
       </div>
     </motion.header>
