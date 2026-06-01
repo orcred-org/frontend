@@ -3,8 +3,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
-const ease = [0.22, 1, 0.36, 1] as const;
-
 const panels = [
   {
     num: "01",
@@ -26,25 +24,92 @@ const panels = [
   },
 ];
 
-/* ── Sticky timeline ── */
-function Timeline({ progress }: { progress: ReturnType<typeof useSpring> }) {
-  const TOTAL = Math.round((typeof window !== "undefined" ? window.innerHeight : 800) * 0.76);
+/* ── Full-viewport panel content ── */
+function PanelContent({
+  panel,
+  showLabel,
+}: {
+  panel: (typeof panels)[number];
+  showLabel?: boolean;
+}) {
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        backgroundColor: "var(--bg-page)",
+        display: "flex",
+        alignItems: "center",
+        padding: "0 clamp(24px, 5vw, 64px)",
+      }}
+    >
+      <div style={{ maxWidth: 640 }}>
 
-  const fillH   = useTransform(progress, [0, 1], [0, TOTAL]);
-  const tipY    = useTransform(progress, [0, 1], [0, TOTAL]);
+        {showLabel && (
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 40 }}>
+            <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.45em", textTransform: "uppercase", color: "rgba(15,13,12,0.35)" }}>
+              The Standard
+            </div>
+            <div style={{ flex: 1, height: 1, background: "rgba(15,13,12,0.1)", maxWidth: 120 }} />
+          </div>
+        )}
+
+        {/* Chapter marker */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#eb4511" }}>{panel.num}</div>
+          <div style={{ width: 24, height: 1, background: "rgba(15,13,12,0.15)" }} />
+          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.35em", textTransform: "uppercase", color: "rgba(15,13,12,0.45)" }}>
+            {panel.chapter}
+          </div>
+        </div>
+
+        {/* Headline */}
+        <div style={{
+          fontSize:      "clamp(22px, 2.8vw, 38px)",
+          fontWeight:    400,
+          letterSpacing: "-0.02em",
+          lineHeight:    1.15,
+          color:         "#0f0d0c",
+          marginBottom:  20,
+        }}>
+          {panel.headline}
+        </div>
+
+        {/* Body */}
+        <div style={{
+          fontSize:   "clamp(13px, 1.1vw, 15px)",
+          fontWeight: 400,
+          lineHeight: 1.85,
+          color:      "rgba(15,13,12,0.55)",
+          maxWidth:   480,
+        }}>
+          {panel.body}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Timeline sidebar ── */
+function TimelineSidebar({ progress }: { progress: ReturnType<typeof useSpring> }) {
+  const totalPx = typeof window !== "undefined" ? window.innerHeight * 0.76 : 608;
+  const fillH = useTransform(progress, [0, 1], [0, totalPx]);
+  const tipY  = useTransform(progress, [0, 1], [0, totalPx]);
 
   return (
-    <div style={{
-      position:       "sticky",
-      top:            0,
-      height:         "100vh",
-      display:        "flex",
-      alignItems:     "center",
-      justifyContent: "center",
-    }}>
-      <div style={{ position: "relative", height: TOTAL, width: 20 }}>
-
-        {/* Grey track */}
+    <div
+      style={{
+        position: "absolute",
+        right:    "clamp(48px, 7vw, 120px)",
+        top:      0,
+        height:   "100%",
+        display:  "flex",
+        alignItems: "center",
+      }}
+      className="hidden lg:flex"
+    >
+      <div style={{ position: "relative", height: totalPx, width: 20 }}>
+        {/* Track */}
         <div style={{
           position:        "absolute",
           left:            "50%",
@@ -68,61 +133,20 @@ function Timeline({ progress }: { progress: ReturnType<typeof useSpring> }) {
           borderRadius:    3,
         }} />
 
-        {/* Glowing tip — rides the end of the fill */}
+        {/* Glowing tip */}
         <motion.div style={{
-          position:     "absolute",
-          left:         "50%",
-          top:          tipY,
-          width:        10,
-          height:       10,
-          borderRadius: "50%",
+          position:        "absolute",
+          left:            "50%",
+          top:             tipY,
+          width:           10,
+          height:          10,
+          borderRadius:    "50%",
           backgroundColor: "#eb4511",
-          x:            "-50%",
-          y:            "-50%",
-          boxShadow:    "0 0 14px 5px rgba(235,69,17,0.55), 0 0 4px 2px rgba(235,69,17,0.9)",
+          x:               "-50%",
+          y:               "-50%",
+          boxShadow:       "0 0 14px 5px rgba(235,69,17,0.55), 0 0 4px 2px rgba(235,69,17,0.9)",
         }} />
-
       </div>
-    </div>
-  );
-}
-
-/* ── Text panel ── */
-function TextPanel({ panel }: { panel: (typeof panels)[number] }) {
-  return (
-    <div
-      className="py-28 sm:py-36"
-      style={{ borderBottom: "1px solid rgba(15,13,12,0.1)" }}
-    >
-      <motion.div
-        className="flex flex-col gap-6"
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8, ease }}
-      >
-        <div className="flex items-center gap-4">
-          <span style={{ fontSize: 11, fontWeight: 700, color: "#eb4511" }}>{panel.num}</span>
-          <div style={{ width: 28, height: 1, background: "rgba(15,13,12,0.15)" }} />
-          <span className="font-label-sm uppercase tracking-[0.35em] text-[9px]" style={{ color: "rgba(15,13,12,0.45)" }}>
-            {panel.chapter}
-          </span>
-        </div>
-
-        <div style={{
-          fontSize: "clamp(22px, 2.8vw, 38px)", fontWeight: 400,
-          letterSpacing: "-0.02em", lineHeight: 1.15, color: "#0f0d0c",
-        }}>
-          {panel.headline}
-        </div>
-
-        <div style={{
-          fontSize: "clamp(13px, 1.1vw, 15px)", fontWeight: 400,
-          lineHeight: 1.85, color: "rgba(15,13,12,0.55)", maxWidth: 480,
-        }}>
-          {panel.body}
-        </div>
-      </motion.div>
     </div>
   );
 }
@@ -133,43 +157,51 @@ export default function PlatformSection() {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end end"],
   });
 
-  const progress = useSpring(scrollYProgress, { stiffness: 40, damping: 25 });
+  const progress = useSpring(scrollYProgress, { stiffness: 50, damping: 25 });
+
+  // Panel 1 slides out upward: progress 0.25 → 0.45
+  const panel1Y = useTransform(progress, [0.25, 0.48], ["0vh", "-100vh"]);
+
+  // Panel 2 slides in from below then out upward
+  const panel2Y = useTransform(
+    progress,
+    [0.25, 0.48, 0.62, 0.85],
+    ["100vh", "0vh", "0vh", "-100vh"]
+  );
+
+  // Panel 3 slides in from below
+  const panel3Y = useTransform(progress, [0.62, 0.85], ["100vh", "0vh"]);
 
   return (
-    <section ref={sectionRef} id="story" style={{ backgroundColor: "var(--bg-page)" }}>
+    <section
+      ref={sectionRef}
+      id="story"
+      style={{ height: "300vh", position: "relative" }}
+    >
+      {/* Sticky viewport container */}
+      <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
 
-      {/* Section label */}
-      <motion.div
-        className="px-6 sm:px-10 lg:px-16 pt-16 pb-0 max-w-[1400px] mx-auto flex items-center gap-5"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1 }}
-      >
-        <div className="flex-1 h-px" style={{ background: "rgba(15,13,12,0.1)" }} />
-        <span className="font-label-sm uppercase tracking-[0.45em] text-[9px]" style={{ color: "rgba(15,13,12,0.4)" }}>
-          The Standard
-        </span>
-        <div className="flex-1 h-px" style={{ background: "rgba(15,13,12,0.1)" }} />
-      </motion.div>
+        {/* Panel 1 */}
+        <motion.div style={{ position: "absolute", inset: 0, y: panel1Y }}>
+          <PanelContent panel={panels[0]} showLabel />
+        </motion.div>
 
-      <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12">
+        {/* Panel 2 */}
+        <motion.div style={{ position: "absolute", inset: 0, y: panel2Y }}>
+          <PanelContent panel={panels[1]} />
+        </motion.div>
 
-          {/* Left: text */}
-          <div className="lg:col-span-9">
-            {panels.map((p, i) => <TextPanel key={i} panel={p} />)}
-          </div>
+        {/* Panel 3 */}
+        <motion.div style={{ position: "absolute", inset: 0, y: panel3Y }}>
+          <PanelContent panel={panels[2]} />
+        </motion.div>
 
-          {/* Right: timeline */}
-          <div className="hidden lg:block lg:col-span-3">
-            <Timeline progress={progress} />
-          </div>
+        {/* Timeline — sits on top of all panels */}
+        <TimelineSidebar progress={progress} />
 
-        </div>
       </div>
     </section>
   );
