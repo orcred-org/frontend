@@ -121,7 +121,6 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
             { value: "40–60%", label: "Pass rate" },
             { value: "45 min",  label: "Live review" },
             { value: "24 hrs",  label: "Turnaround" },
-            { value: "₹2,000",  label: "Per attempt" },
           ].map((s, i, arr) => (
             <div key={i} style={{ display: "flex", alignItems: "center" }}>
               <div style={{ paddingRight: 20 }}>
