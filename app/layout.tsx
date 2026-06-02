@@ -4,6 +4,7 @@ import LenisProvider from "@/components/LenisProvider";
 import CursorGlobal from "@/components/CursorGlobal";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "Orcred | The Standard for AI/ML Intelligence",
@@ -58,6 +59,7 @@ export default function RootLayout({
           <Footer />
           <CursorGlobal />
         </LenisProvider>
+        <Analytics />
       </body>
     </html>
   );
