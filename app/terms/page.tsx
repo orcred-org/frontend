@@ -1,0 +1,176 @@
+"use client";
+
+import { motion } from "framer-motion";
+import Breadcrumb from "@/components/Breadcrumb";
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const sections = [
+  {
+    title: "Acceptance of Terms",
+    body: [
+      "By accessing or using Orcred — including submitting an application, participating in a review session, or browsing this site — you agree to be bound by these Terms of Service. If you do not agree, please do not use the platform.",
+    ],
+  },
+  {
+    title: "What Orcred Is",
+    body: [
+      "Orcred is a professional credentialing platform for AI/ML engineers. We facilitate structured technical review sessions conducted by senior engineers, resulting in a verified credential (an Orcred Score) that attests to the candidate's demonstrated understanding of their work.",
+      "Orcred does not guarantee employment, job placement, or any specific outcome as a result of receiving a credential.",
+    ],
+  },
+  {
+    title: "Candidate Terms",
+    body: [
+      "By submitting an application to be verified, you confirm that the project and work described is your own. Misrepresentation of your work is grounds for immediate disqualification and permanent ineligibility.",
+      "A session fee may apply at the time of booking. Fees are non-refundable once a review session has been scheduled and confirmed.",
+      "Your Orcred Score and credential are tied to a specific project submission. Scores do not transfer between projects.",
+    ],
+  },
+  {
+    title: "Reviewer Terms",
+    body: [
+      "Reviewers agree to conduct sessions honestly, professionally, and in accordance with Orcred's evaluation framework. Scores must reflect genuine assessment of the candidate's demonstrated understanding.",
+      "Reviewers may not solicit candidates for private engagements, employment, or any compensation outside of Orcred.",
+      "Orcred reserves the right to remove a reviewer from the platform for conduct that undermines the integrity of the credential.",
+    ],
+  },
+  {
+    title: "Intellectual Property",
+    body: [
+      "All platform content, branding, scoring methodology, and design assets are the property of Orcred. You may not reproduce, distribute, or create derivative works without explicit written consent.",
+      "Candidate project descriptions submitted during the application process remain the intellectual property of the candidate.",
+    ],
+  },
+  {
+    title: "Limitation of Liability",
+    body: [
+      "Orcred is provided on an as-is basis. We make no warranties, express or implied, regarding the platform's availability, accuracy, or fitness for any particular purpose.",
+      "To the maximum extent permitted by law, Orcred shall not be liable for any indirect, incidental, or consequential damages arising from your use of the platform.",
+    ],
+  },
+  {
+    title: "Changes to These Terms",
+    body: [
+      "We may update these terms from time to time. Continued use of the platform after changes are posted constitutes acceptance of the revised terms. We will note the date of the most recent update at the top of this page.",
+    ],
+  },
+  {
+    title: "Contact",
+    body: [
+      "Questions about these terms? Reach us at: contact@orcred.com",
+    ],
+  },
+];
+
+export default function TermsPage() {
+  return (
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: "var(--bg-page)" }}>
+
+      {/* Subtle ambient */}
+      <div
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 45% at 50% 20%, var(--orange-tint) 0%, transparent 70%)",
+        }}
+      />
+
+      {/* ── Content ── */}
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Terms of Service" }]} />
+
+      <main className="relative z-10 flex-1 max-w-[760px] mx-auto w-full px-8 sm:px-12 lg:px-16 py-12 sm:py-16 lg:py-20">
+
+        {/* Eyebrow */}
+        <motion.div
+          className="flex items-center gap-4 mb-12"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.9 }}
+        >
+          <div className="w-8 h-px" style={{ background: "var(--border)" }} />
+          <span
+            className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
+            style={{ color: "var(--orange-faint)" }}
+          >
+            Legal
+          </span>
+          <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+        </motion.div>
+
+        {/* Title */}
+        <motion.h1
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontWeight: 400,
+            fontSize: "clamp(36px, 5vw, 64px)",
+            lineHeight: 1.05,
+            color: "var(--fg)",
+            marginBottom: "8px",
+          }}
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.1, ease }}
+        >
+          Terms of Service
+        </motion.h1>
+        <motion.p
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontStyle: "italic",
+            fontWeight: 300,
+            fontSize: "clamp(16px, 2vw, 22px)",
+            color: "var(--fg-faint)",
+            marginBottom: "48px",
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.2 }}
+        >
+          Last updated May 2026
+        </motion.p>
+
+        {/* Divider */}
+        <motion.div
+          className="w-full h-px mb-12"
+          style={{ background: "var(--border)" }}
+          initial={{ scaleX: 0, originX: "left" }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.9, delay: 0.25, ease }}
+        />
+
+        {/* Sections */}
+        <div className="space-y-12">
+          {sections.map((s, i) => (
+            <motion.div
+              key={s.title}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 + i * 0.07, ease }}
+            >
+              <h2
+                className="font-label-sm uppercase tracking-[0.32em] text-[10px] mb-4"
+                style={{ color: "var(--orange-muted)" }}
+              >
+                {s.title}
+              </h2>
+              <div className="space-y-3">
+                {s.body.map((para, j) => (
+                  <p
+                    key={j}
+                    className="text-[14px] sm:text-[15px] font-light leading-[1.9]"
+                    style={{ color: "var(--fg-muted)" }}
+                  >
+                    {para}
+                  </p>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+      </main>
+
+    </div>
+  );
+}
