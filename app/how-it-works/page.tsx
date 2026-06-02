@@ -41,7 +41,7 @@ const steps: Step[] = [
     num: "02",
     title: "Payment",
     intro:
-      "Once your submission is accepted, payment of ₹2,000 confirms your slot in the verification queue. Payment is processed via Razorpay — UPI, cards, and net banking accepted.",
+      "Once your submission is accepted, payment of ₹1,999 confirms your slot in the verification queue. Payment is processed via Razorpay — UPI, cards, and net banking accepted.",
     note: "Full refund if a reviewer cannot be assigned within 10 business days, or if your assigned reviewer cancels and cannot be rescheduled within 5 business days. 50% refund if you cancel more than 48 hours before your call. No refund after the review is completed. Full details in our Terms of Service.",
     noteLink: { label: "Terms of Service", href: "/terms" },
   },
