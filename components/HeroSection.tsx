@@ -15,10 +15,12 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
         backgroundColor: "var(--bg-page)",
         minHeight: "100svh",
         display: "flex",
-        alignItems: "center",
+        flexDirection: "column",
+        justifyContent: "center",
+        paddingTop: "60px",
       }}
     >
-      <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 w-full py-20">
+      <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16 w-full py-16">
 
         {/* Eyebrow */}
         <motion.div
@@ -34,7 +36,7 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
         </motion.div>
 
         {/* Two-column row: headline left, body right */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-end mb-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-10">
 
           {/* Left: headline */}
           <motion.div
@@ -50,7 +52,7 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
             transition={{ duration: 0.9, delay: 0.1, ease }}
           >
             The verification standard<br />
-            for AI engineers.
+            for AI/ML engineers.
           </motion.div>
 
           {/* Right: body */}
@@ -103,8 +105,7 @@ export default function HeroSection({ onApply: _ }: HeroProps) {
 
         {/* Stats strip */}
         <motion.div
-          className="flex flex-wrap items-center gap-0 mt-12 pt-6"
-          style={{ borderTop: "1px solid rgba(15,13,12,0.1)" }}
+          className="flex flex-wrap items-center gap-0 mt-12"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.52 }}

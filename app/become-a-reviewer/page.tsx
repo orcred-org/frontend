@@ -31,18 +31,17 @@ const fields: FieldDef[] = [
 
 /* ── Perks list ── */
 const perks = [
-  { label: "Equity in Orcred",        sub: "Founding reviewer terms"              },
-  { label: "₹1,200 per review",       sub: "Per completed session"                },
-  { label: "Founding reviewer badge", sub: "Permanent, public credential"         },
-  { label: "Direct say in the standard", sub: "You help define what passes"       },
-  { label: "Flexible schedule",       sub: "Sessions fit around your day job"     },
+  { label: "Reviewer compensation",      sub: "Discussed during onboarding"                  },
+  { label: "Founding Reviewer badge",    sub: "Permanent, public credential on LinkedIn"     },
+  { label: "Direct say in the standard", sub: "You help define what passes"                  },
+  { label: "Flexible schedule",          sub: "Sessions fit around your day job"             },
 ];
 
 /* ── Eligibility bar ── */
 const eligibility = [
   "5+ years AI/ML industry experience",
   "Active or recent engineering role",
-  "No current or recent connection to applicants",
+  "No current employment at the applicant's company",
 ];
 
 /* ── Single field ── */
