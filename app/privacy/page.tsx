@@ -70,63 +70,28 @@ export default function PrivacyPage() {
 
       <main className="relative z-10 flex-1 max-w-[760px] mx-auto w-full px-8 sm:px-12 lg:px-16 py-12 sm:py-16 lg:py-20">
 
-        {/* Eyebrow */}
+        {/* Page title */}
         <motion.div
-          className="flex items-center gap-4 mb-12"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.9 }}
+          className="mb-14"
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease }}
         >
-          <div className="w-8 h-px" style={{ background: "var(--border)" }} />
-          <span
-            className="font-label-sm uppercase tracking-[0.42em] text-[9px]"
-            style={{ color: "var(--orange-faint)" }}
-          >
-            Legal
-          </span>
-          <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-6 h-px" style={{ backgroundColor: "#eb4511" }} />
+            <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.3em", textTransform: "uppercase", color: "#eb4511" }}>
+              Legal
+            </span>
+          </div>
+          <div style={{ fontSize: "clamp(22px, 2.8vw, 38px)", fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.1, color: "#0f0d0c", marginBottom: 12 }}>
+            Privacy Policy
+          </div>
+          <div style={{ fontSize: "clamp(13px, 1.1vw, 14px)", fontWeight: 400, lineHeight: 1.7, color: "rgba(15,13,12,0.4)", fontStyle: "italic" }}>
+            Last updated May 2026
+          </div>
         </motion.div>
 
-        {/* Title */}
-        <motion.h1
-          style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontWeight: 400,
-            fontSize: "clamp(36px, 5vw, 64px)",
-            lineHeight: 1.05,
-            color: "var(--fg)",
-            marginBottom: "8px",
-          }}
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.1, ease }}
-        >
-          Privacy Policy
-        </motion.h1>
-        <motion.p
-          style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontStyle: "italic",
-            fontWeight: 300,
-            fontSize: "clamp(16px, 2vw, 22px)",
-            color: "var(--fg-faint)",
-            marginBottom: "48px",
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-        >
-          Last updated May 2026
-        </motion.p>
-
-        {/* Divider */}
-        <motion.div
-          className="w-full h-px mb-12"
-          style={{ background: "var(--border)" }}
-          initial={{ scaleX: 0, originX: "left" }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.9, delay: 0.25, ease }}
-        />
+        <div className="w-full h-px mb-12" style={{ background: "rgba(15,13,12,0.1)" }} />
 
         {/* Sections */}
         <div className="space-y-12">
@@ -137,18 +102,14 @@ export default function PrivacyPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 + i * 0.07, ease }}
             >
-              <h2
-                className="font-label-sm uppercase tracking-[0.32em] text-[10px] mb-4"
-                style={{ color: "var(--orange-muted)" }}
-              >
+              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.28em", textTransform: "uppercase" as const, color: "#eb4511", marginBottom: 12 }}>
                 {s.title}
-              </h2>
+              </div>
               <div className="space-y-3">
                 {s.body.map((para, j) => (
                   <p
                     key={j}
-                    className="text-[14px] sm:text-[15px] font-light leading-[1.9]"
-                    style={{ color: "var(--fg-muted)" }}
+                    style={{ fontSize: "clamp(14px, 1.2vw, 15px)", fontWeight: 400, lineHeight: 1.85, color: "rgba(15,13,12,0.58)" }}
                   >
                     {para}
                   </p>
