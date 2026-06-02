@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import Breadcrumb from "@/components/Breadcrumb";
 
@@ -48,7 +47,7 @@ const sections = [
   {
     title: "Contact",
     body: [
-      "For any privacy-related questions or requests, reach us at: privacy@orcred.com",
+      "For any privacy-related questions or requests, reach us at: contact@orcred.com",
     ],
   },
 ];

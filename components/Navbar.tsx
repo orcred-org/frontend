@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
   { label: "Standard", href: "#story"      },
@@ -19,6 +20,8 @@ function scrollTo(href: string) {
 
 export default function Navbar() {
   const { scrollY } = useScroll();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   /* Wordmark dissolves into the orange mark as you scroll */
   const wordmarkOpacity        = useTransform(scrollY, [0, 60], [1, 0]);
@@ -72,18 +75,7 @@ export default function Navbar() {
         {/* Nav links + CTA — all on the right */}
         <nav className="hidden md:flex items-center gap-8 ml-auto">
           {navLinks.map((link) =>
-            link.href.startsWith("/") ? (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="transition-colors duration-200"
-                style={{ fontFamily: "Inter, system-ui, sans-serif", fontWeight: 500, fontSize: "14px", letterSpacing: "-0.01em", color: "#4a4440" }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#0f0d0c")}
-                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "#4a4440")}
-              >
-                {link.label}
-              </Link>
-            ) : (
+            isHome ? (
               <button
                 key={link.href}
                 onClick={() => scrollTo(link.href)}
@@ -94,6 +86,17 @@ export default function Navbar() {
               >
                 {link.label}
               </button>
+            ) : (
+              <Link
+                key={link.href}
+                href={`/${link.href}`}
+                className="transition-colors duration-200"
+                style={{ fontFamily: "Inter, system-ui, sans-serif", fontWeight: 500, fontSize: "14px", letterSpacing: "-0.01em", color: "#4a4440" }}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#0f0d0c")}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "#4a4440")}
+              >
+                {link.label}
+              </Link>
             )
           )}
 
