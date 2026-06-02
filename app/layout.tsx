@@ -24,16 +24,16 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico",           sizes: "any" },
-      { url: "/brand/icon-32.png",     type: "image/png", sizes: "32x32" },
-      { url: "/brand/icon-96.png",     type: "image/png", sizes: "96x96" },
-      { url: "/brand/icon-192.png",    type: "image/png", sizes: "192x192" },
+      { url: "/favicon.ico",        sizes: "any" },
+      { url: "/icon-32.png",        type: "image/png", sizes: "32x32" },
+      { url: "/icon-96.png",        type: "image/png", sizes: "96x96" },
+      { url: "/icon-192.png",       type: "image/png", sizes: "192x192" },
     ],
-    shortcut:   "/favicon.ico",
-    apple:      [{ url: "/brand/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: "/favicon.ico",
+    apple:    [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
     other: [
-      { rel: "android-chrome", url: "/brand/android-chrome-192.png", sizes: "192x192" },
-      { rel: "android-chrome", url: "/brand/android-chrome-512.png", sizes: "512x512" },
+      { rel: "android-chrome", url: "/android-chrome-192.png", sizes: "192x192" },
+      { rel: "android-chrome", url: "/android-chrome-512.png", sizes: "512x512" },
     ],
   },
 };
