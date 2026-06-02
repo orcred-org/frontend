@@ -1,7 +1,8 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const apiKey = process.env.RESEND_API_KEY;
+const resend = apiKey ? new Resend(apiKey) : null;
 
 /* ── Email template — matches site light theme ── */
 function buildEmail(subject: string, fields: Record<string, string>): string {
@@ -160,6 +161,11 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { type, ...fields } = body as { type: string } & Record<string, string>;
+
+    if (!resend) {
+      console.warn("RESEND_API_KEY not set — email not sent");
+      return NextResponse.json({ ok: true });
+    }
 
     const subject = getSubject(type, fields);
     const html    = buildEmail(subject, fields);
