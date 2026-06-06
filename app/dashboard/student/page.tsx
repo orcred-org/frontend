@@ -93,11 +93,33 @@ export default function StudentDashboard() {
           backgroundColor: 'var(--bg-card)',
         }}
       >
-        <div className="max-w-container mx-auto">
-          <h1 className="text-h1 mb-2" style={{ color: 'var(--orange)' }}>
-            Orcred
-          </h1>
-          <p style={{ color: 'var(--fg-muted)' }}>Welcome back, {data.name}</p>
+        <div className="max-w-container mx-auto flex justify-between items-start">
+          <div>
+            <h1 className="text-h1 mb-2" style={{ color: 'var(--orange)' }}>
+              Orcred
+            </h1>
+            <p style={{ color: 'var(--fg-muted)' }}>Welcome back, {data.name}</p>
+          </div>
+          <button
+            onClick={() => router.push('/dashboard/student/profile')}
+            style={{
+              backgroundColor: 'transparent',
+              color: 'var(--fg)',
+              borderRadius: '50px',
+              padding: '10px 24px',
+              fontSize: '11px',
+              fontWeight: '600',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              border: '1px solid var(--fg)',
+              cursor: 'pointer',
+              transition: 'opacity 0.15s ease',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.6')}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+          >
+            Edit Profile
+          </button>
         </div>
       </header>
 
