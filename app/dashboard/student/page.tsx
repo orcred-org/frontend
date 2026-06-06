@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { api, ApiError } from '@/lib/api';
 
 interface StudentDashboardData {
   full_name: string;
@@ -46,23 +47,14 @@ export default function StudentDashboard() {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/v1/student/dashboard', {
-          credentials: 'include',
-        });
-
-        if (!res.ok) {
-          if (res.status === 401) {
-            router.push('/dashboard/auth');
-          } else {
-            setError('Failed to load dashboard');
-          }
-          return;
-        }
-
-        const dashboardData = await res.json();
-        setData(dashboardData);
+        const dashboardData = await api.student.dashboard();
+        setData(dashboardData as StudentDashboardData);
       } catch (err) {
-        setError('An error occurred');
+        if (err instanceof ApiError && err.status === 401) {
+          router.push('/dashboard/auth');
+        } else {
+          setError('Failed to load dashboard');
+        }
       } finally {
         setLoading(false);
       }

@@ -2,25 +2,16 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { api } from '@/lib/api';
 
 export default function DashboardHome() {
   const router = useRouter();
 
   useEffect(() => {
-    // Check if user is authenticated and redirect to role-specific dashboard
-    // For now, redirect to auth page if not logged in
     const checkAuth = async () => {
       try {
-        const res = await fetch('/api/v1/auth/me', {
-          credentials: 'include',
-        });
-
-        if (!res.ok) {
-          router.push('/dashboard/auth');
-          return;
-        }
-
-        const { account_type } = await res.json();
+        const data = await api.auth.me() as { account_type: string };
+        const { account_type } = data;
 
         if (account_type === 'student') {
           router.push('/dashboard/student');
