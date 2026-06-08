@@ -1,39 +1,39 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
+import { Suspense } from 'react';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-export default function AuthCallbackPage() {
+function CallbackHandler() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const handleCallback = async () => {
-      // Supabase implicit flow puts tokens in the URL hash
-      const hash = window.location.hash;
-      if (hash) {
-        const params = new URLSearchParams(hash.substring(1));
-        const accessToken = params.get('access_token');
-        const refreshToken = params.get('refresh_token');
+      const code = searchParams.get('code');
 
-        if (accessToken && refreshToken) {
-          await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+      if (code) {
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        if (error) {
+          console.error('[callback] exchange error:', error.message);
+          router.push('/dashboard/auth?error=invalid_code');
+          return;
         }
       }
 
-      // Check session and redirect to right dashboard
+      // Get session and redirect to right dashboard
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         router.push('/dashboard/auth?error=no_session');
         return;
       }
 
-      // Ask backend which dashboard to go to
       try {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/v1/auth/me`,
@@ -56,7 +56,7 @@ export default function AuthCallbackPage() {
     };
 
     handleCallback();
-  }, [router]);
+  }, [router, searchParams]);
 
   return (
     <div
@@ -65,5 +65,17 @@ export default function AuthCallbackPage() {
     >
       <p style={{ color: 'var(--fg-muted)' }}>Signing you in...</p>
     </div>
+  );
+}
+
+export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-page)' }}>
+        <p style={{ color: 'var(--fg-muted)' }}>Loading...</p>
+      </div>
+    }>
+      <CallbackHandler />
+    </Suspense>
   );
 }
