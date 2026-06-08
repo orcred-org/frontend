@@ -3,6 +3,7 @@
 import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { api, ApiError } from '@/lib/api';
 
 function AuthContent() {
   const router = useRouter();
@@ -45,22 +46,15 @@ function AuthContent() {
     setSuccess(false);
 
     try {
-      const res = await fetch('/api/v1/auth/magic-link', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error || 'Failed to send magic link');
-        return;
-      }
-
+      await api.auth.magicLink(email);
       setSuccess(true);
       setEmail('');
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      if (err instanceof ApiError) {
+        setError(err.message || 'Failed to send magic link');
+      } else {
+        setError('An error occurred. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
