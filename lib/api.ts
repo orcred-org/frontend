@@ -114,18 +114,15 @@ export const api = {
 
   // Admin endpoints
   admin: {
-    applications: (filters?: any) =>
-      request('/admin/applications', {
-        method: 'POST',
-        body: JSON.stringify(filters || {}),
-      }),
+    analytics: () => request('/admin/analytics'),
+    applications: (params?: string) => request(`/admin/applications${params ? `?${params}` : ''}`),
     assign: (data: any) =>
       request('/admin/assign', {
         method: 'POST',
         body: JSON.stringify(data),
       }),
     credentials: () => request('/admin/credentials'),
-    analytics: () => request('/admin/analytics'),
+    reviewers: () => request('/admin/reviewers'),
   },
 
   // Public endpoints
