@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { api } from '@/lib/api';
 
 interface ApplicationFormData {
   // Step 1
@@ -137,12 +138,40 @@ export default function ApplicationPage() {
   };
 
   const handleSubmit = async () => {
-    if (validateStep()) {
-      setSubmitting(true);
-      // Simulate submission
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      setSubmitting(false);
+    if (!validateStep()) return;
+    setSubmitting(true);
+    try {
+      // Step 1: update profile
+      await api.student.updateProfile({
+        full_name: formData.full_name,
+        linkedin_url: formData.linkedin_url,
+        college: formData.college,
+        graduation_year: formData.graduation_year,
+      });
+
+      // Step 2: submit application
+      await api.student.createApplication({
+        project_name: formData.project_name,
+        tech_stack: formData.tech_stack,
+        github_url: formData.github_url,
+        loom_url: formData.loom_url,
+        build_decision_1: formData.build_decision_1,
+        build_decision_2: formData.build_decision_2,
+        build_decision_3: formData.build_decision_3,
+        what_broke: formData.what_broke,
+        ai_tools_used: formData.ai_tools_used,
+        availability_week_1: formData.availability_week_1,
+        availability_week_2: formData.availability_week_2,
+        timezone: formData.timezone,
+        terms_confirmed: formData.terms_confirmed,
+        recording_consent: formData.recording_consent,
+      });
+
       setSubmitted(true);
+    } catch (err: any) {
+      setErrors({ submit: err?.message || 'Submission failed. Please try again.' });
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -1037,6 +1066,12 @@ export default function ApplicationPage() {
                 Next
               </button>
             ) : (
+              <>
+                {errors.submit && (
+                  <p style={{ color: '#ba1a1a', fontSize: '13px', width: '100%', textAlign: 'center', marginBottom: '8px' }}>
+                    {errors.submit}
+                  </p>
+                )}
               <button
                 onClick={handleSubmit}
                 disabled={submitting}
@@ -1060,6 +1095,7 @@ export default function ApplicationPage() {
               >
                 {submitting ? 'Submitting...' : 'Submit Application'}
               </button>
+              </>
             )}
           </div>
         </div>
