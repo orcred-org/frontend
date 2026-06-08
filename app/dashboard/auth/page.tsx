@@ -3,7 +3,12 @@
 import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { api, ApiError } from '@/lib/api';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 function AuthContent() {
   const router = useRouter();
@@ -46,15 +51,18 @@ function AuthContent() {
     setSuccess(false);
 
     try {
-      await api.auth.magicLink(email);
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          shouldCreateUser: false,
+          emailRedirectTo: `${window.location.origin}/dashboard/auth/callback`,
+        },
+      });
+      if (error) throw error;
       setSuccess(true);
       setEmail('');
-    } catch (err) {
-      if (err instanceof ApiError) {
-        setError(err.message || 'Failed to send magic link');
-      } else {
-        setError('An error occurred. Please try again.');
-      }
+    } catch (err: any) {
+      setError(err?.message || 'An error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
