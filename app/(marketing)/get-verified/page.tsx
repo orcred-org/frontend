@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Breadcrumb from "@/components/Breadcrumb";
+import { supabase } from "@/lib/supabase";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -238,6 +239,8 @@ function Success() {
       <div className="w-8 h-px" style={{ background: "#eb4511", opacity: 0.7 }} />
       <div style={{ fontSize: "13px", fontWeight: 400, lineHeight: 1.9, color: "var(--fg-muted)", maxWidth: "360px" }}>
         We review every submission personally. Expect to hear from us within 2–3 business days with a confirmed slot and next steps.
+        <br /><br />
+        We&apos;ve also sent a login link to your email — click it to access your application dashboard.
       </div>
     </motion.div>
   );
@@ -267,14 +270,44 @@ export default function GetVerifiedPage() {
     if (!canProceed()) return;
     setSubmitting(true); setError(null);
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type: "verify", ...values, consent_id: consent.id, consent_recording: consent.recording }),
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+
+      // 1. Submit application to backend (creates user + application in one shot)
+      const res = await fetch(`${apiUrl}/api/v1/applications/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...values,
+          consent_id:        consent.id,
+          consent_recording: consent.recording,
+        }),
       });
-      if (!res.ok) throw new Error();
+
+      let data: { success: boolean; error?: string } | null = null;
+      try { data = await res.json(); } catch { /* ignore */ }
+
+      if (!res.ok) {
+        throw new Error(data?.error || "Submission failed. Please try again.");
+      }
+
+      // 2. Send magic link so user can log in to see their dashboard
+      //    (fire-and-forget — show success even if this step fails)
+      try {
+        await supabase.auth.signInWithOtp({
+          email: values.email,
+          options: {
+            shouldCreateUser: false,
+            emailRedirectTo: `${window.location.origin}/dashboard/auth/callback`,
+          },
+        });
+      } catch {
+        // Non-fatal — application already saved, user can log in later
+      }
+
       setSent(true);
-    } catch {
-      setError("Something went wrong. Please try again.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      setError(message);
     } finally {
       setSubmitting(false);
     }

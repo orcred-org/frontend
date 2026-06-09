@@ -1,9 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import LenisProvider from "@/components/LenisProvider";
-import CursorGlobal from "@/components/CursorGlobal";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
@@ -53,12 +49,7 @@ export default function RootLayout({
         />
       </head>
       <body className="selection:bg-accent-orange selection:text-white">
-        <LenisProvider>
-          <Navbar />
-          {children}
-          <Footer />
-          <CursorGlobal />
-        </LenisProvider>
+        {children}
         <Analytics />
       </body>
     </html>
