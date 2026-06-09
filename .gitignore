@@ -3,3 +3,7 @@ node_modules
 .env
 .env.local
 .env*.local
+
+# stray local folders — not part of the project
+landing/
+dashboard/
