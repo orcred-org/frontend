@@ -3,6 +3,7 @@ import LenisProvider from '@/components/LenisProvider';
 import CursorGlobal from '@/components/CursorGlobal';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import CookieBanner from '@/components/CookieBanner';
 
 export default function MarketingLayout({ children }: { children: ReactNode }) {
   return (
@@ -11,6 +12,7 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
       {children}
       <Footer />
       <CursorGlobal />
+      <CookieBanner />
     </LenisProvider>
   );
 }
