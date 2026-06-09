@@ -27,15 +27,19 @@ const sections = [
     ],
   },
   {
-    title: "Cookies",
+    title: "Cookies & Analytics",
     body: [
-      "This site uses no tracking cookies. We use only essential session storage to maintain your form state within a single visit. No third-party analytics or advertising cookies are set.",
+      "We use Google Analytics (GA4) to understand how visitors use this site — pages visited, session duration, and general usage patterns. This data is anonymised and aggregated; it does not identify you personally.",
+      "Google Analytics cookies are only set after you explicitly click Accept on the cookie consent banner. If you decline, no analytics cookies are placed and no data is sent to Google.",
+      "We use no advertising cookies, retargeting pixels, or any other third-party tracking. Essential session storage (not a cookie) is used solely to maintain your form state within a single visit.",
+      "You can withdraw consent at any time by clearing your browser cookies and declining when the banner next appears.",
     ],
   },
   {
     title: "Third-Party Services",
     body: [
-      "The site is hosted on Vercel. Font assets are loaded from Google Fonts. Neither service receives your application data. We do not use any third-party analytics, CRM, or advertising platforms.",
+      "The site is hosted on Vercel. Font assets are loaded from Google Fonts. With your consent, anonymised usage data is sent to Google Analytics. None of these services receive your application data or personal information submitted through our forms.",
+      "We do not use any CRM, advertising, or data-broker platforms.",
     ],
   },
   {
@@ -87,7 +91,7 @@ export default function PrivacyPage() {
             Privacy Policy
           </div>
           <div style={{ fontSize: "clamp(13px, 1.1vw, 14px)", fontWeight: 400, lineHeight: 1.7, color: "rgba(15,13,12,0.4)", fontStyle: "italic" }}>
-            Last updated May 2026
+            Last updated June 2026
           </div>
         </motion.div>
 
