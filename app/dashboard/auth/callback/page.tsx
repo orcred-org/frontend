@@ -1,51 +1,45 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { supabase } from '@/lib/supabase';
 
 function CallbackHandler() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Supabase JS auto-exchanges the ?code= (PKCE) on client init.
-    // onAuthStateChange fires once the session is ready — no manual exchange needed.
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (event === 'SIGNED_IN' && session) {
-          subscription.unsubscribe();
-          try {
-            const res = await fetch(
-              `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/v1/auth/me`,
-              { credentials: 'include', headers: { Authorization: `Bearer ${session.access_token}` } }
-            );
-            if (res.ok) {
-              const { account_type } = await res.json();
-              const map: Record<string, string> = {
-                student: '/dashboard/student',
-                reviewer: '/dashboard/reviewer',
-                admin: '/dashboard/admin',
-              };
-              router.push(map[account_type] || '/dashboard');
-            } else {
-              router.push('/dashboard');
-            }
-          } catch {
-            router.push('/dashboard');
-          }
+    const handleCallback = async () => {
+      const access_token = searchParams.get('access_token');
+      const refresh_token = searchParams.get('refresh_token');
+      const account_type = searchParams.get('account_type');
+
+      if (access_token && refresh_token) {
+        // Backend exchanged the PKCE code and passed us the session tokens.
+        // Set the session on the frontend Supabase client.
+        const { error } = await supabase.auth.setSession({ access_token, refresh_token });
+        if (error) {
+          console.error('[callback] setSession error:', error.message);
+          router.push('/dashboard/auth?error=session_error');
+          return;
         }
 
-        if (event === 'INITIAL_SESSION' && !session) {
-          // No session and no code to exchange — auth failed
-          subscription.unsubscribe();
-          router.push('/dashboard/auth?error=no_session');
-        }
+        const map: Record<string, string> = {
+          student: '/dashboard/student',
+          reviewer: '/dashboard/reviewer',
+          admin: '/dashboard/admin',
+        };
+        router.push(map[account_type ?? ''] || '/dashboard');
+        return;
       }
-    );
 
-    return () => subscription.unsubscribe();
-  }, [router]);
+      // Fallback: no tokens from backend — shouldn't happen in normal flow
+      router.push('/dashboard/auth?error=no_session');
+    };
+
+    handleCallback();
+  }, [router, searchParams]);
 
   return (
     <div
