@@ -1,8 +1,15 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
+
+const DASHBOARD_MAP: Record<string, string> = {
+  student: '/dashboard/student',
+  reviewer: '/dashboard/reviewer',
+  admin: '/dashboard/admin',
+};
 
 function AuthContent() {
   const router = useRouter();
@@ -11,6 +18,19 @@ function AuthContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session) return;
+      const { data: profile } = await supabase
+        .from('users')
+        .select('account_type')
+        .eq('id', session.user.id)
+        .single();
+      const dest = DASHBOARD_MAP[profile?.account_type ?? ''];
+      if (dest) router.replace(dest);
+    });
+  }, [router]);
 
   const token = searchParams.get('token');
   const type = searchParams.get('type');
