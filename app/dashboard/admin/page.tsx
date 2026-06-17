@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { api } from '@/lib/api';
+import { useRequireAuth } from '@/lib/useRequireAuth';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -71,6 +72,7 @@ const BORDER = '1px solid rgba(15,13,12,0.1)';
 type View = 'dashboard' | 'applications' | 'reviewers' | 'settings';
 
 export default function AdminDashboard() {
+  const { ready, signOut } = useRequireAuth();
   const [view, setView] = useState<View>('dashboard');
   const [analytics,    setAnalytics]    = useState<Analytics | null>(null);
   const [applications, setApplications] = useState<Application[]>([]);
@@ -129,6 +131,8 @@ export default function AdminDashboard() {
   const awaiting  = applications.filter(a => a.status === 'awaiting_reviewer').length;
   const scheduled = applications.filter(a => a.status === 'scheduled').length;
 
+  if (!ready) return null;
+
   return (
     <div style={{ minHeight: '100vh', backgroundColor: BG, fontFamily: FONT }}>
 
@@ -183,6 +187,12 @@ export default function AdminDashboard() {
               <div style={{ fontSize: '12px', fontWeight: 600, color: '#0f0d0c', lineHeight: 1.2 }}>Admin</div>
               <div style={{ fontSize: '11px', color: 'rgba(15,13,12,0.4)', lineHeight: 1.2 }}>Manager</div>
             </div>
+            <button
+              onClick={signOut}
+              style={{ marginLeft: '8px', padding: '6px 14px', fontSize: '12px', fontWeight: 600, color: '#eb4511', background: 'transparent', border: '1px solid #eb4511', borderRadius: '6px', cursor: 'pointer', fontFamily: FONT }}
+            >
+              Sign out
+            </button>
           </div>
         </div>
       </header>

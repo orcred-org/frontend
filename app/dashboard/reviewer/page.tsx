@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useRequireAuth } from '@/lib/useRequireAuth';
 
 interface Submission {
   id: string;
@@ -43,6 +44,7 @@ const MOCK_SUBMISSIONS: Submission[] = [
 
 export default function ReviewerDashboard() {
   const router = useRouter();
+  const { ready, signOut } = useRequireAuth();
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
   const [scoringView, setScoringView] = useState(false);
   const [scores, setScores] = useState({
@@ -422,6 +424,8 @@ export default function ReviewerDashboard() {
     );
   }
 
+  if (!ready) return null;
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-page)' }}>
       <header
@@ -431,13 +435,18 @@ export default function ReviewerDashboard() {
           backgroundColor: 'var(--bg-card)',
         }}
       >
-        <div className="max-w-container mx-auto">
-          <h1 className="text-h1 mb-2" style={{ color: 'var(--orange)' }}>
-            Reviewer Dashboard
-          </h1>
-          <p style={{ color: 'var(--fg-muted)' }}>
-            {MOCK_SUBMISSIONS.length} assigned submissions
-          </p>
+        <div className="max-w-container mx-auto" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <h1 className="text-h1 mb-2" style={{ color: 'var(--orange)' }}>
+              Reviewer Dashboard
+            </h1>
+            <p style={{ color: 'var(--fg-muted)' }}>
+              {MOCK_SUBMISSIONS.length} assigned submissions
+            </p>
+          </div>
+          <button onClick={signOut} style={{ padding: '6px 14px', fontSize: '12px', fontWeight: 600, color: '#eb4511', background: 'transparent', border: '1px solid #eb4511', borderRadius: '6px', cursor: 'pointer' }}>
+            Sign out
+          </button>
         </div>
       </header>
 
