@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { getSafeSession } from './authSession';
 import { supabase } from './supabase';
 
+/** Any signed-in user (no role check). */
 export function useRequireAuth() {
   const router = useRouter();
   const [ready, setReady] = useState(false);

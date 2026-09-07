@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
-import CookieBanner from "@/components/CookieBanner";
 import AuthSessionBootstrap from "@/components/AuthSessionBootstrap";
+import CookieBanner from "@/components/CookieBanner";
 
 export const metadata: Metadata = {
   title: "Orcred | The Standard for AI/ML Intelligence",

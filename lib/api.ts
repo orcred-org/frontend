@@ -288,6 +288,7 @@ export const api = {
     submit: (data: {
       full_name: string;
       email: string;
+      phone: string;
       domains: string[];
       degree: string;
       referral_source: string;
