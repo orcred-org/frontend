@@ -11,7 +11,7 @@
  */
 export const COHORT = {
   total: 15,
-  claimed: 0,
+  claimed: 9,
 } as const;
 
 export const slotsTaken = Math.min(COHORT.total, Math.max(0, COHORT.claimed));
