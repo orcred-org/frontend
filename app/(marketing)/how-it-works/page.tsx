@@ -420,7 +420,7 @@ export default function HowItWorksPage() {
             />
 
             <Rise delay={0.25} className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-4">
-              <Btn href="/join-waitlist">Join the waitlist</Btn>
+              <Btn href="/join-waitlist">Claim a founding slot</Btn>
               <Arrow href="/#standard">Read the scoring standard</Arrow>
             </Rise>
           </div>

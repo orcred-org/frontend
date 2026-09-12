@@ -10,8 +10,9 @@
  * The only colour is a soft radial wash behind the fold and the primary button.
  */
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import Badge from "@/components/orx/Badge";
+import Slots from "@/components/orx/Slots";
 import { Arrow, Btn, EASE, Eyebrow, L, Lines, Rise, SHELL, T } from "@/components/orx/kit";
 
 const FACTS = [
@@ -19,30 +20,6 @@ const FACTS = [
   { v: "₹1,999", k: "One-time fee" },
   { v: "24 hrs", k: "Your result" },
 ];
-
-function ComingSoon() {
-  const reduce = useReducedMotion();
-  return (
-    <span
-      className="inline-flex items-center gap-2.5"
-      style={{
-        padding: "8px 14px",
-        borderRadius: 999,
-        backgroundColor: "var(--or-soft)",
-      }}
-    >
-      <motion.span
-        aria-hidden
-        style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: "var(--or)", flexShrink: 0 }}
-        animate={reduce ? undefined : { opacity: [1, 0.25, 1] }}
-        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <span style={{ fontSize: 13.5, fontWeight: 500, color: "var(--or)", letterSpacing: "-0.005em" }}>
-        Coming soon
-      </span>
-    </span>
-  );
-}
 
 export default function Hero() {
   return (
@@ -86,9 +63,9 @@ export default function Hero() {
             </Rise>
 
             <Rise now delay={0.44} className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-4">
-              <Btn href="/join-waitlist">Join the waitlist</Btn>
+              <Btn href="/join-waitlist">Claim a founding slot</Btn>
               <Arrow href="/how-it-works">See how it works</Arrow>
-              <ComingSoon />
+              <Slots variant="pill" />
             </Rise>
 
             {/* Three facts, evenly spaced and large enough to read at a glance */}

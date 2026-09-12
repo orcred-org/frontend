@@ -8,6 +8,7 @@
  * and a soft wash — no full-bleed colour field.
  */
 
+import Slots from "@/components/orx/Slots";
 import { Arrow, Btn, Lines, Rise, SHELL, T } from "@/components/orx/kit";
 
 const FACTS = ["₹1,999, one time", "45-minute live review", "Result in 24 hours"];
@@ -38,12 +39,12 @@ export default function Close() {
         </h2>
 
         <Rise delay={0.25} className="mt-7" style={{ ...T.lede, maxWidth: 500, margin: "0 auto" }}>
-          Join the waitlist and we&apos;ll email you the moment applications open.
+          The first 15 verifications are free. Claim a founding slot and we&apos;ll take it from there.
         </Rise>
 
         <Rise delay={0.35} className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
           <Btn href="/join-waitlist" className="!px-7 !py-4 !text-[16px]">
-            Join the waitlist
+            Claim a founding slot
           </Btn>
           <Arrow href="/how-it-works">See how it works</Arrow>
         </Rise>

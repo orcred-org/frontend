@@ -21,6 +21,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
+import Slots from "./Slots";
 import { Btn, EASE, L, MARK, SHELL, T } from "./kit";
 
 const NAV = [
@@ -44,7 +45,7 @@ const FOOT = [
   {
     head: "Take part",
     links: [
-      { label: "Join the waitlist", href: "/join-waitlist" },
+      { label: "Claim a founding slot", href: "/join-waitlist" },
       { label: "Become a reviewer", href: "/become-a-reviewer" },
       { label: "Contact us", href: "/contact" },
     ],
@@ -175,8 +176,11 @@ export default function Frame({ children }: { children: ReactNode }) {
           </nav>
 
           <div className="hidden sm:block lg:ml-4 ml-auto">
+            <span className="hidden xl:inline-flex" style={{ marginRight: 14 }}>
+              <Slots variant="pill" />
+            </span>
             <Btn href="/join-waitlist" className="!py-2.5 !px-5 !text-[14px]">
-              Join the waitlist
+              Claim a slot
             </Btn>
           </div>
 
@@ -264,7 +268,7 @@ export default function Frame({ children }: { children: ReactNode }) {
                 transition={{ duration: 0.5, delay: 0.32, ease: EASE }}
               >
                 <Btn href="/join-waitlist" className="w-full" onClick={() => setOpen(false)}>
-                  Join the waitlist
+                  Claim a founding slot
                 </Btn>
 
                 <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3">

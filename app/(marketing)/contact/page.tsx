@@ -14,7 +14,7 @@ const DIRECT = [
 const ELSEWHERE = [
   { label: "Questions we answer most", href: "/#questions" },
   { label: "Apply to review for us", href: "/become-a-reviewer" },
-  { label: "Join the waitlist", href: "/join-waitlist" },
+  { label: "Claim a founding slot", href: "/join-waitlist" },
 ];
 
 export default function ContactPage() {
@@ -68,7 +68,7 @@ export default function ContactPage() {
                 >
                   <Rise delay={0.4} className="mt-9 flex flex-wrap gap-x-8 gap-y-4">
                     <Arrow href="/">Back to home</Arrow>
-                    <Arrow href="/join-waitlist">Join the waitlist</Arrow>
+                    <Arrow href="/join-waitlist">Claim a founding slot</Arrow>
                   </Rise>
                 </Done>
               ) : (

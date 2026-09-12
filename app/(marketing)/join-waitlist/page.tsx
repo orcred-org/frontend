@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Frame from "@/components/orx/Frame";
+import Slots from "@/components/orx/Slots";
 import { Block, Chips, Done, Field, Head, Submit } from "@/components/orx/Sheet";
 import { Arrow, EASE, L, Rise, T } from "@/components/orx/kit";
 import { DOMAIN_TAGS, DEGREE_OPTIONS, REFERRAL_SOURCE_OPTIONS } from "@/lib/form-constants";
@@ -89,19 +90,23 @@ export default function JoinWaitlistPage() {
     <Frame>
       <Head
         eyebrow="Early access"
-        title={["Join the waitlist."]}
-        lede="Two minutes. Tell us who you are and what you build. Applications open at launch, and applicants who show up ready get priority."
-        meta={["Takes about 2 minutes", "No payment now"]}
+        title={["Claim a founding slot."]}
+        lede="Two minutes. Tell us who you are and what you build. The first 15 verifications are free — in return we ask to write yours up as a case study."
+        meta={["Takes about 2 minutes", "Free for the founding cohort"]}
       />
 
       <Block id="registration">
+        <div className="mb-12">
+          <Slots variant="meter" />
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-16">
           <div className="lg:col-span-7">
             <AnimatePresence mode="wait">
               {done ? (
                 <Done
                   key="done"
-                  title={["You're on the list."]}
+                  title={["Your slot is held."]}
                   body="Check your inbox for a confirmation email. We'll write again the moment applications open."
                 >
                   <Rise delay={0.4} className="mt-9 flex flex-wrap gap-x-8 gap-y-4">
@@ -184,7 +189,7 @@ export default function JoinWaitlistPage() {
                   </Field>
 
                   <Submit
-                    label="Join the waitlist"
+                    label="Claim my founding slot"
                     busy={busy}
                     disabled={!ok}
                     error={error}

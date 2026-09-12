@@ -146,7 +146,7 @@ export default function Standard() {
                 the standard does not move.
               </p>
               <Btn href="/join-waitlist" variant="soft">
-                Join the waitlist
+                Claim a founding slot
               </Btn>
             </div>
           </Rise>
