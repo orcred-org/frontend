@@ -21,7 +21,6 @@ import {
   useTransform,
 } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
-import Slots from "./Slots";
 import { Btn, EASE, L, MARK, SHELL, T } from "./kit";
 
 const NAV = [
@@ -176,9 +175,6 @@ export default function Frame({ children }: { children: ReactNode }) {
           </nav>
 
           <div className="hidden sm:block lg:ml-4 ml-auto">
-            <span className="hidden xl:inline-flex" style={{ marginRight: 14 }}>
-              <Slots variant="pill" />
-            </span>
             <Btn href="/join-waitlist" className="!py-2.5 !px-5 !text-[14px]">
               Claim a slot
             </Btn>
