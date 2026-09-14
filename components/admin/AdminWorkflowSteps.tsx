@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import AdminSessionAudit from '@/components/admin/AdminSessionAudit';
+import AdminSessionReport from '@/components/admin/AdminSessionReport';
+import SessionCalendarLinks from '@/components/shared/SessionCalendarLinks';
 import {
   formatTentativeSessionDisplay,
   getAdminReminderCount,
@@ -148,6 +149,12 @@ export interface WorkflowAssignment {
   student_joined_at?: string | null;
   reviewer_early_end_reason?: string | null;
   student_early_end_reason?: string | null;
+  reviewer_noshow_admin_notified_at?: string | null;
+  student_noshow_admin_notified_at?: string | null;
+  reviewer_nudge_count?: number | null;
+  student_nudge_count?: number | null;
+  last_reviewer_nudge_at?: string | null;
+  last_student_nudge_at?: string | null;
   reviewers?: { id?: string; full_name: string; email: string } | null;
   reviewer_tasks?: ReviewerTask[] | null;
 }
@@ -163,6 +170,7 @@ export interface WorkflowScore {
   problem_solving?: number;
   feedback_td?: string;
   submitted_at?: string;
+  code_deletion_acknowledged_at?: string | null;
 }
 
 function StepShell({
@@ -223,6 +231,7 @@ export default function AdminWorkflowSteps({
   detailStatus,
   paymentDone,
   assignment,
+  projectName,
   recordingUrl,
   scoreSubmittedAt,
   score,
@@ -243,15 +252,26 @@ export default function AdminWorkflowSteps({
   overrideFailed,
   onConfirmReviewedChange,
   onOverrideFailedChange,
+  transcriptSummary,
+  transcript,
+  transcriptGeneratedAt,
+  onGenerateTranscript,
+  generatingTranscript,
 }: {
   detailStatus: string;
   paymentDone: boolean;
   assignment: WorkflowAssignment | null;
+  projectName?: string;
   recordingUrl?: string | null;
   scoreSubmittedAt?: string | null;
   score: WorkflowScore | null;
   credentialIssued: boolean;
   actionLoading: boolean;
+  transcriptSummary?: string | null;
+  transcript?: string | null;
+  transcriptGeneratedAt?: string | null;
+  onGenerateTranscript?: () => Promise<void>;
+  generatingTranscript?: boolean;
   scoreInput: number;
   scoreFeedback: string;
   onScoreInputChange: (n: number) => void;
@@ -431,6 +451,15 @@ export default function AdminWorkflowSteps({
                 Observe live session →
               </Link>
             )}
+            {assignment.session_date && (
+              <SessionCalendarLinks
+                title={`Orcred review: ${projectName ?? assignment.student_code ?? 'Session'}`}
+                sessionDate={assignment.session_date}
+                sessionUrl={`/dashboard/session/${assignment.id}?as=admin`}
+                uid={`orcred-${assignment.id}@orcred.com`}
+                compact
+              />
+            )}
             {canAdminReschedule && (
               <AdminReschedulePanel
                 assignment={assignment}
@@ -503,37 +532,29 @@ export default function AdminWorkflowSteps({
           done={!!assignment?.student_session_confirmed_at && !!score}
           active={isSessionDone(assignment) && !score}
         >
-          <AdminSessionAudit assignment={assignment} scoreSubmittedAt={scoreSubmittedAt ?? score?.submitted_at} />
-          <div style={{ fontSize: 12, lineHeight: 1.7, color: 'rgba(15,13,12,0.65)' }}>
-            {assignment?.session_completed_at && (
-              <p style={{ margin: '0 0 8px' }}>
-                <strong>Reviewer ended session:</strong>{' '}
-                {new Date(assignment.session_completed_at).toLocaleString('en-IN')}
-              </p>
-            )}
-            {assignment?.student_session_confirmed_at ? (
-              <p style={{ margin: '0 0 8px', color: '#007a4a', fontWeight: 600 }}>
-                Student marked complete — {new Date(assignment.student_session_confirmed_at).toLocaleString('en-IN')}
-              </p>
-            ) : (
-              <p style={{ margin: '0 0 8px', color: '#9a6500' }}>Waiting for student to confirm session complete.</p>
-            )}
-            {(assignment?.student_feedback_audio != null || assignment?.student_feedback_video != null || assignment?.student_feedback_notes) && (
-              <div style={{ margin: '0 0 10px', padding: 10, background: 'rgba(15,13,12,0.03)', border: '1px solid rgba(15,13,12,0.08)' }}>
-                <p style={{ fontWeight: 600, margin: '0 0 6px' }}>Student session feedback</p>
-                {assignment.student_feedback_audio != null && <p style={{ margin: '0 0 4px' }}>Audio: {assignment.student_feedback_audio}/5</p>}
-                {assignment.student_feedback_video != null && <p style={{ margin: '0 0 4px' }}>Video: {assignment.student_feedback_video}/5</p>}
-                {assignment.student_feedback_notes && <p style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{assignment.student_feedback_notes}</p>}
-              </div>
-            )}
-            {recordingUrl ? (
-              <a href={recordingUrl} target="_blank" rel="noreferrer" style={{ color: '#eb4511', fontWeight: 600 }}>
-                View meeting recording →
-              </a>
-            ) : (
-              <p style={{ margin: 0, color: 'rgba(15,13,12,0.45)' }}>Recording will appear here when available.</p>
-            )}
-          </div>
+          <AdminSessionReport
+            assignment={assignment}
+            score={score}
+            scoreSubmittedAt={scoreSubmittedAt ?? score?.submitted_at}
+            recordingUrl={recordingUrl}
+            transcriptSummary={transcriptSummary}
+            transcript={transcript}
+            transcriptGeneratedAt={transcriptGeneratedAt}
+            studentFeedback={{
+              audio: assignment?.student_feedback_audio,
+              video: assignment?.student_feedback_video,
+              notes: assignment?.student_feedback_notes,
+            }}
+            onGenerateTranscript={onGenerateTranscript}
+            generatingTranscript={generatingTranscript}
+          />
+          {assignment?.student_session_confirmed_at ? (
+            <p style={{ fontSize: 12, margin: '0 0 8px', color: '#007a4a', fontWeight: 600 }}>
+              Student marked complete — {new Date(assignment.student_session_confirmed_at).toLocaleString('en-IN')}
+            </p>
+          ) : (
+            <p style={{ fontSize: 12, margin: 0, color: '#9a6500' }}>Waiting for student to confirm session complete.</p>
+          )}
         </StepShell>
       )}
 

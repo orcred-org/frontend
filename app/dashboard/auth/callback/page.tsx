@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { clearInvalidAuthSession } from '@/lib/authSession';
 import { supabase } from '@/lib/supabase';
-import { isAdminOnlyAuth } from '@/lib/platformGates';
+import { canSignInWithRole } from '@/lib/platformGates';
 import { dashboardPathForRole } from '@/lib/roles';
 
 function readCallbackParams(searchParams: URLSearchParams): URLSearchParams {
@@ -45,7 +45,7 @@ function CallbackHandler() {
         return;
       }
 
-      if (isAdminOnlyAuth() && account_type !== 'admin') {
+      if (!canSignInWithRole(account_type)) {
         await supabase.auth.signOut();
         router.push('/dashboard/auth?error=admin_only');
         return;

@@ -21,6 +21,8 @@ interface RescheduleRequestFormProps {
   assignmentId?: string;
   applicationId?: string;
   reschedulePending?: boolean;
+  /** Session start time has passed — only admin can reschedule. */
+  rescheduleBlocked?: boolean;
   onSuccess?: () => void;
 }
 
@@ -29,6 +31,7 @@ export default function RescheduleRequestForm({
   assignmentId,
   applicationId,
   reschedulePending,
+  rescheduleBlocked,
   onSuccess,
 }: RescheduleRequestFormProps) {
   const [open, setOpen] = useState(false);
@@ -78,6 +81,14 @@ export default function RescheduleRequestForm({
     return (
       <p style={{ fontSize: 13, color: '#9a6500', fontWeight: 500, margin: '12px 0 0', lineHeight: 1.5 }}>
         Reschedule request sent — our team will confirm a new time by email.
+      </p>
+    );
+  }
+
+  if (rescheduleBlocked) {
+    return (
+      <p style={{ fontSize: 12, color: 'rgba(15,13,12,0.5)', margin: '12px 0 0', lineHeight: 1.5 }}>
+        The scheduled session time has passed. Contact admin if you still need to reschedule.
       </p>
     );
   }

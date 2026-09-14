@@ -70,20 +70,7 @@ export function loomEmbedUrl(url: string): string | null {
   return null;
 }
 
-export function googleCalendarUrl(title: string, startIso: string, durationMin = 45): string | null {
-  if (!startIso) return null;
-  const start = new Date(startIso);
-  if (Number.isNaN(start.getTime())) return null;
-  const end = new Date(start.getTime() + durationMin * 60_000);
-  const fmt = (d: Date) => `${d.toISOString().replace(/[-:]/g, '').split('.')[0]}Z`;
-  const params = new URLSearchParams({
-    action: 'TEMPLATE',
-    text: title,
-    dates: `${fmt(start)}/${fmt(end)}`,
-    details: 'Orcred technical review session — join link will be shared by admin before the meeting.',
-  });
-  return `https://calendar.google.com/calendar/render?${params.toString()}`;
-}
+export { googleCalendarUrl } from '@/lib/calendar';
 
 export interface AvailabilitySlot {
   date: string;

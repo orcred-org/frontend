@@ -7,20 +7,32 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { api, ApiError } from '@/lib/api';
 import { getSafeSession } from '@/lib/authSession';
 import { useRequireAuth } from '@/lib/useRequireAuth';
-import { isDevFullAccess } from '@/lib/devAccess';
 import { supabase } from '@/lib/supabase';
 import SessionScoreForm, { DEFAULT_RATINGS } from '@/components/session/SessionScoreForm';
 import SessionSubmissionSidebar from '@/components/session/SessionSubmissionSidebar';
 import SessionTimer from '@/components/session/SessionTimer';
 import SessionNotesPanel from '@/components/session/SessionNotesPanel';
 import SessionAgentPanel from '@/components/session/SessionAgentPanel';
+import CodeDeletionAck from '@/components/reviewer/CodeDeletionAck';
 import type { CriterionKey, CriterionRating } from '@/lib/scoring';
 import { EARLY_END_BUFFER_MINUTES, SESSION_DURATION_MINUTES } from '@/lib/sessionAccess';
+import { SESSION_VIDEO_PANEL_HEIGHT } from '@/lib/sessionLayout';
 
 const DailyRoomEmbed = dynamic(() => import('@/components/session/DailyRoomEmbed'), {
   ssr: false,
   loading: () => (
-    <p style={{ fontSize: 14, color: 'rgba(15,13,12,0.45)', padding: 16 }}>Loading video…</p>
+    <div
+      style={{
+        height: SESSION_VIDEO_PANEL_HEIGHT,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#faf7f2',
+        borderRadius: 8,
+      }}
+    >
+      <p style={{ fontSize: 14, color: 'rgba(15,13,12,0.45)', margin: 0 }}>Loading video…</p>
+    </div>
   ),
 });
 
@@ -78,6 +90,12 @@ interface SessionData {
     waiting_for_reviewer?: boolean;
     waiting_for_student?: boolean;
   };
+  nudge?: {
+    role: 'reviewer' | 'student';
+    nudges_used: number;
+    nudges_remaining: number;
+    can_nudge: boolean;
+  } | null;
   application: ApplicationSummary | null;
 }
 
@@ -200,9 +218,9 @@ export default function SessionPage() {
   const asParam = searchParams.get('as')?.toLowerCase() ?? null;
   const asRole = asParam === 'student' || asParam === 'reviewer' || asParam === 'admin' ? asParam : undefined;
   const [isAdminUser, setIsAdminUser] = useState(false);
+  const [resolvingRole, setResolvingRole] = useState(!asRole);
 
   const { ready } = useRequireAuth();
-  const [userEmail, setUserEmail] = useState<string | null>(null);
   const fetchGen = useRef(0);
   const [data, setData] = useState<SessionData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -232,6 +250,8 @@ export default function SessionPage() {
   const [studentEarlyEndReason, setStudentEarlyEndReason] = useState('');
   const [showEarlyEndModal, setShowEarlyEndModal] = useState(false);
   const [pendingEarlyEndReason, setPendingEarlyEndReason] = useState('');
+  const [codeDeletionAck, setCodeDeletionAck] = useState(false);
+  const [nudgeLoading, setNudgeLoading] = useState(false);
 
   const applyPayload = useCallback((payload: SessionData, forRole: 'reviewer' | 'student' | 'admin') => {
     let merged = payload;
@@ -294,14 +314,34 @@ export default function SessionPage() {
 
   useEffect(() => {
     if (!ready) return;
-    getSafeSession().then((session) => {
-      setUserEmail(session?.user?.email ?? null);
-    }).catch(() => {});
     api.auth.me().then((me) => {
       const role = (me as { account_type?: string })?.account_type;
       if (role === 'admin') setIsAdminUser(true);
     }).catch(() => {});
   }, [ready]);
+
+  useEffect(() => {
+    if (!ready || asRole || !assignmentId) return;
+    let cancelled = false;
+    setResolvingRole(true);
+    api.video
+      .session(assignmentId)
+      .then((res) => {
+        if (cancelled) return;
+        const role = (res as { data?: SessionData }).data?.role;
+        if (role === 'reviewer' || role === 'student' || role === 'admin') {
+          router.replace(`/dashboard/session/${assignmentId}?as=${role}`);
+        } else {
+          setResolvingRole(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setResolvingRole(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [ready, asRole, assignmentId, router]);
 
   useEffect(() => {
     draftLoaded.current = false;
@@ -429,6 +469,10 @@ export default function SessionPage() {
       setActionMsg('This session ended early — explain why before submitting scores (min 10 characters).');
       return;
     }
+    if (!codeDeletionAck) {
+      setActionMsg('Confirm you have deleted all student code from your devices before submitting.');
+      return;
+    }
     setActionLoading(true);
     setActionMsg('');
     try {
@@ -437,6 +481,7 @@ export default function SessionPage() {
         ratings,
         feedback_notes: feedbackNotes.trim(),
         confirm: true,
+        code_deletion_acknowledged: true as const,
         ...(needsReason && reviewerEarlyEndReason.trim()
           ? { early_end_reason: reviewerEarlyEndReason.trim() }
           : {}),
@@ -447,6 +492,25 @@ export default function SessionPage() {
       setActionMsg(e instanceof ApiError ? e.message : 'Could not submit scores');
     } finally {
       setActionLoading(false);
+    }
+  };
+
+  const sendNudge = async () => {
+    if (!data?.nudge?.can_nudge || !asRole || asRole === 'admin') return;
+    if (asRole !== 'reviewer' && asRole !== 'student') return;
+    setNudgeLoading(true);
+    setActionMsg('');
+    try {
+      const res = await api.session.nudge(data.assignment_id, asRole) as {
+        data?: { nudges_remaining?: number };
+      };
+      const left = res.data?.nudges_remaining ?? 0;
+      setActionMsg(`Nudge sent — we emailed the other participant.${left > 0 ? ` (${left} left)` : ''}`);
+      await loadSession();
+    } catch (e) {
+      setActionMsg(e instanceof ApiError ? e.message : 'Could not send nudge');
+    } finally {
+      setNudgeLoading(false);
     }
   };
 
@@ -487,33 +551,25 @@ export default function SessionPage() {
   }
 
   if (!asRole) {
+    if (resolvingRole) {
+      return (
+        <div className="min-h-screen flex items-center justify-center" style={{ background: '#faf7f2' }}>
+          <p style={{ color: 'rgba(15,13,12,0.45)' }}>Loading session…</p>
+        </div>
+      );
+    }
+
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-6 p-6" style={{ background: '#faf7f2' }}>
         <div style={{ maxWidth: 420, textAlign: 'center' }}>
           <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#eb4511', margin: '0 0 8px' }}>
-            Choose session role
+            Session access
           </p>
-          <h1 style={{ fontSize: 20, fontWeight: 600, margin: '0 0 12px' }}>How are you joining?</h1>
+          <h1 style={{ fontSize: 20, fontWeight: 600, margin: '0 0 12px' }}>Cannot open this session</h1>
           <p style={{ fontSize: 14, color: 'rgba(15,13,12,0.55)', lineHeight: 1.6, margin: '0 0 24px' }}>
-            {isDevFullAccess(userEmail)
-              ? 'Your dev account can test both sides. Pick a role — the URL will include ?as= so you join with the correct permissions.'
-              : 'Open this page from your student or reviewer dashboard so we know which role to use.'}
+            Open this page from your student or reviewer dashboard, or use the admin calendar link to observe.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <button
-              type="button"
-              onClick={() => router.push(`/dashboard/session/${assignmentId}?as=reviewer`)}
-              style={{ padding: '12px 20px', background: '#eb4511', color: '#fff', border: 'none', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
-            >
-              Join as reviewer (host)
-            </button>
-            <button
-              type="button"
-              onClick={() => router.push(`/dashboard/session/${assignmentId}?as=student`)}
-              style={{ padding: '12px 20px', background: '#007a4a', color: '#fff', border: 'none', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
-            >
-              Join as student
-            </button>
             {isAdminUser && (
               <button
                 type="button"
@@ -523,6 +579,12 @@ export default function SessionPage() {
                 Observe as admin
               </button>
             )}
+            <Link
+              href={isAdminUser ? '/dashboard/admin' : '/dashboard/auth'}
+              style={{ fontSize: 13, color: '#eb4511', textDecoration: 'none' }}
+            >
+              ← Back to dashboard
+            </Link>
           </div>
         </div>
       </div>
@@ -582,46 +644,24 @@ export default function SessionPage() {
   );
 
   return (
-    <div className="min-h-screen" style={{ background: '#faf7f2' }}>
+    <div className="dash min-h-screen" style={{ background: '#faf7f2' }}>
       {isAdmin && (
         <div style={{ background: '#1a1a2e', color: '#fff', padding: '10px 24px', fontSize: 12, textAlign: 'center' }}>
           Admin observer mode — you join muted with camera off. Reviewer and student are not notified.
         </div>
       )}
-      {isDevFullAccess(userEmail) && !isAdmin && (
-        <div style={{ background: '#1a1a2e', color: '#fff', padding: '8px 24px', fontSize: 12, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-          <span>Dev testing as: <strong>{asRole === 'reviewer' ? 'Reviewer (host)' : 'Student'}</strong></span>
-          <span style={{ opacity: 0.5 }}>|</span>
-          <button
-            type="button"
-            onClick={() => router.push(`/dashboard/session/${assignmentId}?as=reviewer`)}
-            style={{ background: asRole === 'reviewer' ? '#eb4511' : 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.35)', padding: '4px 12px', fontSize: 11, fontWeight: 600, cursor: 'pointer' }}
-          >
-            Reviewer
-          </button>
-          <button
-            type="button"
-            onClick={() => router.push(`/dashboard/session/${assignmentId}?as=student`)}
-            style={{ background: asRole === 'student' ? '#007a4a' : 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.35)', padding: '4px 12px', fontSize: 11, fontWeight: 600, cursor: 'pointer' }}
-          >
-            Student
-          </button>
-        </div>
-      )}
-      <header style={{ borderBottom: '1px solid rgba(15,13,12,0.1)', padding: '16px 24px', background: '#fff' }}>
-        <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 16 }}>
+      <header className="dash-header" style={{ position: 'relative' }}>
+        <div className="dash-header-inner" style={{ maxWidth: 1400, paddingTop: 16, paddingBottom: 16, alignItems: 'flex-start' }}>
           <div>
-            <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#eb4511', margin: 0 }}>
-              Orcred live review
-            </p>
-            <h1 style={{ fontSize: 18, fontWeight: 600, margin: '4px 0 0' }}>
+            <p className="dash-eyebrow">Orcred live review</p>
+            <h1 className="dash-panel-title" style={{ fontSize: 20, margin: '4px 0 0' }}>
               {data.project_name ?? 'Review session'}
             </h1>
             {sessionLabel && (
-              <p style={{ fontSize: 13, color: 'rgba(15,13,12,0.55)', margin: '4px 0 0' }}>{sessionLabel}</p>
+              <p className="dash-muted" style={{ margin: '4px 0 0' }}>{sessionLabel}</p>
             )}
           </div>
-          <Link href={dashboardUrl} style={{ fontSize: 12, color: '#eb4511', textDecoration: 'none' }}>
+          <Link href={dashboardUrl} className="dash-btn dash-btn--ghost" style={{ textDecoration: 'none' }}>
             ← Dashboard
           </Link>
         </div>
@@ -662,6 +702,33 @@ export default function SessionPage() {
           />
         )}
 
+        {data?.nudge?.can_nudge && (isReviewer || isStudent) && !data.meeting_closed && (
+          <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              disabled={nudgeLoading || data.nudge.nudges_remaining <= 0}
+              onClick={sendNudge}
+              style={{
+                padding: '8px 16px',
+                background: '#fff',
+                border: '1px solid rgba(235,69,17,0.45)',
+                color: '#eb4511',
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: nudgeLoading || data.nudge.nudges_remaining <= 0 ? 'default' : 'pointer',
+                opacity: data.nudge.nudges_remaining <= 0 ? 0.5 : 1,
+              }}
+            >
+              {nudgeLoading
+                ? 'Sending…'
+                : `Nudge ${isReviewer ? 'student' : 'reviewer'} to join (${data.nudge.nudges_remaining} left)`}
+            </button>
+            <span style={{ fontSize: 12, color: 'rgba(15,13,12,0.45)' }}>
+              Sends an automated email — admin is notified.
+            </span>
+          </div>
+        )}
+
         {showEarlyEndModal && (
           <div style={{ marginBottom: 16, padding: 16, background: '#fff', border: '1px solid rgba(184,121,0,0.35)' }}>
             <p style={{ fontSize: 14, fontWeight: 600, margin: '0 0 8px', color: '#9a6500' }}>End session before time is up?</p>
@@ -696,7 +763,7 @@ export default function SessionPage() {
         )}
 
         {isAdmin ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(300px, 380px)', gap: 20, alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(300px, 380px)', gap: 20, alignItems: 'stretch' }}>
             <div>
               {showVideo ? (
                 <>
@@ -746,13 +813,14 @@ export default function SessionPage() {
             </aside>
           </div>
         ) : isReviewer ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(300px, 400px)', gap: 20, alignItems: 'start' }}>
+          <div>
+            {asRole === 'reviewer' && data.is_host && showVideo && (
+              <p style={{ fontSize: 13, color: '#007a4a', marginBottom: 12, fontWeight: 600 }}>
+                You are the session host. Cameras start off — audio only unless you enable video.
+              </p>
+            )}
+            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(300px, 400px)', gap: 20, alignItems: 'start' }}>
             <div>
-              {asRole === 'reviewer' && data.is_host && showVideo && (
-                <p style={{ fontSize: 13, color: '#007a4a', marginBottom: 12, fontWeight: 600 }}>
-                  You are the session host. Cameras start off — audio only unless you enable video.
-                </p>
-              )}
               {showVideo ? (
                 <DailyRoomEmbed
                   key={`${data.assignment_id}-${asRole}-live`}
@@ -813,16 +881,13 @@ export default function SessionPage() {
             </div>
 
             <aside
+              className={`session-sidebar-panel${showVideo ? ' session-sidebar-panel--live' : ''}`}
               style={{
                 background: '#fff',
                 border: '1px solid rgba(15,13,12,0.1)',
-                maxHeight: 'calc(100vh - 140px)',
-                display: 'flex',
-                flexDirection: 'column',
-                overflow: 'hidden',
               }}
             >
-              <div style={{ display: 'flex', borderBottom: '1px solid rgba(15,13,12,0.1)', flexShrink: 0 }}>
+              <div className="session-sidebar-tabs">
                 {(
                   [
                     { id: 'submission' as const, label: 'Brief', icon: '⧉' },
@@ -836,35 +901,18 @@ export default function SessionPage() {
                     type="button"
                     title={tab.label}
                     onClick={() => setSidebarTab(tab.id)}
-                    style={{
-                      flex: 1,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: 3,
-                      padding: '10px 4px 9px',
-                      border: 'none',
-                      background: sidebarTab === tab.id ? '#faf7f2' : '#fff',
-                      fontSize: 10,
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      borderBottom: sidebarTab === tab.id ? '2px solid #eb4511' : '2px solid transparent',
-                      color: sidebarTab === tab.id ? '#0f0d0c' : 'rgba(15,13,12,0.45)',
-                    }}
+                    className={`session-sidebar-tab${sidebarTab === tab.id ? ' session-sidebar-tab--active' : ''}`}
                   >
-                    <span style={{ fontSize: 15, lineHeight: 1 }} aria-hidden>
+                    <span className="session-sidebar-tab-icon" aria-hidden>
                       {tab.icon}
                     </span>
-                    <span>{tab.label}</span>
+                    <span className="session-sidebar-tab-label">{tab.label}</span>
                   </button>
                 ))}
               </div>
               <div
+                className={`session-sidebar-body${sidebarTab === 'agent' ? ' session-sidebar-body--agent' : ''}`}
                 style={{
-                  flex: 1,
-                  minHeight: 0,
-                  overflowY: sidebarTab === 'agent' ? 'hidden' : 'auto',
                   padding: sidebarTab === 'agent' ? 0 : 16,
                 }}
               >
@@ -931,9 +979,15 @@ export default function SessionPage() {
                                 />
                               </>
                             )}
+                            <CodeDeletionAck
+                              checked={codeDeletionAck}
+                              onChange={setCodeDeletionAck}
+                              disabled={actionLoading}
+                              compact
+                            />
                             <button
                             type="button"
-                            disabled={actionLoading}
+                            disabled={actionLoading || !codeDeletionAck}
                             onClick={submitScores}
                             style={{
                               marginTop: 14,
@@ -957,9 +1011,10 @@ export default function SessionPage() {
                 )}
               </div>
             </aside>
+            </div>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(300px, 400px)', gap: 20, alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(300px, 400px)', gap: 20, alignItems: 'stretch' }}>
             <div>
               {!data.meeting_closed && (
                 <>
@@ -1114,6 +1169,83 @@ export default function SessionPage() {
           </div>
         )}
       </main>
+      <style jsx global>{`
+        .session-sidebar-panel {
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          align-self: start;
+        }
+        .session-sidebar-panel--live {
+          height: ${SESSION_VIDEO_PANEL_HEIGHT};
+          max-height: ${SESSION_VIDEO_PANEL_HEIGHT};
+        }
+        .session-sidebar-tabs {
+          display: flex;
+          gap: 4px;
+          padding: 8px 8px 0;
+          flex-shrink: 0;
+          border-bottom: 1px solid rgba(15, 13, 12, 0.08);
+          background: #fff;
+        }
+        .session-sidebar-tab {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 5px;
+          padding: 8px 6px 10px;
+          border: none;
+          border-radius: 10px 10px 0 0;
+          background: transparent;
+          cursor: pointer;
+          transition: background-color 0.15s ease, color 0.15s ease;
+          color: rgba(15, 13, 12, 0.42);
+        }
+        .session-sidebar-tab:hover {
+          background: rgba(15, 13, 12, 0.04);
+          color: rgba(15, 13, 12, 0.72);
+        }
+        .session-sidebar-tab--active {
+          background: #faf7f2;
+          color: #0f0d0c;
+          box-shadow: inset 0 -2px 0 #eb4511;
+        }
+        .session-sidebar-tab-icon {
+          font-size: 17px;
+          line-height: 1;
+          width: 34px;
+          height: 34px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 9px;
+          background: rgba(15, 13, 12, 0.05);
+        }
+        .session-sidebar-tab--active .session-sidebar-tab-icon {
+          background: rgba(235, 69, 17, 0.12);
+          color: #eb4511;
+        }
+        .session-sidebar-tab-label {
+          font-size: 10.5px;
+          font-weight: 600;
+          letter-spacing: 0.02em;
+        }
+        .session-sidebar-body {
+          flex: 1;
+          min-height: 0;
+          overflow-y: auto;
+          overflow-x: hidden;
+        }
+        .session-sidebar-body--agent {
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          min-height: 0;
+        }
+      `}</style>
     </div>
   );
 }

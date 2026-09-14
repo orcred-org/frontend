@@ -5,9 +5,15 @@ import { useRouter } from 'next/navigation';
 import { getSafeSession } from './authSession';
 import { supabase } from './supabase';
 import { api, ApiError } from './api';
-import { allowsDashboardRole } from './devAccess';
+import { allowsDashboardRole } from './roles';
 
-export function useRequireReviewer() {
+type Options = {
+  /** Allow profile page before onboarding is complete */
+  skipOnboarding?: boolean;
+};
+
+export function useRequireReviewer(options: Options = {}) {
+  const { skipOnboarding = false } = options;
   const router = useRouter();
   const [ready, setReady] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -23,18 +29,32 @@ export function useRequireReviewer() {
 
         if (!session) {
           setLoading(false);
-          router.replace('/dashboard/auth');
+          router.replace('/dashboard/auth?from=reviewer');
           return;
         }
 
         try {
           const profile = await api.auth.me() as { account_type?: string; email?: string };
-          if (!allowsDashboardRole(profile.email, 'reviewer', profile.account_type)) {
+          if (!allowsDashboardRole(
+            profile.account_type ? { account_type: profile.account_type } : null,
+            'reviewer',
+          )) {
             setDenied(
               `Signed in as ${profile.email ?? session.user.email} (${profile.account_type ?? 'unknown'}). Reviewer access required.`,
             );
             return;
           }
+
+          if (!skipOnboarding) {
+            const reviewerProfile = await api.reviewer.profile() as {
+              data?: { reviewer_onboarding_complete?: boolean };
+            };
+            if (!reviewerProfile.data?.reviewer_onboarding_complete) {
+              router.replace('/dashboard/reviewer/profile');
+              return;
+            }
+          }
+
           setReady(true);
         } catch (e) {
           setDenied(
@@ -46,7 +66,7 @@ export function useRequireReviewer() {
       } catch {
         if (!cancelled) {
           setLoading(false);
-          router.replace('/dashboard/auth');
+          router.replace('/dashboard/auth?from=reviewer');
         }
       }
     }
@@ -55,7 +75,7 @@ export function useRequireReviewer() {
     return () => {
       cancelled = true;
     };
-  }, [router]);
+  }, [router, skipOnboarding]);
 
   const signOut = async () => {
     await supabase.auth.signOut();

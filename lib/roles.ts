@@ -15,16 +15,16 @@ export function dashboardPathForRole(accountType: string | undefined): string {
   return '/dashboard/auth';
 }
 
-/**
- * Route access: admins may preview student and reviewer dashboards.
- * When admin-only auth is on, only admins may access any dashboard route.
- */
+/** Strict dashboard access — each role may only reach its own routes. */
 export function allowsDashboardRole(
   me: { account_type: string } | null,
   required: AccountType,
 ): boolean {
   if (!me) return false;
-  if (me.account_type === 'admin') return true;
-  if (isAdminOnlyAuth()) return false;
+  if (isAdminOnlyAuth()) {
+    if (required === 'admin') return me.account_type === 'admin';
+    if (required === 'reviewer') return me.account_type === 'reviewer';
+    return false;
+  }
   return me.account_type === required;
 }

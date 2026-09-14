@@ -149,11 +149,14 @@ export const api = {
       request(`/session/notes?as=${asRole}`, { method: 'POST', body: JSON.stringify(data) }),
     recordJoin: (assignment_id: string, asRole: 'reviewer' | 'student') =>
       request(`/session/join?as=${asRole}`, { method: 'POST', body: JSON.stringify({ assignment_id }) }),
+    nudge: (assignment_id: string, asRole: 'reviewer' | 'student') =>
+      request(`/session/nudge?as=${asRole}`, { method: 'POST', body: JSON.stringify({ assignment_id }) }),
     agentSuggest: (data: {
       assignment_id: string;
       mode?: 'questions' | 'feedback_draft';
       focus?: string;
       session_notes?: string;
+      user_message?: string;
     }) =>
       request('/session/agent/suggest?as=reviewer', { method: 'POST', body: JSON.stringify(data) }),
   },
@@ -202,6 +205,8 @@ export const api = {
     analytics: () => request('/admin/analytics'),
     applications: (params?: string) => request(`/admin/applications${params ? `?${params}` : ''}`),
     application: (id: string) => request(`/admin/applications/${id}`),
+    generateTranscript: (applicationId: string) =>
+      request(`/admin/applications/${applicationId}/transcript`, { method: 'POST' }),
     submitScore: (data: { application_id: string; total_score: number; feedback?: string }) =>
       request('/admin/scores', { method: 'POST', body: JSON.stringify(data) }),
     assign: (data: { application_id: string; reviewer_id: string }) =>
@@ -242,6 +247,11 @@ export const api = {
       }),
     credentials: () => request('/admin/credentials'),
     reviewers: () => request('/admin/reviewers'),
+    inviteReviewer: (data: { email: string; full_name?: string }) =>
+      request('/admin/reviewers/invite', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
     confirmPayment: (application_id: string) =>
       request('/admin/payments/confirm', {
         method: 'POST',
@@ -282,6 +292,9 @@ export const api = {
         method: 'POST',
         body: JSON.stringify(data),
       }),
+    demoStatus: () => request('/admin/demo'),
+    demoAction: (action: 'start' | 'advance' | 'run_all' | 'reset') =>
+      request('/admin/demo', { method: 'POST', body: JSON.stringify({ action }) }),
   },
 
   waitlist: {

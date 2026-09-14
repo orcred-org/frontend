@@ -97,7 +97,7 @@ function AuthContent() {
           </h1>
           <p style={{ color: 'var(--fg-muted)' }}>
             {isAdminOnlyAuth()
-              ? 'Admin access only — enter your Orcred admin email for a login link'
+              ? 'Admin and invited reviewer access — enter your Orcred email for a login link'
               : 'Enter your email to receive a login link'}
           </p>
         </div>

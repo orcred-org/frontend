@@ -1,6 +1,15 @@
-/** When true (default), only users with account_type=admin in public.users may sign in. */
+/** When true (default), only admin and invited reviewer accounts may sign in. */
 export function isAdminOnlyAuth(): boolean {
   return process.env.NEXT_PUBLIC_ADMIN_ONLY_AUTH !== 'false';
+}
+
+/** Whether this account type may complete magic-link sign-in. */
+export function canSignInWithRole(accountType: string | null | undefined): boolean {
+  if (!accountType) return false;
+  if (isAdminOnlyAuth()) {
+    return accountType === 'admin' || accountType === 'reviewer';
+  }
+  return accountType === 'student' || accountType === 'reviewer' || accountType === 'admin';
 }
 
 /** When true, students can submit verification applications from the dashboard. */

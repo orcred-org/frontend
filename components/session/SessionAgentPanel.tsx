@@ -123,12 +123,15 @@ export default function SessionAgentPanel({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [copiedIdx, setCopiedIdx] = useState<string | null>(null);
+  const [chatInput, setChatInput] = useState('');
+  const [quickOpen, setQuickOpen] = useState(false);
+  const [focusOpen, setFocusOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'welcome',
       role: 'assistant',
       kind: 'text',
-      text: 'I can suggest Socratic questions during the call or draft written feedback from your notes. Pick a quick prompt below or choose a focus area.',
+      text: 'I can suggest up to 3 Socratic questions per request, or draft feedback from your notes. Use quick prompts, pick a focus, or type below.',
     },
   ]);
   const threadRef = useRef<HTMLDivElement>(null);
@@ -145,12 +148,20 @@ export default function SessionAgentPanel({
     setMessages((prev) => [...prev, { id: msgId(), role: 'user', text }]);
   };
 
-  const suggest = async (nextFocus: AgentFocus | '' = focus, userLabel?: string) => {
+  const suggest = async (
+    nextFocus: AgentFocus | '' = focus,
+    userLabel?: string,
+    customMessage?: string,
+  ) => {
     setFocus(nextFocus);
     setLoading(true);
     setError('');
     const chip = FOCUS_CHIPS.find((c) => c.value === nextFocus);
-    appendUser(userLabel ?? (chip?.label ? `Suggest ${chip.label.toLowerCase()} questions` : 'Suggest questions'));
+    const display =
+      userLabel ??
+      customMessage ??
+      (chip?.label ? `Suggest ${chip.label.toLowerCase()} questions` : 'Suggest questions');
+    appendUser(display);
 
     try {
       const res = (await api.session.agentSuggest({
@@ -158,6 +169,7 @@ export default function SessionAgentPanel({
         mode: 'questions',
         ...(nextFocus ? { focus: nextFocus } : {}),
         ...(sessionNotes.trim() ? { session_notes: sessionNotes.trim() } : {}),
+        ...(customMessage?.trim() ? { user_message: customMessage.trim() } : {}),
       })) as {
         data?: { questions: string[]; probe_areas: string[]; coaching_tip: string };
       };
@@ -170,7 +182,7 @@ export default function SessionAgentPanel({
           id: msgId(),
           role: 'assistant',
           kind: 'questions',
-          questions: res.data!.questions,
+          questions: res.data!.questions.slice(0, 3),
           probeAreas: res.data!.probe_areas ?? [],
           coachingTip: res.data!.coaching_tip ?? '',
         },
@@ -225,8 +237,14 @@ export default function SessionAgentPanel({
     }
   };
 
+  const closeComposerCollapsibles = () => {
+    setQuickOpen(false);
+    setFocusOpen(false);
+  };
+
   const runQuickPrompt = (prompt: (typeof QUICK_PROMPTS)[number]) => {
     if (disabled || loading) return;
+    closeComposerCollapsibles();
     if (prompt.action === 'feedback') {
       void draftFeedback();
       return;
@@ -234,61 +252,29 @@ export default function SessionAgentPanel({
     void suggest(prompt.focus ?? '', prompt.label);
   };
 
+  const sendChatMessage = () => {
+    const text = chatInput.trim();
+    if (!text || disabled || loading) return;
+    closeComposerCollapsibles();
+    setChatInput('');
+    void suggest(focus, text, text);
+  };
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        minHeight: 420,
-        background: '#faf8f5',
-      }}
-    >
+    <div className="session-agent-panel">
       {/* Chat header */}
-      <div
-        style={{
-          flexShrink: 0,
-          padding: '12px 14px',
-          background: '#fff',
-          borderBottom: '1px solid rgba(15,13,12,0.08)',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: '50%',
-              background: 'rgba(235,69,17,0.1)',
-              color: '#eb4511',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: 14,
-            }}
-          >
-            ✦
-          </span>
+      <div className="session-agent-header">
+        <div className="session-agent-header-inner">
+          <span className="session-agent-avatar" aria-hidden>✦</span>
           <div>
-            <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: '#0f0d0c' }}>Review copilot</p>
-            <p style={{ margin: 0, fontSize: 10, color: 'rgba(15,13,12,0.45)' }}>{notesHint}</p>
+            <p className="session-agent-title">Review copilot</p>
+            <p className="session-agent-subtitle">{notesHint}</p>
           </div>
         </div>
       </div>
 
       {/* Message thread */}
-      <div
-        ref={threadRef}
-        style={{
-          flex: 1,
-          minHeight: 0,
-          overflowY: 'auto',
-          padding: '14px 12px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 4,
-        }}
-      >
+      <div ref={threadRef} className="session-agent-thread">
         {messages.map((msg) => {
           if (msg.role === 'user') {
             return (
@@ -555,98 +541,314 @@ export default function SessionAgentPanel({
       </div>
 
       {/* Composer */}
-      <div
-        style={{
-          flexShrink: 0,
-          padding: '10px 12px 12px',
-          background: '#fff',
-          borderTop: '1px solid rgba(15,13,12,0.08)',
-        }}
-      >
-        <p style={{ margin: '0 0 8px', fontSize: 10, fontWeight: 600, color: 'rgba(15,13,12,0.38)', letterSpacing: '0.04em' }}>
-          QUICK PROMPTS
-        </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
-          {QUICK_PROMPTS.map((prompt) => (
-            <button
-              key={prompt.label}
-              type="button"
-              disabled={disabled || loading}
-              onClick={() => runQuickPrompt(prompt)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 5,
-                padding: '6px 10px',
-                fontSize: 11,
-                fontWeight: 600,
-                borderRadius: 16,
-                border: '1px solid rgba(15,13,12,0.12)',
-                background: '#faf8f5',
-                color: 'rgba(15,13,12,0.65)',
-                cursor: disabled || loading ? 'default' : 'pointer',
-                opacity: disabled || loading ? 0.5 : 1,
-              }}
-            >
-              <span style={{ fontSize: 12, lineHeight: 1 }}>{prompt.icon}</span>
-              {prompt.label}
-            </button>
-          ))}
+      <div className="session-agent-composer">
+        <div className="session-agent-quick-block">
+          <button
+            type="button"
+            className="session-agent-quick-toggle"
+            onClick={() => setQuickOpen((o) => !o)}
+            aria-expanded={quickOpen}
+          >
+            <span>Quick prompts</span>
+            <span className={`session-agent-quick-chevron${quickOpen ? ' session-agent-quick-chevron--open' : ''}`} aria-hidden>
+              ›
+            </span>
+          </button>
+          {quickOpen && (
+            <div className="session-agent-quick-grid">
+              {QUICK_PROMPTS.map((prompt) => (
+                <button
+                  key={prompt.label}
+                  type="button"
+                  disabled={disabled || loading}
+                  onClick={() => runQuickPrompt(prompt)}
+                  className="session-agent-quick-btn"
+                >
+                  <span className="session-agent-quick-icon" aria-hidden>{prompt.icon}</span>
+                  {prompt.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        <p style={{ margin: '0 0 6px', fontSize: 10, fontWeight: 600, color: 'rgba(15,13,12,0.38)', letterSpacing: '0.04em' }}>
-          FOCUS
-        </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 10 }}>
-          {FOCUS_CHIPS.map((chip) => {
-            const active = focus === chip.value;
-            return (
-              <button
-                key={chip.label}
-                type="button"
-                disabled={disabled || loading}
-                onClick={() => setFocus(chip.value)}
-                title={chip.label}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 4,
-                  padding: '4px 8px',
-                  fontSize: 10,
-                  fontWeight: 600,
-                  borderRadius: 14,
-                  border: active ? '1px solid #eb4511' : '1px solid rgba(15,13,12,0.1)',
-                  background: active ? 'rgba(235,69,17,0.1)' : '#fff',
-                  color: active ? '#eb4511' : 'rgba(15,13,12,0.5)',
-                  cursor: disabled || loading ? 'default' : 'pointer',
-                }}
-              >
-                <span>{chip.icon}</span>
-                {chip.label}
-              </button>
-            );
-          })}
+        <div className="session-agent-focus-block">
+          <button
+            type="button"
+            className="session-agent-quick-toggle"
+            onClick={() => setFocusOpen((o) => !o)}
+            aria-expanded={focusOpen}
+          >
+            <span>Focus{focus ? `: ${FOCUS_CHIPS.find((c) => c.value === focus)?.label ?? focus}` : ''}</span>
+            <span className={`session-agent-quick-chevron${focusOpen ? ' session-agent-quick-chevron--open' : ''}`} aria-hidden>
+              ›
+            </span>
+          </button>
+          {focusOpen && (
+            <div className="session-agent-focus-row">
+              {FOCUS_CHIPS.map((chip) => {
+                const active = focus === chip.value;
+                return (
+                  <button
+                    key={chip.label}
+                    type="button"
+                    disabled={disabled || loading}
+                    onClick={() => setFocus(chip.value)}
+                    title={chip.label}
+                    className={`session-agent-focus-chip${active ? ' session-agent-focus-chip--active' : ''}`}
+                  >
+                    <span aria-hidden>{chip.icon}</span>
+                    {chip.label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
-        <button
-          type="button"
-          onClick={() => suggest()}
-          disabled={disabled || loading}
-          style={{
-            width: '100%',
-            padding: '10px 14px',
-            background: disabled ? 'rgba(15,13,12,0.08)' : 'linear-gradient(135deg, #eb4511, #c93a0e)',
-            color: disabled ? 'rgba(15,13,12,0.35)' : '#fff',
-            border: 'none',
-            borderRadius: 10,
-            fontSize: 12,
-            fontWeight: 600,
-            cursor: disabled || loading ? 'default' : 'pointer',
-          }}
-        >
-          {loading ? 'Thinking…' : '✦ Send question request'}
-        </button>
+        <div className="session-agent-input-row">
+          <textarea
+            className="session-agent-input"
+            rows={1}
+            placeholder="Ask for questions… e.g. probe their database choices"
+            value={chatInput}
+            disabled={disabled || loading}
+            onChange={(e) => setChatInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendChatMessage();
+              }
+            }}
+          />
+          <button
+            type="button"
+            className="session-agent-send"
+            disabled={disabled || loading || !chatInput.trim()}
+            onClick={sendChatMessage}
+            aria-label="Send message"
+          >
+            {loading ? '…' : '↑'}
+          </button>
+        </div>
       </div>
+
+      <style jsx>{`
+        .session-agent-panel {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          height: 100%;
+          min-height: 0;
+          background: #faf8f5;
+        }
+        .session-agent-header {
+          flex-shrink: 0;
+          padding: 8px 12px;
+          background: #fff;
+          border-bottom: 1px solid rgba(15, 13, 12, 0.08);
+        }
+        .session-agent-header-inner {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .session-agent-avatar {
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          background: rgba(235, 69, 17, 0.1);
+          color: #eb4511;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          flex-shrink: 0;
+        }
+        .session-agent-title {
+          margin: 0;
+          font-size: 12px;
+          font-weight: 600;
+          color: #0f0d0c;
+        }
+        .session-agent-subtitle {
+          margin: 0;
+          font-size: 9.5px;
+          color: rgba(15, 13, 12, 0.45);
+          line-height: 1.35;
+        }
+        .session-agent-thread {
+          flex: 1 1 auto;
+          min-height: 0;
+          overflow-y: auto;
+          overflow-x: hidden;
+          overscroll-behavior: contain;
+          -webkit-overflow-scrolling: touch;
+          padding: 14px 12px;
+          display: flex;
+          flex-direction: column;
+          gap: 4;
+        }
+        .session-agent-composer {
+          flex-shrink: 0;
+          padding: 8px 10px 10px;
+          background: #fff;
+          border-top: 1px solid rgba(15, 13, 12, 0.08);
+        }
+        .session-agent-quick-block,
+        .session-agent-focus-block {
+          margin-bottom: 4px;
+        }
+        .session-agent-quick-toggle {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          padding: 4px 2px;
+          margin: 0 0 4px;
+          border: none;
+          background: none;
+          font-size: 10px;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: rgba(15, 13, 12, 0.42);
+          cursor: pointer;
+        }
+        .session-agent-quick-toggle:hover {
+          color: rgba(15, 13, 12, 0.65);
+        }
+        .session-agent-quick-chevron {
+          font-size: 14px;
+          line-height: 1;
+          transform: rotate(90deg);
+          transition: transform 0.15s ease;
+        }
+        .session-agent-quick-chevron--open {
+          transform: rotate(-90deg);
+        }
+        .session-agent-section-label {
+          margin: 0 0 6px;
+          font-size: 10px;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: rgba(15, 13, 12, 0.38);
+        }
+        .session-agent-quick-grid {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 4px;
+          padding-bottom: 4px;
+        }
+        .session-agent-quick-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          padding: 4px 8px;
+          font-size: 10px;
+          font-weight: 600;
+          line-height: 1.2;
+          border-radius: 999px;
+          border: 1px solid rgba(15, 13, 12, 0.1);
+          background: #faf8f5;
+          color: rgba(15, 13, 12, 0.78);
+          cursor: pointer;
+          transition: border-color 0.15s ease, background-color 0.15s ease;
+        }
+        .session-agent-quick-btn:hover:not(:disabled) {
+          border-color: rgba(235, 69, 17, 0.35);
+          background: #fff;
+        }
+        .session-agent-quick-btn:disabled {
+          opacity: 0.45;
+          cursor: default;
+        }
+        .session-agent-quick-icon {
+          font-size: 10px;
+          line-height: 1;
+          color: #eb4511;
+          flex-shrink: 0;
+        }
+        .session-agent-focus-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 4px;
+          padding-bottom: 4px;
+        }
+        .session-agent-focus-chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          padding: 5px 9px;
+          font-size: 10.5px;
+          font-weight: 600;
+          border-radius: 999px;
+          border: 1px solid rgba(15, 13, 12, 0.1);
+          background: #fff;
+          color: rgba(15, 13, 12, 0.55);
+          cursor: pointer;
+          transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+        }
+        .session-agent-focus-chip--active {
+          border-color: #eb4511;
+          background: rgba(235, 69, 17, 0.08);
+          color: #eb4511;
+        }
+        .session-agent-focus-chip:disabled {
+          opacity: 0.45;
+          cursor: default;
+        }
+        .session-agent-input-row {
+          display: flex;
+          gap: 8px;
+          align-items: flex-end;
+        }
+        .session-agent-input {
+          flex: 1;
+          min-width: 0;
+          min-height: 36px;
+          max-height: 72px;
+          resize: none;
+          padding: 8px 10px;
+          font-family: inherit;
+          font-size: 12.5px;
+          line-height: 1.4;
+          border-radius: 10px;
+          border: 1px solid rgba(15, 13, 12, 0.12);
+          background: #faf8f5;
+          color: #0f0d0c;
+        }
+        .session-agent-input:focus {
+          outline: none;
+          border-color: rgba(235, 69, 17, 0.45);
+          box-shadow: 0 0 0 3px rgba(235, 69, 17, 0.1);
+          background: #fff;
+        }
+        .session-agent-input:disabled {
+          opacity: 0.55;
+        }
+        .session-agent-send {
+          flex-shrink: 0;
+          width: 36px;
+          height: 36px;
+          border: none;
+          border-radius: 10px;
+          background: linear-gradient(135deg, #eb4511, #c93a0e);
+          color: #fff;
+          font-size: 18px;
+          font-weight: 700;
+          line-height: 1;
+          cursor: pointer;
+          box-shadow: 0 4px 12px rgba(235, 69, 17, 0.35);
+        }
+        .session-agent-send:disabled {
+          background: rgba(15, 13, 12, 0.08);
+          color: rgba(15, 13, 12, 0.35);
+          box-shadow: none;
+          cursor: default;
+        }
+      `}</style>
     </div>
   );
 }

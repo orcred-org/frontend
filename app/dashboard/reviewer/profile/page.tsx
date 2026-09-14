@@ -2,30 +2,23 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { api, ApiError } from '@/lib/api';
 import { useRequireReviewer } from '@/lib/useRequireReviewer';
+import DashboardShell from '@/components/dashboard/DashboardShell';
 import { validateLinkedinUrl } from '@/lib/validators';
 import { TIMEZONES } from '@/lib/form-constants';
 
-const inputStyle: React.CSSProperties = {
-  display: 'block',
-  width: '100%',
-  marginTop: 4,
-  padding: '10px 12px',
-  border: '1px solid rgba(15,13,12,0.14)',
-  fontSize: 14,
-  fontFamily: 'Inter, system-ui, sans-serif',
-};
+const inputClass = 'dash-input';
 
 export default function ReviewerProfilePage() {
   const router = useRouter();
-  const { ready } = useRequireReviewer();
+  const { ready, signOut } = useRequireReviewer({ skipOnboarding: true });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
   const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [currentCompany, setCurrentCompany] = useState('');
   const [currentRole, setCurrentRole] = useState('');
@@ -42,6 +35,7 @@ export default function ReviewerProfilePage() {
         const res = await api.reviewer.profile() as { data?: Record<string, unknown> };
         const d = res?.data ?? {};
         setFullName(String(d.full_name ?? ''));
+        setPhone(String(d.phone ?? ''));
         setEmail(String(d.email ?? ''));
         setCurrentCompany(String(d.current_company ?? ''));
         setCurrentRole(String(d.current_role ?? ''));
@@ -68,6 +62,7 @@ export default function ReviewerProfilePage() {
     try {
       await api.reviewer.updateProfile({
         full_name: fullName,
+        phone: phone.trim(),
         current_company: currentCompany,
         current_role: currentRole,
         years_experience: parseInt(yearsExperience, 10),
@@ -77,6 +72,7 @@ export default function ReviewerProfilePage() {
       });
       setSaved(true);
       setOnboardingComplete(true);
+      setTimeout(() => router.push('/dashboard/reviewer'), 800);
     } catch (e) {
       setError(e instanceof ApiError ? e.message : 'Save failed');
     } finally {
@@ -89,11 +85,20 @@ export default function ReviewerProfilePage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#faf7f2', padding: '40px 24px' }}>
-      <div style={{ maxWidth: 480, margin: '0 auto' }}>
-        <Link href="/dashboard/reviewer" style={{ fontSize: 13, color: 'rgba(15,13,12,0.5)' }}>← Dashboard</Link>
-        <h1 style={{ fontSize: 28, margin: '16px 0 8px', fontWeight: 500 }}>Reviewer profile</h1>
-        <p style={{ fontSize: 14, color: 'rgba(15,13,12,0.55)', marginBottom: 24, lineHeight: 1.6 }}>
+    <DashboardShell
+      homeHref="/dashboard/reviewer"
+      navItems={[
+        { id: 'dashboard', label: 'Dashboard', href: '/dashboard/reviewer' },
+        { id: 'profile', label: 'Profile', href: '/dashboard/reviewer/profile', active: true },
+      ]}
+      userName={fullName || 'Reviewer'}
+      userEmail={email}
+      roleLabel="Reviewer"
+      onSignOut={signOut}
+      mainMaxWidth={480}
+    >
+        <h1 className="dash-page-title" style={{ margin: '0 0 8px' }}>Reviewer profile</h1>
+        <p className="dash-muted" style={{ marginBottom: 24, lineHeight: 1.6 }}>
           Two minutes. We only need what matters for matching you with the right submissions.
         </p>
         {error && <p style={{ color: '#ba1a1a', marginBottom: 16 }}>{error}</p>}
@@ -103,34 +108,46 @@ export default function ReviewerProfilePage() {
             Complete this once before your first assignment.
           </p>
         )}
-        <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: 14, background: '#fff', padding: 24, border: '1px solid rgba(15,13,12,0.1)' }}>
-          <label>Full name<input value={fullName} onChange={(e) => setFullName(e.target.value)} required style={inputStyle} /></label>
-          <label>Email<input value={email} disabled style={{ ...inputStyle, opacity: 0.6 }} /></label>
-          <label>Current company<input value={currentCompany} onChange={(e) => setCurrentCompany(e.target.value)} required placeholder="e.g. Acme AI" style={inputStyle} /></label>
-          <label>Current role<input value={currentRole} onChange={(e) => setCurrentRole(e.target.value)} required placeholder="e.g. Staff ML Engineer" style={inputStyle} /></label>
+        <form onSubmit={handleSave} className="dash-surface" style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: 24 }}>
+          <label>Full name<input className={inputClass} value={fullName} onChange={(e) => setFullName(e.target.value)} required /></label>
+          <label>
+            Phone
+            <input
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+              type="tel"
+              autoComplete="tel"
+              inputMode="tel"
+              placeholder="9876543210 or +91 98765 43210"
+              className={inputClass}
+            />
+          </label>
+          <label>Email<input className={inputClass} value={email} disabled style={{ opacity: 0.6 }} /></label>
+          <label>Current company<input className={inputClass} value={currentCompany} onChange={(e) => setCurrentCompany(e.target.value)} required placeholder="e.g. Acme AI" /></label>
+          <label>Current role<input className={inputClass} value={currentRole} onChange={(e) => setCurrentRole(e.target.value)} required placeholder="e.g. Staff ML Engineer" /></label>
           <label>
             Years of experience
-            <select value={yearsExperience} onChange={(e) => setYearsExperience(e.target.value)} style={inputStyle}>
+            <select className={inputClass} value={yearsExperience} onChange={(e) => setYearsExperience(e.target.value)}>
               {[5, 6, 7, 8, 9, 10, 12, 15, 20].map((y) => (
                 <option key={y} value={y}>{y}+ years</option>
               ))}
             </select>
           </label>
-          <label>LinkedIn URL<input value={linkedinUrl} onChange={(e) => setLinkedinUrl(e.target.value)} required placeholder="https://linkedin.com/in/…" style={inputStyle} /></label>
+          <label>LinkedIn URL<input className={inputClass} value={linkedinUrl} onChange={(e) => setLinkedinUrl(e.target.value)} required placeholder="https://linkedin.com/in/…" /></label>
           <label>
-            Core expertise <span style={{ fontWeight: 400, color: 'rgba(15,13,12,0.4)' }}>(optional, one line)</span>
-            <input value={expertise} onChange={(e) => setExpertise(e.target.value)} placeholder="e.g. LLM systems, backend infra" style={inputStyle} />
+            Core expertise <span className="dash-muted" style={{ fontWeight: 400 }}>(optional, one line)</span>
+            <input className={inputClass} value={expertise} onChange={(e) => setExpertise(e.target.value)} placeholder="e.g. LLM systems, backend infra" />
           </label>
           <label>
             Timezone
-            <input list="tz-list" value={timezone} onChange={(e) => setTimezone(e.target.value)} style={inputStyle} />
+            <input className={inputClass} list="tz-list" value={timezone} onChange={(e) => setTimezone(e.target.value)} />
             <datalist id="tz-list">{TIMEZONES.map((tz) => <option key={tz} value={tz} />)}</datalist>
           </label>
-          <button type="submit" disabled={saving} style={{ marginTop: 8, padding: '12px 20px', background: '#eb4511', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
+          <button type="submit" disabled={saving} className="dash-btn dash-btn--primary" style={{ marginTop: 8 }}>
             {saving ? 'Saving…' : 'Save profile'}
           </button>
         </form>
-      </div>
-    </div>
+    </DashboardShell>
   );
 }

@@ -150,14 +150,17 @@ export function Mark({
   size = 23,
   u = (n: number) => n,
   color = "var(--ink)",
+  variant = "full",
 }: {
   size?: number;
   u?: (n: number) => number | string;
   color?: string;
+  /** `icon` — orange dot only (use when page chrome already shows the wordmark). */
+  variant?: "full" | "icon";
 }) {
   const d = u(size * MARK.dot);
   return (
-    <span className="inline-flex items-center" style={{ gap: u(size * MARK.gap) }}>
+    <span className="inline-flex items-center" style={{ gap: variant === "full" ? u(size * MARK.gap) : 0 }}>
       <svg
         viewBox="0 0 40 40"
         fill="none"
@@ -166,18 +169,20 @@ export function Mark({
       >
         <circle cx="20" cy="20" r="20" fill="#eb4511" />
       </svg>
-      <span
-        style={{
-          fontFamily: "'Inter Tight', sans-serif",
-          fontWeight: 600,
-          fontSize: u(size),
-          letterSpacing: `${MARK.track}em`,
-          lineHeight: 1,
-          color,
-        }}
-      >
-        Orcred
-      </span>
+      {variant === "full" && (
+        <span
+          style={{
+            fontFamily: "'Inter Tight', sans-serif",
+            fontWeight: 600,
+            fontSize: u(size),
+            letterSpacing: `${MARK.track}em`,
+            lineHeight: 1,
+            color,
+          }}
+        >
+          Orcred
+        </span>
+      )}
     </span>
   );
 }

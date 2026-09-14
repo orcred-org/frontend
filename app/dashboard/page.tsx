@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import { dashboardPathForRole } from '@/lib/roles';
-import { isAdminOnlyAuth } from '@/lib/platformGates';
+import { canSignInWithRole } from '@/lib/platformGates';
 
 export default function DashboardHome() {
   const router = useRouter();
@@ -15,7 +15,7 @@ export default function DashboardHome() {
         const data = await api.auth.me() as { account_type: string };
         const { account_type } = data;
 
-        if (isAdminOnlyAuth() && account_type !== 'admin') {
+        if (!canSignInWithRole(account_type)) {
           router.push('/dashboard/auth?error=admin_only');
           return;
         }

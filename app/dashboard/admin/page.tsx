@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { api, ApiError } from '@/lib/api';
 import { useRequireAuth } from '@/lib/useRequireAuth';
 import UserProfilePanel from '@/components/admin/UserProfilePanel';
@@ -11,7 +11,21 @@ import AdminWorkflowSteps from '@/components/admin/AdminWorkflowSteps';
 import AdminSubmissionDetail from '@/components/admin/AdminSubmissionDetail';
 import ScheduledMeetingsCalendar from '@/components/admin/ScheduledMeetingsCalendar';
 import WaitlistPanel from '@/components/admin/WaitlistPanel';
+import PlatformDemoPanel from '@/components/admin/PlatformDemoPanel';
 import AccountSettingsPanel from '@/components/settings/AccountSettingsPanel';
+import DashStatCard from '@/components/dashboard/DashStatCard';
+import DashboardShell from '@/components/dashboard/DashboardShell';
+import ReviewerInviteForm from '@/components/admin/ReviewerInviteForm';
+import {
+  ensureInboxBaseline,
+  readInboxBaseline,
+  inboxBadgeCount,
+  dismissInboxCategory,
+  dismissSessionInbox,
+  clearInboxBaseline,
+  type AdminInboxCounts,
+  type AdminInboxKey,
+} from '@/lib/adminInboxSeen';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -21,6 +35,15 @@ interface Analytics {
   credentials:   { total: number; linkedin_conversion_pct: number };
   revenue:       { all_time: number; this_month: number };
   waitlist?:     { total: number; pending: number; this_month: number };
+  inbox?: {
+    payment_to_confirm: number;
+    new_applications: number;
+    waitlist_pending: number;
+    needs_reviewer: number;
+    sessions_today: number;
+    session_proposals: number;
+    credentials_to_issue: number;
+  };
 }
 
 interface Application {
@@ -68,6 +91,9 @@ interface AppDetail {
   what_broke: string;
   ai_tools_used: string;
   recording_url?: string | null;
+  session_transcript?: string | null;
+  session_transcript_summary?: string | null;
+  session_transcript_generated_at?: string | null;
   users: { id?: string; full_name: string; email: string } | null;
   scores: Array<{ total_score: number; final_score: number | null; passed: boolean; admin_review_status?: string; feedback_td?: string; submitted_at?: string }> | { total_score: number; final_score: number | null; passed: boolean; admin_review_status?: string; feedback_td?: string; submitted_at?: string } | null;
   credentials: { credential_id: string; credential_url: string; issued_at: string } | Array<{ credential_id: string; credential_url: string; issued_at: string }> | null;
@@ -138,10 +164,15 @@ const APP_PAGE_SIZE = 10;
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-type View = 'dashboard' | 'applications' | 'waitlist' | 'reviewers' | 'settings';
+type View = 'dashboard' | 'applications' | 'waitlist' | 'reviewers' | 'demo' | 'settings';
 
 export default function AdminDashboard() {
-  const { ready, signOut } = useRequireAuth();
+  const { ready, signOut: authSignOut } = useRequireAuth();
+  const signOut = async () => {
+    clearInboxBaseline();
+    await authSignOut();
+  };
+  const searchParams = useSearchParams();
   const [view, setView] = useState<View>('dashboard');
   const [analytics,    setAnalytics]    = useState<Analytics | null>(null);
   const [applications, setApplications] = useState<Application[]>([]);
@@ -157,6 +188,7 @@ export default function AdminDashboard() {
   const [search,   setSearch]   = useState('');
   const [page,     setPage]     = useState(1);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [generatingTranscript, setGeneratingTranscript] = useState(false);
   const [selectedAppId, setSelectedAppId] = useState<string | null>(null);
   const [appDetail, setAppDetail] = useState<AppDetail | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
@@ -173,6 +205,7 @@ export default function AdminDashboard() {
     projectName: string;
     reviewerName: string;
   } | null>(null);
+  const [inboxBaseline, setInboxBaseline] = useState<Partial<AdminInboxCounts>>(() => readInboxBaseline());
 
   // Fetch analytics
   useEffect(() => {
@@ -189,6 +222,23 @@ export default function AdminDashboard() {
       finally { setLoadingA(false); }
     })();
   }, [ready]);
+
+  useEffect(() => {
+    if (analytics?.inbox) {
+      setInboxBaseline(ensureInboxBaseline(analytics.inbox as AdminInboxCounts));
+    }
+  }, [analytics?.inbox]);
+
+  const dismissInbox = (key: AdminInboxKey) => {
+    if (!analytics?.inbox) return;
+    const counts = analytics.inbox as AdminInboxCounts;
+    setInboxBaseline((prev) => dismissInboxCategory(key, counts[key], prev));
+  };
+
+  const dismissSessionsInbox = () => {
+    if (!analytics?.inbox) return;
+    setInboxBaseline((prev) => dismissSessionInbox(analytics.inbox as AdminInboxCounts, prev));
+  };
 
   // Fetch applications
   const fetchApps = useCallback(async () => {
@@ -239,21 +289,23 @@ export default function AdminDashboard() {
     await fetchApps();
   };
 
-  // Fetch reviewers
+  const fetchReviewers = useCallback(async () => {
+    setLoadingR(true);
+    try {
+      const res = await api.admin.reviewers() as any;
+      setReviewers(res?.data ?? []);
+      setApiError('');
+    } catch (e) {
+      if (e instanceof ApiError) setApiError(e.message);
+    } finally {
+      setLoadingR(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (!ready) return;
-    (async () => {
-      setLoadingR(true);
-      try {
-        const res = await api.admin.reviewers() as any;
-        setReviewers(res?.data ?? []);
-        setApiError('');
-      } catch (e) {
-        if (e instanceof ApiError) setApiError(e.message);
-      }
-      finally { setLoadingR(false); }
-    })();
-  }, [ready]);
+    void fetchReviewers();
+  }, [ready, fetchReviewers]);
 
   const handleConfirmPayment = async (appId: string) => {
     setActionLoading(appId);
@@ -352,10 +404,23 @@ export default function AdminDashboard() {
     loadUserProfile(userId);
   };
 
+  const openApplicationsFiltered = useCallback((
+    tab: 'all' | 'payment_confirmed' | 'scheduled' | 'completed',
+  ) => {
+    setView('applications');
+    setTableTab(tab);
+    setPage(1);
+  }, []);
+
   const closeUserProfile = () => {
     setSelectedUserId(null);
     setUserProfile(null);
   };
+
+  useEffect(() => {
+    if (!ready) return;
+    if (searchParams.get('view') === 'demo') setView('demo');
+  }, [ready, searchParams]);
 
   const handleApproveSession = async (assignmentId: string) => {
     setActionLoading(selectedAppId);
@@ -414,6 +479,19 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleGenerateTranscript = async (appId: string) => {
+    setGeneratingTranscript(true);
+    try {
+      await api.admin.generateTranscript(appId);
+      await refreshDetail();
+      setApiError('');
+    } catch (e) {
+      setApiError(e instanceof ApiError ? e.message : 'Transcript generation failed');
+    } finally {
+      setGeneratingTranscript(false);
+    }
+  };
+
   const handleResetStep = async (appId: string, step: 'payment' | 'assignment' | 'score' | 'credential' | 'full') => {
     const labels: Record<string, string> = {
       payment: 'undo payment confirmation',
@@ -437,112 +515,138 @@ export default function AdminDashboard() {
     }
   };
 
-  // Derived counts
-  const awaiting  = applications.filter(a => a.status === 'payment_confirmed' || a.status === 'reviewer_assigned').length;
+  // Derived counts (inbox from analytics is authoritative for action badges)
+  const inbox = analytics?.inbox;
+  const awaitingCount = inbox?.needs_reviewer ?? applications.filter(a => a.status === 'payment_confirmed' || a.status === 'reviewer_assigned').length;
   const scheduled = applications.filter(a => a.status === 'scheduled').length;
+  const badgePayment = inbox ? inboxBadgeCount('payment_to_confirm', inbox.payment_to_confirm, inboxBaseline) : 0;
+  const badgeNewApps = inbox ? inboxBadgeCount('new_applications', inbox.new_applications, inboxBaseline) : 0;
+  const badgeWaitlist = inbox ? inboxBadgeCount('waitlist_pending', inbox.waitlist_pending, inboxBaseline) : 0;
+  const badgeReviewer = inbox ? inboxBadgeCount('needs_reviewer', inbox.needs_reviewer, inboxBaseline) : 0;
+  const badgeSessions = inbox
+    ? inboxBadgeCount('sessions_today', inbox.sessions_today, inboxBaseline)
+      + inboxBadgeCount('session_proposals', inbox.session_proposals, inboxBaseline)
+    : 0;
+  const badgeCredentials = inbox ? inboxBadgeCount('credentials_to_issue', inbox.credentials_to_issue, inboxBaseline) : 0;
+
+  useEffect(() => {
+    if (view !== 'demo') return;
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtml = html.style.overflow;
+    const prevBody = body.style.overflow;
+    html.style.overflow = 'hidden';
+    body.style.overflow = 'hidden';
+    return () => {
+      html.style.overflow = prevHtml;
+      body.style.overflow = prevBody;
+    };
+  }, [view]);
 
   if (!ready) return null;
 
+  const demoShell = view === 'demo';
+
+  const adminNav = (['dashboard', 'applications', 'waitlist', 'reviewers', 'demo', 'settings'] as View[]).map((v) => ({
+    id: v,
+    label: v === 'waitlist' ? 'Waitlist' : v === 'demo' ? 'Demo' : v.charAt(0).toUpperCase() + v.slice(1),
+    active: view === v,
+    onClick: () => setView(v),
+  }));
+
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: BG, fontFamily: FONT, overflowX: 'hidden', width: '100%', maxWidth: '100vw' }}>
+    <DashboardShell
+      homeHref="/dashboard/admin"
+      navItems={adminNav}
+      userName="Admin"
+      roleLabel="Manager"
+      userInitial="A"
+      onSignOut={signOut}
+      showFooter={!demoShell}
+      headerPosition={demoShell ? 'relative' : 'sticky'}
+      mainMaxWidth={demoShell ? 'none' : 1400}
+      mainClassName={`admin-main${view === 'demo' ? ' admin-main--demo' : ''}`}
+      mainStyle={demoShell ? { flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' } : undefined}
+      shellStyle={{
+        fontFamily: FONT,
+        height: demoShell ? '100vh' : undefined,
+        overflow: demoShell ? 'hidden' : 'hidden auto',
+        width: '100%',
+        maxWidth: '100vw',
+      }}
+      headerExtra={(
+        <button
+          type="button"
+          onClick={() => setView('demo')}
+          className="admin-nav-preview"
+          style={{
+            padding: '6px 12px',
+            fontSize: '11px',
+            fontWeight: 600,
+            color: view === 'demo' ? '#fff' : 'rgba(15,13,12,0.55)',
+            background: view === 'demo' ? '#eb4511' : 'transparent',
+            border: '1px solid rgba(15,13,12,0.12)',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontFamily: FONT,
+          }}
+        >
+          Platform demo
+        </button>
+      )}
+    >
       <style>{`
         .admin-main { max-width: 1400px; margin: 0 auto; padding: 36px clamp(16px, 4vw, 40px) 80px; width: 100%; box-sizing: border-box; }
         .admin-header-inner { max-width: 1400px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px); height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; }
         .admin-stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 24px; }
-        .admin-dash-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 320px); gap: 16px; align-items: start; width: 100%; min-width: 0; }
+        .admin-dash-stack { display: flex; flex-direction: column; gap: 16px; width: 100%; min-width: 0; }
+        .admin-dash-bottom { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; width: 100%; min-width: 0; }
+        .admin-cal-section .cal-root { margin-bottom: 0 !important; border: none !important; box-shadow: none !important; background: #fff1e8 !important; }
         .admin-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
-        @media (max-width: 1080px) {
-          .admin-dash-grid { grid-template-columns: 1fr; }
-          .admin-sidebar { max-width: none !important; }
+        @media (max-width: 900px) {
+          .admin-dash-bottom { grid-template-columns: 1fr; }
         }
         @media (max-width: 720px) {
           .admin-nav-preview { display: none !important; }
         }
+        @media (max-width: 820px) {
+          .admin-app-full-grid { grid-template-columns: 1fr !important; }
+        }
+        .admin-main--demo {
+          max-width: none !important;
+          margin: 0 !important;
+          padding: 8px clamp(8px, 1.5vw, 16px) 8px !important;
+          flex: 1 1 auto;
+          min-height: 0 !important;
+          height: auto;
+          max-height: none;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          box-sizing: border-box;
+        }
+        .admin-header-inner--demo {
+          max-width: none !important;
+        }
       `}</style>
 
-      {/* ── Navbar ─────────────────────────────────────────────────── */}
-      <header style={{
-        position: 'sticky', top: 0, zIndex: 50,
-        backgroundColor: 'rgba(250,247,242,0.94)',
-        backdropFilter: 'blur(14px)',
-        borderBottom: BORDER,
-      }}>
-        <div className="admin-header-inner">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <svg width="26" height="26" viewBox="0 0 42 42" fill="none">
-              <circle cx="21" cy="21" r="20" fill="#eb4511" />
-            </svg>
-            <span style={{ fontSize: '17px', fontWeight: 700, letterSpacing: '-0.02em', color: '#0f0d0c' }}>Orcred</span>
-          </div>
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            {(['dashboard', 'applications', 'waitlist', 'reviewers', 'settings'] as View[]).map(v => {
-              const active = view === v;
-              const label  = v === 'waitlist' ? 'Waitlist' : v.charAt(0).toUpperCase() + v.slice(1);
-              return (
-                <button
-                  key={v}
-                  onClick={() => setView(v)}
-                  style={{
-                    padding: '6px 14px',
-                    fontSize: '13px',
-                    fontWeight: active ? 600 : 400,
-                    color: active ? '#0f0d0c' : 'rgba(15,13,12,0.45)',
-                    backgroundColor: active ? 'rgba(15,13,12,0.07)' : 'transparent',
-                    border: 'none',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    letterSpacing: '-0.01em',
-                    fontFamily: FONT,
-                    transition: 'background-color 0.15s, color 0.15s',
-                  }}
-                  onMouseEnter={e => !active && ((e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(15,13,12,0.04)')}
-                  onMouseLeave={e => !active && ((e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent')}
-                >
-                  {label}
-                </button>
-              );
-            })}
-          </nav>
-          <div className="admin-nav-preview" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <Link
-              href="/dashboard/student"
-              style={{ padding: '6px 12px', fontSize: '11px', fontWeight: 600, color: 'rgba(15,13,12,0.55)', textDecoration: 'none', border: '1px solid rgba(15,13,12,0.12)', borderRadius: '6px' }}
-            >
-              Student view
-            </Link>
-            <Link
-              href="/dashboard/reviewer"
-              style={{ padding: '6px 12px', fontSize: '11px', fontWeight: 600, color: 'rgba(15,13,12,0.55)', textDecoration: 'none', border: '1px solid rgba(15,13,12,0.12)', borderRadius: '6px' }}
-            >
-              Reviewer view
-            </Link>
-            <div style={{ width: '30px', height: '30px', borderRadius: '50%', backgroundColor: '#eb4511', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontSize: '12px', fontWeight: 700, color: '#fff' }}>A</span>
-            </div>
-            <div>
-              <div style={{ fontSize: '12px', fontWeight: 600, color: '#0f0d0c', lineHeight: 1.2 }}>Admin</div>
-              <div style={{ fontSize: '11px', color: 'rgba(15,13,12,0.4)', lineHeight: 1.2 }}>Manager</div>
-            </div>
-            <button
-              onClick={signOut}
-              style={{ marginLeft: '8px', padding: '6px 14px', fontSize: '12px', fontWeight: 600, color: '#eb4511', background: 'transparent', border: '1px solid #eb4511', borderRadius: '6px', cursor: 'pointer', fontFamily: FONT }}
-            >
-              Sign out
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div className="admin-main">
-
         {/* Page title */}
-        <h1 style={{ fontSize: '28px', fontWeight: 400, letterSpacing: '-0.03em', color: '#0f0d0c', margin: '0 0 28px' }}>
-          {view === 'waitlist' ? 'Waitlist' : view.charAt(0).toUpperCase() + view.slice(1)}
-        </h1>
+        {view !== 'demo' && (
+          <h1 className="dash-page-title">
+            {view === 'waitlist' ? 'Waitlist' : view.charAt(0).toUpperCase() + view.slice(1)}
+          </h1>
+        )}
 
-        {apiError && (
+        {apiError && view !== 'demo' && (
           <div style={{ marginBottom: '20px', padding: '14px 18px', backgroundColor: 'rgba(186,26,26,0.08)', border: '1px solid rgba(186,26,26,0.2)', fontSize: '13px', color: '#ba1a1a' }}>
             {apiError}
+          </div>
+        )}
+
+        {/* ── Platform demo ── */}
+        {view === 'demo' && (
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: '100%', minHeight: 0 }}>
+            <PlatformDemoPanel />
           </div>
         )}
 
@@ -555,12 +659,16 @@ export default function AdminDashboard() {
         {/* ── Reviewers full view ── */}
         {view === 'reviewers' && (
           <div>
+            <ReviewerInviteForm onInvited={() => void fetchReviewers()} />
             {loadingR ? (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '14px' }}>
                 {[1,2,3].map(i => <div key={i} style={{ height: '140px', backgroundColor: 'rgba(15,13,12,0.04)', border: BORDER }} />)}
               </div>
             ) : reviewers.length === 0 ? (
-              <div style={{ padding: '60px', textAlign: 'center', fontSize: '14px', color: 'rgba(15,13,12,0.35)', backgroundColor: '#fff', border: BORDER }}>No reviewers yet.</div>
+              <div style={{ padding: '40px 24px', textAlign: 'center', fontSize: '14px', color: 'rgba(15,13,12,0.45)', backgroundColor: '#fff', border: BORDER, borderRadius: 12 }}>
+                <p style={{ margin: '0 0 8px', fontWeight: 600, color: '#0f0d0c' }}>No reviewers yet</p>
+                <p style={{ margin: 0 }}>Use the form above to add someone by email.</p>
+              </div>
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '14px' }}>
                 {reviewers.map(r => <ReviewerCard key={r.id} reviewer={r} onViewProfile={() => openUserProfile(r.id)} />)}
@@ -572,59 +680,92 @@ export default function AdminDashboard() {
         {/* ── Dashboard + Applications views ── */}
         {(view === 'dashboard' || view === 'applications') && <>
 
-        {/* ── 4 Stat cards ─────────────────────────────────────────── */}
+        {/* ── Stat cards (incl. revenue) ───────────────────────────── */}
         {view === 'dashboard' && <div className="admin-stat-row">
           {loadingA ? (
-            Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} style={{ height: '110px', backgroundColor: 'rgba(15,13,12,0.04)', border: BORDER }} />
+            Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} style={{ height: '110px', backgroundColor: 'rgba(15,13,12,0.04)', border: BORDER, borderRadius: 12 }} />
             ))
           ) : analytics ? (
             <>
-              <StatCard
+              <DashStatCard
+                icon="💰"
+                label="Revenue"
+                value={fmtRevenue(analytics.revenue.all_time)}
+                sub={`${fmtRevenue(analytics.revenue.this_month)} this month · ${analytics.scores.average}/100 avg score`}
+                accent="#0d9488"
+                badge={badgePayment || undefined}
+                badgeHint={badgePayment ? `${badgePayment} new payment${badgePayment === 1 ? '' : 's'} to confirm` : undefined}
+                urgent={badgePayment > 0}
+                onClick={() => { dismissInbox('payment_to_confirm'); openApplicationsFiltered('all'); }}
+              />
+              <DashStatCard
                 icon="📋"
                 label="Total Applications"
                 value={analytics.applications.total}
-                sub={`${analytics.applications.this_month} this month`}
+                sub={`${analytics.applications.this_month} this month · view all`}
                 accent="#eb4511"
+                badge={badgeNewApps || undefined}
+                badgeHint={badgeNewApps ? `${badgeNewApps} new since you logged in` : undefined}
+                urgent={badgeNewApps > 0}
+                onClick={() => { dismissInbox('new_applications'); openApplicationsFiltered('all'); }}
               />
-              <StatCard
+              <DashStatCard
                 icon="📝"
                 label="Waitlist Signups"
                 value={analytics.waitlist?.total ?? 0}
-                sub={`${analytics.waitlist?.pending ?? 0} pending · click Waitlist tab`}
+                sub={`${analytics.waitlist?.pending ?? 0} pending · open waitlist`}
                 accent="#7c3aed"
-                onClick={() => setView('waitlist')}
+                badge={badgeWaitlist || undefined}
+                badgeHint={badgeWaitlist ? `${badgeWaitlist} new waitlist signup${badgeWaitlist === 1 ? '' : 's'}` : undefined}
+                urgent={badgeWaitlist > 0}
+                onClick={() => { dismissInbox('waitlist_pending'); setView('waitlist'); }}
               />
-              <StatCard
+              <DashStatCard
                 icon="⏳"
                 label="Awaiting Reviewer"
-                value={awaiting}
-                sub="Need assignment"
+                value={awaitingCount}
+                sub="Need assignment · filter list"
                 accent="#9a6500"
+                badge={badgeReviewer || undefined}
+                badgeHint={badgeReviewer ? `${badgeReviewer} new — assign reviewer${badgeReviewer === 1 ? '' : 's'}` : undefined}
+                urgent={badgeReviewer > 0}
+                onClick={() => { dismissInbox('needs_reviewer'); openApplicationsFiltered('payment_confirmed'); }}
               />
-              <StatCard
+              <DashStatCard
                 icon="📅"
                 label="Sessions Scheduled"
                 value={scheduled}
-                sub="Upcoming reviews"
+                sub="Upcoming reviews · filter list"
                 accent="#007a4a"
+                badge={badgeSessions || undefined}
+                badgeHint={
+                  badgeSessions > 0
+                    ? `${badgeSessions} new session update${badgeSessions === 1 ? '' : 's'} since login`
+                    : undefined
+                }
+                urgent={badgeSessions > 0 && (inbox?.sessions_today ?? 0) > 0}
+                onClick={() => { dismissSessionsInbox(); openApplicationsFiltered('scheduled'); }}
               />
-              <StatCard
+              <DashStatCard
                 icon="🎓"
                 label="Credentials Issued"
                 value={analytics.credentials.total}
-                sub={`${analytics.scores.pass_rate_all_time}% pass rate`}
+                sub={`${analytics.scores.pass_rate_all_time}% pass rate · completed`}
                 accent="#005fa3"
+                badge={badgeCredentials || undefined}
+                badgeHint={badgeCredentials ? `${badgeCredentials} new ready to issue` : undefined}
+                urgent={badgeCredentials > 0}
+                onClick={() => { dismissInbox('credentials_to_issue'); openApplicationsFiltered('completed'); }}
               />
             </>
           ) : null}
         </div>}
 
-        {/* ── Two-column layout ─────────────────────────────────────── */}
-        <div className="admin-dash-grid" style={{ gridTemplateColumns: view === 'dashboard' ? undefined : 'minmax(0, 1fr)' }}>
+        {/* ── Applications table → calendar → reviewers ── */}
+        <div className="admin-dash-stack">
 
-          {/* ── LEFT: Applications table ─────────────────────────── */}
-          <div style={{ backgroundColor: '#fff', border: BORDER, minWidth: 0 }}>
+          <div className="dash-surface" style={{ backgroundColor: '#fff', minWidth: 0, borderRadius: 12 }}>
 
             {/* Table header */}
             <div style={{ padding: '18px 20px 0', borderBottom: BORDER }}>
@@ -729,47 +870,57 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {tableTab === 'scheduled' && (
-              <div style={{ padding: '16px 20px 20px', borderTop: BORDER }}>
-                <ScheduledMeetingsCalendar onOpenApplication={(id) => openApp(id)} />
-              </div>
-            )}
           </div>
 
-          {/* ── RIGHT sidebar (dashboard only) ──────────────────── */}
-          {view === 'dashboard' && <div className="admin-sidebar" style={{ display: 'flex', flexDirection: 'column', gap: '14px', minWidth: 0, maxWidth: '320px' }}>
+          {view === 'dashboard' && (
+            <div
+              className="admin-cal-section"
+              style={{
+                marginTop: 16,
+                marginBottom: 16,
+                padding: '4px',
+                borderRadius: 14,
+                background: '#ffe8d9',
+                border: '1px solid rgba(235, 69, 17, 0.18)',
+              }}
+            >
+              <ScheduledMeetingsCalendar onOpenApplication={(id) => openApp(id)} />
+            </div>
+          )}
 
-            {/* Revenue card */}
-            {analytics && (
-              <div style={{ backgroundColor: '#fff', border: BORDER, padding: '22px', minWidth: 0, overflow: 'hidden' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                  <span style={{ fontSize: '14px', fontWeight: 600, color: '#0f0d0c', letterSpacing: '-0.01em' }}>Revenue</span>
-                  <span style={{ fontSize: '11px', color: 'rgba(15,13,12,0.38)' }}>All time</span>
-                </div>
-                <div style={{ fontSize: 'clamp(28px, 5vw, 40px)', fontWeight: 200, letterSpacing: '-0.04em', color: '#0f0d0c', lineHeight: 1, marginBottom: '6px', wordBreak: 'break-word' }}>
-                  {fmtRevenue(analytics.revenue.all_time)}
-                </div>
-                <div style={{ fontSize: '12px', color: 'rgba(15,13,12,0.45)' }}>
-                  {fmtRevenue(analytics.revenue.this_month)} this month · {analytics.scores.average}/100 avg score
-                </div>
-                <div style={{ marginTop: '16px', height: '3px', backgroundColor: 'rgba(15,13,12,0.07)', borderRadius: '2px', overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: `${Math.min(analytics.scores.pass_rate_all_time, 100)}%`, backgroundColor: '#eb4511', borderRadius: '2px', transition: 'width 0.6s ease' }} />
-                </div>
-                <div style={{ fontSize: '11px', color: 'rgba(15,13,12,0.38)', marginTop: '5px' }}>
-                  {analytics.scores.pass_rate_all_time}% pass rate
+          {view === 'dashboard' && (
+            <div className="admin-dash-bottom">
+            <div className="dash-surface" style={{ backgroundColor: '#fff', borderRadius: 12, minWidth: 0, gridColumn: '1 / -1' }}>
+              <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(15,13,12,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '14px', fontWeight: 600, color: '#0f0d0c', letterSpacing: '-0.01em' }}>Reviewers</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  {reviewers.length > 0 && (
+                    <span style={{ fontSize: '11px', backgroundColor: 'rgba(15,13,12,0.06)', color: 'rgba(15,13,12,0.5)', padding: '2px 8px', borderRadius: '10px', fontWeight: 500 }}>
+                      {reviewers.length} active
+                    </span>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setView('reviewers')}
+                    style={{
+                      padding: '6px 12px',
+                      fontSize: 11,
+                      fontWeight: 600,
+                      color: '#eb4511',
+                      background: 'rgba(235,69,17,0.08)',
+                      border: '1px solid rgba(235,69,17,0.25)',
+                      borderRadius: 6,
+                      cursor: 'pointer',
+                      fontFamily: FONT,
+                    }}
+                  >
+                    + Add reviewer
+                  </button>
                 </div>
               </div>
-            )}
 
-            {/* Reviewers panel */}
-            <div style={{ backgroundColor: '#fff', border: BORDER }}>
-              <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(15,13,12,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '14px', fontWeight: 600, color: '#0f0d0c', letterSpacing: '-0.01em' }}>Reviewer Performance</span>
-                {reviewers.length > 0 && (
-                  <span style={{ fontSize: '11px', backgroundColor: 'rgba(15,13,12,0.06)', color: 'rgba(15,13,12,0.5)', padding: '2px 8px', borderRadius: '10px', fontWeight: 500 }}>
-                    {reviewers.length} active
-                  </span>
-                )}
+              <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(15,13,12,0.07)' }}>
+                <ReviewerInviteForm compact onInvited={() => void fetchReviewers()} />
               </div>
 
               {loadingR ? (
@@ -785,7 +936,9 @@ export default function AdminDashboard() {
                   ))}
                 </div>
               ) : reviewers.length === 0 ? (
-                <div style={{ padding: '32px', textAlign: 'center', fontSize: '13px', color: 'rgba(15,13,12,0.35)' }}>No reviewers yet.</div>
+                <div style={{ padding: '20px', textAlign: 'center', fontSize: '13px', color: 'rgba(15,13,12,0.45)' }}>
+                  No reviewers listed yet — grant access with the form above.
+                </div>
               ) : (
                 <div>
                   {reviewers.map((r, i) => (
@@ -795,7 +948,8 @@ export default function AdminDashboard() {
               )}
             </div>
 
-          </div>}
+          </div>
+          )}
         </div>
 
         </>}
@@ -805,6 +959,7 @@ export default function AdminDashboard() {
             detail={appDetail}
             loading={detailLoading}
             actionLoading={actionLoading === selectedAppId}
+            generatingTranscript={generatingTranscript}
             scoreInput={scoreInput}
             scoreFeedback={scoreFeedback}
             onScoreInputChange={setScoreInput}
@@ -822,6 +977,7 @@ export default function AdminDashboard() {
             onRescheduleSession={handleRescheduleSession}
             onSessionReminder={handleSessionReminder}
             onReviewScore={handleReviewScore}
+            onGenerateTranscript={() => handleGenerateTranscript(selectedAppId)}
           />
         )}
 
@@ -856,8 +1012,7 @@ export default function AdminDashboard() {
             onCancel={() => setPendingAssign(null)}
           />
         )}
-      </div>
-    </div>
+    </DashboardShell>
   );
 }
 
@@ -910,44 +1065,6 @@ function ReviewerCard({ reviewer: r, onViewProfile }: { reviewer: Reviewer; onVi
         ))}
       </div>
       <p style={{ fontSize: 11, color: 'rgba(15,13,12,0.35)', marginTop: 14, marginBottom: 0 }}>Click to view full profile →</p>
-    </div>
-  );
-}
-
-// ── StatCard ──────────────────────────────────────────────────────────────────
-
-function StatCard({ icon, label, value, sub, accent, onClick }: {
-  icon: string; label: string; value: number | string; sub: string; accent: string;
-  onClick?: () => void;
-}) {
-  const [hov, setHov] = useState(false);
-  return (
-    <div
-      onClick={onClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        backgroundColor: '#fff',
-        border: `1px solid ${hov ? accent : 'rgba(15,13,12,0.1)'}`,
-        padding: '20px',
-        transition: 'border-color 0.18s, box-shadow 0.18s',
-        boxShadow: hov ? `0 4px 20px ${accent}18` : 'none',
-        cursor: onClick ? 'pointer' : 'default', position: 'relative', overflow: 'hidden',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '10px' }}>
-        <span style={{ fontSize: '18px', lineHeight: 1 }}>{icon}</span>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ opacity: 0.25 }}>
-          <path d="M2 12L12 2M12 2H5M12 2V9" stroke="#0f0d0c" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </div>
-      <p style={{ fontSize: '12px', fontWeight: 500, color: 'rgba(15,13,12,0.45)', marginBottom: '6px', letterSpacing: '-0.01em' }}>
-        {label}
-      </p>
-      <p style={{ fontSize: '40px', fontWeight: 200, letterSpacing: '-0.04em', color: '#0f0d0c', lineHeight: 1, margin: '0 0 6px' }}>
-        {value}
-      </p>
-      <p style={{ fontSize: '11px', color: 'rgba(15,13,12,0.38)', margin: 0 }}>{sub}</p>
     </div>
   );
 }
@@ -1112,14 +1229,15 @@ function firstCred(creds: AppDetail['credentials']) {
 }
 
 function ApplicationPanel({
-  detail, loading, actionLoading, scoreInput, scoreFeedback,
+  detail, loading, actionLoading, generatingTranscript, scoreInput, scoreFeedback,
   onScoreInputChange, onScoreFeedbackChange,
   onClose, onConfirmPayment, onSubmitScore, onIssueCredential, onResetStep, onViewProfile,
-  onApproveSession, onRescheduleSession, onSessionReminder, onReviewScore,
+  onApproveSession, onRescheduleSession, onSessionReminder, onReviewScore, onGenerateTranscript,
 }: {
   detail: AppDetail | null;
   loading: boolean;
   actionLoading: boolean;
+  generatingTranscript?: boolean;
   scoreInput: number;
   scoreFeedback: string;
   onScoreInputChange: (n: number) => void;
@@ -1134,6 +1252,7 @@ function ApplicationPanel({
   onRescheduleSession: (assignmentId: string, newSessionAt: string, note?: string) => void;
   onSessionReminder: (assignmentId: string) => void;
   onReviewScore: (appId: string, action: 'approve' | 'request_revision' | 'under_review') => void;
+  onGenerateTranscript?: () => Promise<void>;
 }) {
   const score = detail ? firstScore(detail.scores) : null;
   const cred = detail ? firstCred(detail.credentials) : null;
@@ -1148,73 +1267,97 @@ function ApplicationPanel({
 
   return (
     <>
-      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(15,13,12,0.35)', zIndex: 100 }} />
+      <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(15,13,12,0.45)', zIndex: 100 }} />
       <div style={{
-        position: 'fixed', top: 0, right: 0, bottom: 0, width: 'min(520px, 100vw)',
-        background: '#fff', zIndex: 101, overflowY: 'auto',
-        borderLeft: BORDER, boxShadow: '-8px 0 32px rgba(15,13,12,0.08)',
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 'min(960px, 94vw)',
+        maxHeight: '92vh',
+        background: '#fff',
+        zIndex: 101,
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        border: BORDER,
+        boxShadow: '0 24px 64px rgba(15,13,12,0.18)',
+        borderRadius: 8,
       }}>
-        <div style={{ padding: '20px 24px', borderBottom: BORDER, display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, background: '#fff', zIndex: 1 }}>
+        <div style={{ padding: '18px 24px', borderBottom: BORDER, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0, background: '#fff' }}>
           <div>
-            <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#eb4511', marginBottom: 4 }}>Application</p>
-            <h2 style={{ fontSize: 18, fontWeight: 600, margin: 0 }}>{detail?.project_name ?? 'Loading…'}</h2>
+            <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#eb4511', marginBottom: 4 }}>Full application view</p>
+            <h2 style={{ fontSize: 20, fontWeight: 600, margin: 0 }}>{detail?.project_name ?? 'Loading…'}</h2>
           </div>
-          <button onClick={onClose} style={{ border: 'none', background: 'transparent', fontSize: 22, cursor: 'pointer', color: 'rgba(15,13,12,0.4)' }}>×</button>
+          <button onClick={onClose} style={{ border: 'none', background: 'transparent', fontSize: 24, cursor: 'pointer', color: 'rgba(15,13,12,0.4)', lineHeight: 1 }} aria-label="Close">×</button>
         </div>
 
         {loading || !detail ? (
           <div style={{ padding: 40, color: 'rgba(15,13,12,0.4)' }}>Loading…</div>
         ) : (
-          <div style={{ padding: '24px' }}>
-            <p style={{ fontSize: 13, color: 'rgba(15,13,12,0.55)', marginBottom: 12 }}>
-              {detail.users?.full_name} · {detail.users?.email}
-            </p>
-            <button
-              type="button"
-              onClick={onViewProfile}
-              style={{ marginBottom: 20, padding: '6px 12px', fontSize: 11, fontWeight: 600, border: '1px solid rgba(15,13,12,0.2)', background: '#fff', cursor: 'pointer' }}
+          <div style={{ padding: '20px 24px 24px', overflowY: 'auto', flex: 1, minHeight: 0 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+              <p style={{ fontSize: 13, color: 'rgba(15,13,12,0.55)', margin: 0 }}>
+                {detail.users?.full_name} · {detail.users?.email}
+              </p>
+              <button
+                type="button"
+                onClick={onViewProfile}
+                style={{ padding: '6px 12px', fontSize: 11, fontWeight: 600, border: '1px solid rgba(15,13,12,0.2)', background: '#fff', cursor: 'pointer' }}
+              >
+                Student profile →
+              </button>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: 20, alignItems: 'start' }}
+              className="admin-app-full-grid"
             >
-              View full student profile →
-            </button>
+              <AdminSubmissionDetail
+                project_name={detail.project_name}
+                tech_stack={detail.tech_stack}
+                github_url={detail.github_url}
+                loom_url={detail.loom_url}
+                build_decision_1={detail.build_decision_1}
+                build_decision_2={detail.build_decision_2}
+                build_decision_3={detail.build_decision_3}
+                what_broke={detail.what_broke}
+                ai_tools_used={detail.ai_tools_used}
+                submitted_at={detail.submitted_at}
+                fullPage
+              />
 
-            <AdminSubmissionDetail
-              project_name={detail.project_name}
-              tech_stack={detail.tech_stack}
-              github_url={detail.github_url}
-              loom_url={detail.loom_url}
-              build_decision_1={detail.build_decision_1}
-              build_decision_2={detail.build_decision_2}
-              build_decision_3={detail.build_decision_3}
-              what_broke={detail.what_broke}
-              ai_tools_used={detail.ai_tools_used}
-              submitted_at={detail.submitted_at}
-            />
-
-            <AdminWorkflowSteps
-              detailStatus={detail.status}
-              paymentDone={paymentDone}
-              assignment={assignment}
-              recordingUrl={detail.recording_url ?? null}
-              scoreSubmittedAt={score?.submitted_at ?? null}
-              score={score}
-              credentialIssued={credDone}
-              actionLoading={actionLoading}
-              scoreInput={scoreInput}
-              scoreFeedback={scoreFeedback}
-              onScoreInputChange={onScoreInputChange}
-              onScoreFeedbackChange={onScoreFeedbackChange}
-              onConfirmPayment={onConfirmPayment}
-              onApproveSession={onApproveSession}
-              onRescheduleSession={onRescheduleSession}
-              onSessionReminder={onSessionReminder}
-              onReviewScore={(action) => onReviewScore(detail.id, action)}
-              onSubmitManualScore={onSubmitScore}
-              onIssueCredential={onIssueCredential}
-              confirmReviewed={confirmReviewed}
-              overrideFailed={overrideFailed}
-              onConfirmReviewedChange={setConfirmReviewed}
-              onOverrideFailedChange={setOverrideFailed}
-            />
+              <AdminWorkflowSteps
+                detailStatus={detail.status}
+                paymentDone={paymentDone}
+                assignment={assignment}
+                projectName={detail.project_name}
+                recordingUrl={detail.recording_url ?? null}
+                scoreSubmittedAt={score?.submitted_at ?? null}
+                score={score}
+                credentialIssued={credDone}
+                actionLoading={actionLoading}
+                scoreInput={scoreInput}
+                scoreFeedback={scoreFeedback}
+                onScoreInputChange={onScoreInputChange}
+                onScoreFeedbackChange={onScoreFeedbackChange}
+                onConfirmPayment={onConfirmPayment}
+                onApproveSession={onApproveSession}
+                onRescheduleSession={onRescheduleSession}
+                onSessionReminder={onSessionReminder}
+                onReviewScore={(action) => onReviewScore(detail.id, action)}
+                onSubmitManualScore={onSubmitScore}
+                onIssueCredential={onIssueCredential}
+                confirmReviewed={confirmReviewed}
+                overrideFailed={overrideFailed}
+                onConfirmReviewedChange={setConfirmReviewed}
+                onOverrideFailedChange={setOverrideFailed}
+                transcriptSummary={detail.session_transcript_summary}
+                transcript={detail.session_transcript}
+                transcriptGeneratedAt={detail.session_transcript_generated_at}
+                onGenerateTranscript={onGenerateTranscript}
+                generatingTranscript={generatingTranscript}
+              />
+            </div>
 
             {credDone && cred && (
               <div style={{ marginBottom: 16, padding: 14, border: BORDER, background: 'rgba(0,95,163,0.04)' }}>

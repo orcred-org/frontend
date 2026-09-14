@@ -9,9 +9,14 @@ import ReviewerGuide from '@/components/reviewer/ReviewerGuide';
 import AssignmentTaskList from '@/components/reviewer/AssignmentTaskList';
 import SubmissionReviewFlow from '@/components/reviewer/SubmissionReviewFlow';
 import ReviewerHeader from '@/components/reviewer/ReviewerHeader';
+import DashboardFooter from '@/components/dashboard/DashboardFooter';
+import MySessionMiniCalendar from '@/components/shared/MySessionMiniCalendar';
+import type { MiniCalendarSession } from '@/components/shared/MySessionMiniCalendar';
+import CodeDeletionAck from '@/components/reviewer/CodeDeletionAck';
 import { type WorkflowTask } from '@/lib/workflowTasks';
 import { formatTentativeSessionDisplay } from '@/lib/sessionDisplay';
 import { getSessionJoinState } from '@/lib/sessionAccess';
+import SessionCalendarLinks from '@/components/shared/SessionCalendarLinks';
 
 const FONT = 'Inter, system-ui, sans-serif';
 const BORDER = '1px solid rgba(15,13,12,0.1)';
@@ -119,6 +124,7 @@ export default function ReviewerDashboard() {
   const [ratings, setRatings] = useState<Record<CriterionKey, CriterionRating>>(DEFAULT_RATINGS);
   const [feedbackNotes, setFeedbackNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [codeDeletionAck, setCodeDeletionAck] = useState(false);
   const [workflowTasks, setWorkflowTasks] = useState<WorkflowTask[]>([]);
 
   const fetchWorkflowTasks = useCallback(async () => {
@@ -195,6 +201,10 @@ export default function ReviewerDashboard() {
       setError('Add brief review notes (min 10 characters)');
       return;
     }
+    if (!codeDeletionAck) {
+      setError('Confirm you have deleted all student code from your devices.');
+      return;
+    }
     setSubmitting(true);
     setError('');
     try {
@@ -203,6 +213,7 @@ export default function ReviewerDashboard() {
         ratings,
         feedback_notes: feedbackNotes,
         confirm: true,
+        code_deletion_acknowledged: true as const,
       });
       alert('Score submitted — pending admin review.');
       setSelectedId(null);
@@ -267,12 +278,14 @@ export default function ReviewerDashboard() {
           <textarea value={feedbackNotes} onChange={(e) => setFeedbackNotes(e.target.value)}
             placeholder="Summary feedback for the student (min 10 chars)"
             style={{ width: '100%', minHeight: 100, marginBottom: 16, padding: 12, fontFamily: FONT }} />
+          <CodeDeletionAck checked={codeDeletionAck} onChange={setCodeDeletionAck} disabled={submitting} />
           {error && <p style={{ color: '#ba1a1a', fontSize: 13 }}>{error}</p>}
-          <button disabled={submitting || activeCount === 0} onClick={handleSubmitScore}
+          <button disabled={submitting || activeCount === 0 || !codeDeletionAck} onClick={handleSubmitScore}
             style={{ width: '100%', padding: 14, background: '#eb4511', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
             {submitting ? 'Submitting…' : `Submit — ${totalScore}/100`}
           </button>
         </main>
+        <DashboardFooter />
       </div>
     );
   }
@@ -304,10 +317,16 @@ export default function ReviewerDashboard() {
             onBack={() => { setSelectedId(null); setDetail(null); fetchWorkflowTasks(); }}
             onComplete={() => { setSelectedId(null); setDetail(null); fetchAssignments(); fetchWorkflowTasks(); }}
             onRefresh={refreshSubmission}
-            onStartScore={() => { setRatings(DEFAULT_RATINGS()); setFeedbackNotes(''); setScoring(true); }}
+            onStartScore={() => {
+              setRatings(DEFAULT_RATINGS());
+              setFeedbackNotes('');
+              setCodeDeletionAck(false);
+              setScoring(true);
+            }}
           />
         )}
         {error && <p style={{ color: '#ba1a1a', fontSize: 13, textAlign: 'center', padding: 16 }}>{error}</p>}
+        <DashboardFooter />
       </div>
     );
   }
@@ -315,8 +334,22 @@ export default function ReviewerDashboard() {
   const activeAssignments = assignments.filter((a) => normalizeApp(a.applications));
   const pendingTasks = workflowTasks.filter((t) => t.status !== 'done' && t.status !== 'cancelled');
 
+  const reviewerCalendarSessions: MiniCalendarSession[] = activeAssignments
+    .filter((a) => a.session_date)
+    .map((a) => {
+      const app = normalizeApp(a.applications)!;
+      return {
+        id: a.id,
+        sessionDate: a.session_date!,
+        title: `Orcred review: ${app.project_name}`,
+        sessionUrl: `/dashboard/session/${a.id}?as=reviewer`,
+        calendarUid: `orcred-reviewer-${a.id}@orcred.com`,
+        subtitle: a.student_code ?? undefined,
+      };
+    });
+
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#faf7f2', fontFamily: FONT }}>
+    <div className="dash" style={{ minHeight: '100vh', backgroundColor: '#faf7f2', fontFamily: FONT }}>
       <ReviewerHeader
         subtitle={`${activeAssignments.length} active assignment${activeAssignments.length === 1 ? '' : 's'}${pendingTasks.length > 0 ? ` · ${pendingTasks.length} open task${pendingTasks.length === 1 ? '' : 's'}` : ''}`}
         onSignOut={signOut}
@@ -337,6 +370,44 @@ export default function ReviewerDashboard() {
           </div>
         ) : (
           <>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                gap: 16,
+                marginBottom: 24,
+                alignItems: 'start',
+              }}
+            >
+              <MySessionMiniCalendar
+                sessions={reviewerCalendarSessions}
+                emptyMessage="Scheduled sessions will show here once confirmed."
+              />
+              {reviewerCalendarSessions.length > 0 && (
+                <div
+                  className="dash-surface"
+                  style={{
+                    padding: '18px 20px',
+                    borderRadius: 12,
+                    background: 'linear-gradient(135deg, rgba(0,95,163,0.06) 0%, #fff 60%)',
+                  }}
+                >
+                  <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(15,13,12,0.4)', margin: '0 0 8px' }}>
+                    Next up
+                  </p>
+                  <p style={{ fontSize: 15, fontWeight: 600, margin: '0 0 4px', letterSpacing: '-0.01em' }}>
+                    {reviewerCalendarSessions
+                      .filter((s) => new Date(s.sessionDate).getTime() > Date.now() - 60_000)
+                      .sort((a, b) => new Date(a.sessionDate).getTime() - new Date(b.sessionDate).getTime())[0]
+                      ?.title.replace(/^Orcred review:\s*/i, '') ?? '—'}
+                  </p>
+                  <p style={{ fontSize: 12, color: 'rgba(15,13,12,0.5)', margin: 0 }}>
+                    Use the calendar to add events to Google Calendar and watch the countdown.
+                  </p>
+                </div>
+              )}
+            </div>
+
             <h2 style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(15,13,12,0.4)', marginBottom: 14 }}>
               Your assigned students
             </h2>
@@ -383,6 +454,13 @@ export default function ReviewerDashboard() {
                             <p style={{ fontSize: 11, color: 'rgba(15,13,12,0.45)', marginTop: 6 }}>
                               {getSessionJoinState(a.session_date).message}
                             </p>
+                            <SessionCalendarLinks
+                              title={`Orcred review: ${app.project_name}`}
+                              sessionDate={a.session_date}
+                              sessionUrl={`/dashboard/session/${a.id}?as=reviewer`}
+                              uid={`orcred-reviewer-${a.id}@orcred.com`}
+                              compact
+                            />
                           </div>
                         )}
                         {status === 'scheduling' && (
@@ -418,6 +496,7 @@ export default function ReviewerDashboard() {
 
         <ReviewerGuide assignmentCount={activeAssignments.length} compact={activeAssignments.length > 0} />
       </main>
+      <DashboardFooter />
     </div>
   );
 }

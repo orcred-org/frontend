@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import DailyIframe from '@daily-co/daily-js';
 import type { DailyCall, DailyEventObjectFatalError } from '@daily-co/daily-js';
+import { SESSION_VIDEO_PANEL_HEIGHT } from '@/lib/sessionLayout';
 
 /** Serialize Daily create/destroy — React Strict Mode remounts otherwise throw. */
 let lifecycle: Promise<void> = Promise.resolve();
@@ -164,7 +165,7 @@ export default function DailyRoomEmbed({ roomUrl, token, userName, onJoined }: D
   }
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: 'min(70vh, 640px)' }}>
+    <div style={{ position: 'relative', width: '100%', height: SESSION_VIDEO_PANEL_HEIGHT }}>
       {loading && (
         <p
           style={{

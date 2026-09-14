@@ -6,10 +6,14 @@ import { useRouter } from 'next/navigation';
 import { api, ApiError } from '@/lib/api';
 import { useRequireAuth } from '@/lib/useRequireAuth';
 import RescheduleRequestForm, { isReschedulePending } from '@/components/shared/RescheduleRequestForm';
+import SessionCalendarLinks from '@/components/shared/SessionCalendarLinks';
 import PaymentSection from '@/components/student/PaymentSection';
 import { formatTentativeSessionDisplay } from '@/lib/sessionDisplay';
 import { getSessionJoinState } from '@/lib/sessionAccess';
 import { isStudentApplyEnabled, WAITLIST_PATH } from '@/lib/platformGates';
+import DashboardShell from '@/components/dashboard/DashboardShell';
+import MySessionMiniCalendar from '@/components/shared/MySessionMiniCalendar';
+import type { MiniCalendarSession } from '@/components/shared/MySessionMiniCalendar';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -205,41 +209,43 @@ export default function StudentDashboard() {
   const firstName = data.full_name?.split(' ')[0] || 'there';
   const meta = STATE_META[data.state];
 
+  const studentCalendarSessions: MiniCalendarSession[] = [];
+  if (data.application?.session_date) {
+    studentCalendarSessions.push({
+      id: data.application.assignment_id ?? 'student-session',
+      sessionDate: data.application.session_date,
+      title: `Orcred review: ${data.project?.name ?? 'Your project'}`,
+      sessionUrl: data.application.assignment_id
+        ? `/dashboard/session/${data.application.assignment_id}?as=student`
+        : undefined,
+      calendarUid: `orcred-student-${data.application.assignment_id ?? 'session'}@orcred.com`,
+      subtitle: '45-min live review',
+    });
+  }
+
+  const showSessionCalendar =
+    !!data.application?.session_date
+    || data.state === 'scheduled'
+    || data.state === 'reviewer_assigned';
+
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: BG, fontFamily: FONT }}>
-
-      {/* ── Navbar ── */}
-      <header style={{ position: 'sticky', top: 0, zIndex: 50, backgroundColor: 'rgba(250,247,242,0.94)', backdropFilter: 'blur(14px)', borderBottom: BORDER }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 40px', height: '58px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <svg width="26" height="26" viewBox="0 0 42 42" fill="none"><circle cx="21" cy="21" r="20" fill="#eb4511"/></svg>
-            <span style={{ fontSize: '17px', fontWeight: 700, letterSpacing: '-0.02em', color: '#0f0d0c' }}>Orcred</span>
-          </div>
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <NavLink href="/dashboard/student" active>Dashboard</NavLink>
-            <NavLink href="/dashboard/student/profile">Profile</NavLink>
-            <NavLink href="/dashboard/settings">Settings</NavLink>
-          </nav>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '30px', height: '30px', borderRadius: '50%', backgroundColor: '#eb4511', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontSize: '12px', fontWeight: 700, color: '#fff' }}>{(firstName[0] || 'S').toUpperCase()}</span>
-            </div>
-            <div>
-              <div style={{ fontSize: '12px', fontWeight: 600, color: '#0f0d0c', lineHeight: 1.2 }}>{data.full_name || 'Student'}</div>
-              <div style={{ fontSize: '11px', color: 'rgba(15,13,12,0.4)', lineHeight: 1.2 }}>{data.email}</div>
-            </div>
-            <button onClick={signOut} style={{ marginLeft: '8px', padding: '6px 14px', fontSize: '12px', fontWeight: 600, color: '#eb4511', background: 'transparent', border: '1px solid #eb4511', borderRadius: '6px', cursor: 'pointer', fontFamily: FONT }}>
-              Sign out
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '36px 40px 80px' }}>
-
+    <DashboardShell
+      homeHref="/dashboard/student"
+      navItems={[
+        { id: 'dashboard', label: 'Dashboard', href: '/dashboard/student', active: true },
+        { id: 'profile', label: 'Profile', href: '/dashboard/student/profile' },
+        { id: 'settings', label: 'Settings', href: '/dashboard/settings' },
+      ]}
+      userName={data.full_name || 'Student'}
+      userEmail={data.email}
+      roleLabel="Student"
+      userInitial={(firstName[0] || 'S').toUpperCase()}
+      onSignOut={signOut}
+      shellStyle={{ fontFamily: FONT }}
+    >
         {/* Page title */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px' }}>
-          <h1 style={{ fontSize: '28px', fontWeight: 400, letterSpacing: '-0.03em', color: '#0f0d0c', margin: 0 }}>
+          <h1 className="dash-page-title" style={{ margin: 0 }}>
             Welcome back, {firstName}.
           </h1>
           <span style={{ fontSize: '12px', fontWeight: 600, padding: '5px 12px', backgroundColor: meta.bg, color: meta.color, borderRadius: '4px' }}>
@@ -489,10 +495,23 @@ export default function StudentDashboard() {
                       {getSessionJoinState(data.application.session_date).message}
                     </p>
 
+                    {data.application.assignment_id && (
+                      <SessionCalendarLinks
+                        title={`Orcred review: ${data.project?.name ?? data.application.id}`}
+                        sessionDate={data.application.session_date}
+                        sessionUrl={`/dashboard/session/${data.application.assignment_id}?as=student`}
+                        uid={`orcred-student-${data.application.assignment_id}@orcred.com`}
+                      />
+                    )}
+
                     <RescheduleRequestForm
                       role="student"
                       applicationId={data.application.id}
                       reschedulePending={isReschedulePending(data.application.proposed_session_notes)}
+                      rescheduleBlocked={
+                        !!data.application.session_date
+                        && new Date(data.application.session_date).getTime() <= Date.now()
+                      }
                       onSuccess={loadDashboard}
                     />
 
@@ -565,6 +584,9 @@ export default function StudentDashboard() {
                         <div style={{ display: 'flex', gap: '10px', marginBottom: '36px', flexWrap: 'wrap' }}>
                           <ActionBtn primary onClick={copyCredentialUrl}>{copied ? 'Copied ✓' : 'Copy verify link'}</ActionBtn>
                           <ActionBtn onClick={() => window.open(data.credential!.credential_url, '_blank')}>View public page</ActionBtn>
+                          <ActionBtn onClick={() => window.open(`${data.credential!.credential_url}?view=certificate`, '_blank', 'noopener,noreferrer')}>
+                            Download certificate
+                          </ActionBtn>
                           <ActionBtn onClick={addToLinkedIn}>
                             {data.credential.linkedin_added ? 'Add to LinkedIn again' : 'Add to LinkedIn'}
                           </ActionBtn>
@@ -615,6 +637,17 @@ export default function StudentDashboard() {
 
           {/* ── RIGHT sidebar ── */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+
+            {showSessionCalendar && (
+              <MySessionMiniCalendar
+                sessions={studentCalendarSessions}
+                emptyMessage={
+                  data.application?.workflow_stage === 'session_proposed'
+                    ? 'Your reviewer proposed a time — admin will confirm soon.'
+                    : 'Session time will appear here once scheduled.'
+                }
+              />
+            )}
 
             {/* Profile completion card */}
             <div style={{ backgroundColor: '#fff', border: BORDER, padding: '22px' }}>
@@ -683,30 +716,11 @@ export default function StudentDashboard() {
 
           </div>
         </div>
-      </div>
-    </div>
+    </DashboardShell>
   );
 }
 
 // ── Small components ──────────────────────────────────────────────────────────
-
-function NavLink({ href, children, active }: { href: string; children: React.ReactNode; active?: boolean }) {
-  return (
-    <Link href={href} style={{
-      padding: '6px 14px',
-      fontSize: '13px', fontWeight: active ? 600 : 400,
-      color: active ? '#0f0d0c' : 'rgba(15,13,12,0.45)',
-      backgroundColor: active ? 'rgba(15,13,12,0.07)' : 'transparent',
-      borderRadius: '6px', textDecoration: 'none', letterSpacing: '-0.01em',
-      transition: 'background-color 0.15s, color 0.15s',
-    }}
-      onMouseEnter={e => !active && ((e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(15,13,12,0.04)')}
-      onMouseLeave={e => !active && ((e.currentTarget as HTMLElement).style.backgroundColor = 'transparent')}
-    >
-      {children}
-    </Link>
-  );
-}
 
 function StatCard({ icon, label, value, sub, accent, small }: {
   icon: string; label: string; value: string | number; sub: string; accent: string; small?: boolean;
